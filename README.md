@@ -18,6 +18,15 @@ De pagina's die bij elkaar horend zijn zullen ook onder 1 navigation laag zitten
 Deze verschillende pagina's / navigation lagen zullen dan in de App.tsx opgeroepen worden.
 Ook zal ik gebruik maken van babel als javaScript compiler.
 
+Ik zal de expo FileSystem api gebruiken om de gespeelde games locaal op te slaan.
+(https://docs.expo.dev/versions/v48.0.0/sdk/filesystem/)
+
+Ook zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zal 180.
+(https://docs.expo.dev/versions/v48.0.0/sdk/audio/)
+
+En tenslotte zal ik de expo camera api gebruiken om de hoogtepunten tijdens het darten te kunnen vastleggen.
+(https://docs.expo.dev/versions/v48.0.0/sdk/camera/)
+
 ### 3. Wat is mijn insteek voor de UI?
 
 Ik ga proberen het design van de DartCounter app zo goed mogelijk na te maken.
