@@ -20,16 +20,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <StatusBar style="light" />
-      <LoginStack />
+      <LoginStack/>
     </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

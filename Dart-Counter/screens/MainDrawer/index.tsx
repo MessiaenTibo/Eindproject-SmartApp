@@ -10,12 +10,12 @@ const Drawer = createDrawerNavigator();
 export function MainDrawer () {
     return (
         <Drawer.Navigator initialRouteName="Home"
-            screenOptions={{
-                headerShown: false,
-            }}
+            // screenOptions={{
+            //     headerShown: false,
+            // }}
         >
-            <Drawer.Screen name="Overview" component={Overview} />
-            <Drawer.Screen name="Settings" component={Settings} />
+            <Drawer.Screen name="Overview" component={Overview} options={{headerShown: false,}}/>
+            <Drawer.Screen name="Settings" component={Settings} options={{title: 'Settings'}}/>
         </Drawer.Navigator>
     );
 }

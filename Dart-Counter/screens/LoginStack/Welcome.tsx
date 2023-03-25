@@ -22,7 +22,7 @@ export default () => {
                 <Text style={HomeStyle.buttonText} >CREATE ACCOUNT</Text>
             </Pressable>
             <View style={HomeStyle.line} />
-            <Pressable onPress={() => {}}>
+            <Pressable onPress={() => {navigate('MainDrawer')}}>
                 <Text style={HomeStyle.buttonText} >CONTINUE AS GUEST</Text>
             </Pressable>
         </View>
