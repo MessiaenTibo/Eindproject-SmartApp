@@ -6,6 +6,12 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useEffect } from "react";
 
+import SettingLine from "../../Components/SettingLine";
+
+
+import { ChevronRight } from "lucide-react"
+import { LogOut } from "lucide-react-native"
+
 export default () => {
 
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'MainDrawer'>>()
@@ -28,12 +34,14 @@ export default () => {
 
     return(
         <View style={HomeStyle.container}>
-            <Pressable style={{flexDirection: "row"}}>
-                <Text>Account</Text>
-                <Text>{'>'}</Text>
-            </Pressable>
-
-            <View style={HomeStyle.line} ></View>
+            <SettingLine title="Account" />
+            <SettingLine title="Languages" />
+            <SettingLine title="Game settings" />
+            <SettingLine title="Blocked players" />
+            <SettingLine title="Reset statistics" />
+            <SettingLine title="Terms of Use" />
+            <SettingLine title="Privacy policy" />
+            <SettingLine title="Logout" titleColor={colors.gold} icon='logout'/>
         </View>
     )
 }

@@ -21,7 +21,7 @@ export default () => {
             <Pressable style={HomeStyle.button2} onPress={() => {navigate('Register');}}>
                 <Text style={HomeStyle.buttonText} >CREATE ACCOUNT</Text>
             </Pressable>
-            <View style={HomeStyle.line} />
+            <View style={HomeStyle.line1} />
             <Pressable onPress={() => {navigate('MainDrawer')}}>
                 <Text style={HomeStyle.buttonText} >CONTINUE AS GUEST</Text>
             </Pressable>

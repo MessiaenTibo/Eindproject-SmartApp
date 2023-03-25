@@ -49,11 +49,30 @@ export const HomeStyle = StyleSheet.create({
         padding: 10,
         marginVertical: 4,
     },
-    line:{
+    line1:{
         width: '100%',
         height: 2,
         backgroundColor: colors.lightGrey,
         marginTop: 20,
         marginBottom: 20,
+    },
+    line2:{
+        width: '100%',
+        height: 2,
+        backgroundColor: colors.lightGrey,
+        marginTop: 8,
+        marginBottom: 8,
+    },
+    settingsRow:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        width: '100%',
+        marginVertical: 4,
+        color: colors.white,
+    },
+    settingsText:{
+        fontSize: 16,
+        color: colors.white,
     },
 })
