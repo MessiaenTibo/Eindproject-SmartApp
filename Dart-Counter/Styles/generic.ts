@@ -1,0 +1,59 @@
+import { StyleSheet } from 'react-native';
+import { colors } from './colors';
+
+export const HomeStyle = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: colors.darkGrey,
+        alignItems: 'center',
+        paddingTop: 100,
+        padding: 20,
+    },
+    title: {
+        fontSize: 60,
+        fontWeight: '600',
+        marginBottom: 40,
+        color: colors.orange,
+    },
+    text:{
+        fontSize: 20,
+        fontWeight: '400',
+        color: colors.white,
+    },
+    button1:{
+        backgroundColor: colors.orange,
+        width: '100%',
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 12,
+    },
+    button2:{
+        backgroundColor: 'transparent',
+        borderColor: colors.white,
+        borderWidth: 2,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 12,
+        width: '100%',
+    },
+    buttonText:{
+        fontSize: 16,
+        color: 'white',
+    },
+    textInput:{
+        backgroundColor: colors.white,
+        width: '100%',
+        height: 50,
+        padding: 10,
+        marginVertical: 4,
+    },
+    line:{
+        width: '100%',
+        height: 2,
+        backgroundColor: colors.lightGrey,
+        marginTop: 20,
+        marginBottom: 20,
+    },
+})
