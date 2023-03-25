@@ -6,8 +6,10 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStyle } from '../../Styles/generic';
 
 
+
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
+
 
     return (
         <View style={HomeStyle.container}>
@@ -20,7 +22,7 @@ export default () => {
                 <Text style={HomeStyle.buttonText} >CREATE ACCOUNT</Text>
             </Pressable>
             <View style={HomeStyle.line} />
-            <Pressable onPress={() => {navigate('Home');}}>
+            <Pressable onPress={() => {}}>
                 <Text style={HomeStyle.buttonText} >CONTINUE AS GUEST</Text>
             </Pressable>
         </View>

@@ -5,6 +5,7 @@ import React from 'react';
 import { StyleSheet, Text} from 'react-native';
 import 'react-native-gesture-handler';
 import { MainDrawer } from './screens/MainDrawer';
+import { LoginStack } from './screens/LoginStack';
 
 // export default function App() {
 //   return (
@@ -18,8 +19,8 @@ import { MainDrawer } from './screens/MainDrawer';
 export default function App() {
   return (
     <NavigationContainer>
-      <MainDrawer />
-      <StatusBar style="auto" />
+      <StatusBar style="light" />
+      <LoginStack />
     </NavigationContainer>
   );
 }

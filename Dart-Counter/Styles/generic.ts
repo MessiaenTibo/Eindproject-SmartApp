@@ -6,7 +6,6 @@ export const HomeStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.darkGrey,
         alignItems: 'center',
-        paddingTop: 100,
         padding: 20,
     },
     title: {
@@ -14,6 +13,7 @@ export const HomeStyle = StyleSheet.create({
         fontWeight: '600',
         marginBottom: 40,
         color: colors.orange,
+        marginTop: 100,
     },
     text:{
         fontSize: 20,

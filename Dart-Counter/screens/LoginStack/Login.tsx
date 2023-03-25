@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { HomeStyle } from '../../Styles/generic';
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
     const [username, onChangeUsername] = useState('');
     const [password, onChangePassword] = useState('');
@@ -26,7 +26,7 @@ export default () => {
                 value={password}
                 placeholder="Password"
             />
-            <Pressable style={HomeStyle.button1} onPress={() => {navigate('HOME');}}>
+            <Pressable style={HomeStyle.button1} onPress={() => {navigate('Home');}}>
                 <Text style={HomeStyle.buttonText} >LOGIN</Text>
             </Pressable>
             <Pressable onPress={() => {navigate('ForgotPassword');}}>
