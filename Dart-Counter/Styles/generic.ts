@@ -43,11 +43,29 @@ export const HomeStyle = StyleSheet.create({
         color: 'white',
     },
     textInput:{
-        backgroundColor: colors.white,
+        backgroundColor: 'transparent',
+        color: colors.white,
         width: '100%',
         height: 50,
         padding: 10,
         marginVertical: 4,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.white,
+    },
+    textInputWrong:{
+        backgroundColor: 'transparent',
+        color: colors.white,
+        width: '100%',
+        height: 50,
+        padding: 10,
+        marginVertical: 4,
+        borderBottomWidth: 1,
+        borderBottomColor: colors.Red,
+    },
+    textInputErrorMessage:{
+        textAlign: 'left',
+        color: colors.Red,
+        height: 20,
     },
     line1:{
         width: '100%',
@@ -112,6 +130,7 @@ export const HomeStyle = StyleSheet.create({
     },
     profileText:{
         fontSize: 16,
+        fontWeight: '200',
         color: colors.white,
     },
     profileButton:{
@@ -137,8 +156,9 @@ export const HomeStyle = StyleSheet.create({
         marginHorizontal: 6,
     },
     bigButtonTitle:{
-        fontSize: 20,
-        fontWeight: '600',
+        fontSize: 16,
+        fontWeight: '400',
+        maxWidth: '80%',
         color: colors.lightGrey,
     },
     bigButtonIcon:{

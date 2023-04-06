@@ -13,10 +13,10 @@ export default () => {
     return (
         <View>
             <ProfileHeader />
-            <BigButton/>
-            <BigButton/>
-            <BigButton/>
-            <BigButton/>
+            <BigButton title="New game"/>
+            <BigButton title='Play online'/>
+            <BigButton title='Let our MasterCaller announce your name'/>
+            <BigButton title='View your statistics'/>
         </View>
     )
 }

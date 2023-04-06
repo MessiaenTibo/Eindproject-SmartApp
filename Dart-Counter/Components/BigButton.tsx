@@ -8,13 +8,13 @@ import { StackNavigationProp } from "@react-navigation/stack"
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 
-export default () => {
+export default ({title}:{title:string}) => {
 
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
     
     return (
         <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('NewGame');}}>
-            <Text style={HomeStyle.bigButtonTitle}>Title</Text>
+            <Text style={HomeStyle.bigButtonTitle}>{title}</Text>
             <Image style={HomeStyle.bigButtonIcon} source={require('../assets/images/ProfileIcon.png')}/>
         </Pressable>
     )
