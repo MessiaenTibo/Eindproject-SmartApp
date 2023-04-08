@@ -5,7 +5,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import ProfileHeader from '../../Components/ProfileHeader';
 import BigButton from '../../Components/BigButton';
+import { HomeStyle } from '../../Styles/generic';
 
+import { Image } from "react-native"
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
@@ -13,10 +15,26 @@ export default () => {
     return (
         <View>
             <ProfileHeader />
-            <BigButton title="New game"/>
-            <BigButton title='Play online'/>
-            <BigButton title='Let our MasterCaller announce your name'/>
-            <BigButton title='View your statistics'/>
+
+            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('NewGame')}}>
+                <Text style={HomeStyle.bigButtonTitle}>New game</Text>
+                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+            </Pressable>
+
+            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+                <Text style={HomeStyle.bigButtonTitle}>Play online</Text>
+                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+            </Pressable>
+
+            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+                <Text style={HomeStyle.bigButtonTitle}>Let our MasterCaller announce your name</Text>
+                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+            </Pressable>
+
+            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+                <Text style={HomeStyle.bigButtonTitle}>View your statistics</Text>
+                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+            </Pressable>
         </View>
     )
 }
