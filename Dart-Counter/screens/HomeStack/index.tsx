@@ -8,7 +8,7 @@ import Home from './Home';
 import NewGame from './NewGame';
 import Match from './Match';
 import Game from './Game';
-
+import Statistics from './Statistics';
 
 const Stack = createStackNavigator();
 
@@ -25,6 +25,7 @@ export function HomeStack() {
         <Stack.Screen name="NewGame" component={NewGame} options={{title: 'New Game'}}/>
         <Stack.Screen name="Match" component={Match} options={{title: 'Match'}}/>
         <Stack.Screen name="Game" component={Game} options={{title: 'Game'}}/>
+        <Stack.Screen name="Statistics" component={Statistics} options={{title: 'Statistics'}}/>
 
     </Stack.Navigator>
   );

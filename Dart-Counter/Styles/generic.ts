@@ -1,5 +1,6 @@
 import { StyleSheet } from 'react-native';
 import { colors } from './colors';
+import { max } from 'react-native-reanimated';
 
 export const HomeStyle = StyleSheet.create({
     container: {
@@ -298,8 +299,10 @@ export const HomeStyle = StyleSheet.create({
         backgroundColor: colors.white,
         alignItems: 'center',
         justifyContent: 'center',
+        textAlign: 'center',
         borderWidth: 3,
         borderColor: colors.darkGrey,
+        fontSize: 24,
     },
     gameScoreInputText:{
         fontSize: 16,
@@ -326,6 +329,32 @@ export const HomeStyle = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '100%',
+        flexWrap: 'wrap',
+        gap: 0,
     },
-
+    gameNumberInputButton:{
+        height: '22%',
+        width: '33.333333%',
+        padding: 12,
+        backgroundColor: colors.grey,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: colors.darkGrey,
+    },
+    gameNumberInputButtonBlack:{
+        height: '22%',
+        width: '33.333333%',
+        padding: 12,
+        backgroundColor: colors.black,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderWidth: 1,
+        borderColor: colors.darkGrey,
+    },
+    gameNumberInputButtonText:{
+        fontSize: 20,
+        fontWeight: '400',
+        color: colors.white,
+    },
 })
