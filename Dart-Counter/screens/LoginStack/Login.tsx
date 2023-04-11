@@ -7,11 +7,16 @@ import { useState } from 'react';
 import { HomeStyle } from '../../Styles/generic';
 import { colors } from '../../Styles/colors';
 
+// Custom firebase hook
+import useFirebase from '../../hooks/useFirebase';
+
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
-    const [username, onChangeUsername] = useState('');
-    const [usernameError, onChangeUsernameError] = useState('');
+    const { login } = useFirebase();
+
+    const [email, onChangeEmail] = useState('');
+    const [emailError, onChangeEmailError] = useState('');
 
     const [password, onChangePassword] = useState('');
     const [passwordError, onChangePasswordError] = useState('');
@@ -19,11 +24,14 @@ export default () => {
     const validate = () => {
         Keyboard.dismiss();
         
-        if(!username) {
-            onChangeUsernameError('First name is required');
+        if(!email) {
+            onChangeEmailError('Email is required');
+            return
+        } else if (!email.includes('@') || !email.includes('.') || email.length < 5){
+            onChangeEmailError('Email must be valid');
             return
         } else{
-            onChangeUsernameError('');
+            onChangeEmailError('');
         }
 
         if(!password) {
@@ -36,21 +44,42 @@ export default () => {
             onChangePasswordError('');
         }
 
-        navigate('MainDrawer')
+        // login
+        const loginState = login(email, password);
+        loginState.then((value) => {
+            console.log(value)
+            if(value == "success"){
+                console.log("Logged in");
+                navigate('MainDrawer')
+            }
+            else if(value == "auth/wrong-password"){
+                console.log("Wrong password");
+                onChangePasswordError('Wrong password');
+            }
+            else if(value == "auth/user-not-found" ){
+                console.log("Invalid email");
+                onChangeEmailError('Invalid email');
+            }
+            else{
+                console.log("Unknown error");
+                onChangeEmailError('Unknown error');
+                onChangePasswordError('Unknown error');
+            }
+        })
     }
 
 
     return (
         <View style={HomeStyle.container}>
             <TextInput
-                style={usernameError ? HomeStyle.textInputWrong : HomeStyle.textInput}
-                onChangeText={onChangeUsername}
-                value={username}
-                placeholder="Username"
+                style={emailError ? HomeStyle.textInputWrong : HomeStyle.textInput}
+                onChangeText={onChangeEmail}
+                value={email}
+                placeholder="Email"
                 placeholderTextColor={colors.veryLightGrey}
             />
-            <Text style={[HomeStyle.textInputErrorMessage,{height: usernameError ? 20 : 0}]}>
-                {usernameError}
+            <Text style={[HomeStyle.textInputErrorMessage,{height: emailError ? 20 : 0}]}>
+                {emailError}
             </Text>
             <TextInput
                 style={passwordError ? HomeStyle.textInputWrong : HomeStyle.textInput}

@@ -20,16 +20,16 @@ import { useEffect, useState } from 'react';
 // }
 
 const firebaseConfig = {
-    apiKey: "AIzaSyD72De_JkY5tzIL89dSPvZwmLmwTCUn58Y",
-    authDomain: "authentication-3752d.firebaseapp.com",
-    projectId: "authentication-3752d",
-    storageBucket: "authentication-3752d.appspot.com",
-    messagingSenderId: "491111340973",
-    appId: "1:491111340973:web:6889a9f0fc9b029612df24",
-    measurementId: "G-H7L9ZR9LCH"
+    apiKey: "AIzaSyDl3sKJ_ihR30z8eYolA5AzTdprmyiKfrU",
+    authDomain: "authentication-dart-counter.firebaseapp.com",
+    projectId: "authentication-dart-counter",
+    storageBucket: "authentication-dart-counter.appspot.com",
+    messagingSenderId: "639746126697",
+    appId: "1:639746126697:web:37974771f78ac30b1b43f8",
+    measurementId: "G-9F6LR6ZPXN"
   };
 
-const app: FirebaseApp = initializeApp(firebaseConfig);
+const app: FirebaseApp = initializeApp(firebaseConfig, "Authentication-firebase");
 const auth: Auth = getAuth(app);
 
 
@@ -94,12 +94,13 @@ export default () => {
             }).catch((error) => {
                 console.log(error)
             });
+            return { errorCode: "success", errorMessage: "success"}
         })
         .catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log({ errorCode, errorMessage })
-            return { errorCode, errorMessage }
+            return { errorCode, errorMessage}
         });
     }
 
@@ -114,7 +115,16 @@ export default () => {
     }
 
     const resetPassword = (email:string) => {
-        sendPasswordResetEmail(auth, email, actionCodeSettings)
+        sendPasswordResetEmail(auth, email).then(() => {
+            // Password reset email sent!
+            // ..
+            console.log("email sent")
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log({ errorCode, errorMessage })
+            return { errorCode, errorMessage}
+        });
     }
 
     return{
@@ -122,6 +132,5 @@ export default () => {
         register,
         logout,
         resetPassword,
-        // - reset password
     }
 }

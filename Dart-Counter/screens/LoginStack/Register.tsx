@@ -3,14 +3,21 @@ import { Text, View, Button, Pressable, TextInput, Keyboard } from 'react-native
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 import { colors } from '../../Styles/colors';
 
+// React hook
 import { useState } from 'react';
+
+// Custom firebase hook
+import useFirebase from '../../hooks/useFirebase';
 
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+
+    const { register } = useFirebase();
 
     const [firstName, onChangeFirstName] = useState('');
     const [firstNameError, onChangeFirstNameError] = useState('');
@@ -26,6 +33,8 @@ export default () => {
 
     const [password, onChangePassword] = useState('');
     const [passwordError, onChangePasswordError] = useState('');
+
+    let [errorMessages, setErrorMessage] = useState('none');
 
 
     const validate = () => {
@@ -73,10 +82,16 @@ export default () => {
         }
 
         //create account
-
-
-        //Navigate to home
-        navigate('MainDrawer');
+        const registerState = register(firstName, email, password);
+        
+        registerState.then(({errorCode, errorMessage}) => {
+            setErrorMessage(errorMessage);
+            if(errorCode == "success") navigate('Login');
+            else if(errorCode == "auth/email-already-in-use") onChangeEmailError(errorMessage);
+            else if(errorCode == "auth/invalid-email") onChangeEmailError(errorMessage);
+            else if(errorCode == "auth/operation-not-allowed") onChangeEmailError(errorMessage);
+            else if(errorCode == "auth/weak-password") onChangePasswordError(errorMessage);
+        })
     
     };
 
