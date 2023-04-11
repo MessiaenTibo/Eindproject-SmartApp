@@ -16,8 +16,8 @@ export default () => {
         <View>
             <ProfileHeader />
 
-            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('NewGame')}}>
-                <Text style={HomeStyle.bigButtonTitle}>New game</Text>
+            <Pressable style={HomeStyle.bigButtonOrange} onPress={() => {navigate('NewGame')}}>
+                <Text style={HomeStyle.bigButtonTitleWhite}>New game</Text>
                 <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
             </Pressable>
 

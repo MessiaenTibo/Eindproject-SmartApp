@@ -191,11 +191,27 @@ export const HomeStyle = StyleSheet.create({
         marginVertical: 6,
         marginHorizontal: 6,
     },
+    bigButtonOrange:{
+        flexDirection: 'row',
+        backgroundColor: colors.orange,
+        paddingHorizontal: 20,
+        paddingVertical: 24,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginVertical: 6,
+        marginHorizontal: 6,
+    },
     bigButtonTitle:{
         fontSize: 16,
         fontWeight: '400',
         maxWidth: '80%',
         color: colors.lightGrey,
+    },
+    bigButtonTitleWhite:{
+        fontSize: 16,
+        fontWeight: '400',
+        maxWidth: '80%',
+        color: colors.white,
     },
     bigButtonIcon:{
         width: 50,
