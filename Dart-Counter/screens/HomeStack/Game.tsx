@@ -4,10 +4,10 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStyle } from '../../Styles/generic';
 import { TextInput } from 'react-native-gesture-handler';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { colors } from '../../Styles/colors';
 
-import { ArrowRight, Delete, CornerDownLeft } from 'lucide-react-native';
+import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
 export default (props:any) => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
@@ -15,6 +15,8 @@ export default (props:any) => {
     let screenHeight = Dimensions.get('window').height;
 
     const {players, legs, sets }:{players:Array<{name:string, id:number}>,legs:number,sets:number} = props.route.params;
+    // Camera
+    let [camera, setCamera] = useState(false);
 
     // Game settings
     let AmountOfPlayers = players.length;
@@ -35,7 +37,10 @@ export default (props:any) => {
     const [setsPlayer1, setSetsPlayer1] = useState(0);
 
     // Player 2
-    const [namePlayer2, setNamePlayer2] = useState(players[1].name);
+    const [namePlayer2, setNamePlayer2] = useState('');
+    useEffect(() => {
+        if(players[1])setNamePlayer2(players[1].name);
+    }, []);
     const [scorePlayer2, setScorePlayer2] = useState(501);
     const [lastScorePlayer2, setLastScorePlayer2] = useState(-1);
     let [lastscoresPlayer2, setLastscoresPlayer2] = useState([0]);
@@ -175,7 +180,7 @@ export default (props:any) => {
                 </View>
 
                 <View style={[{width: '50%'},{backgroundColor: colors.black},currentPlayer === 2 ? {opacity: 1} : {opacity: 0.8}]}>
-                <View style={HomeStyle.gameTitleContainer}>
+                    <View style={HomeStyle.gameTitleContainer}>
                         <Text style={HomeStyle.gameTitle}>{namePlayer2}</Text>
                     </View>
 
@@ -194,7 +199,6 @@ export default (props:any) => {
                         <Text style={HomeStyle.gameScoreText}>3-dart avg.: {threeDartAvgPlayer2}</Text>
                     </View>
                 </View>
-                
             </View>
 
             <View style={HomeStyle.gameButtonsContainer}>
@@ -247,8 +251,8 @@ export default (props:any) => {
                     <Text style={HomeStyle.gameNumberInputButtonText}>9</Text>
                 </Pressable>
 
-                <Pressable style={HomeStyle.gameNumberInputButtonBlack}>
-                    <Text style={HomeStyle.gameNumberInputButtonText}></Text>
+                <Pressable style={HomeStyle.gameNumberInputButtonBlack} onPress={() => navigate('Camera')}>
+                    <Camera size={48} color={colors.black} fill={colors.white} />
                 </Pressable>
 
                 <Pressable style={HomeStyle.gameNumberInputButton} onPress={() => addNumberToScoreInput(0)}>
