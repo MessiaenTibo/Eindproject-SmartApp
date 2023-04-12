@@ -46,6 +46,15 @@ const actionCodeSettings = {
     handleCodeInApp: true
   };
 
+let userInfo = {
+    email: '',
+    username: '',
+    uid: '',
+    lastLoginAt: '',
+    createdAt: '',
+    token: '',
+}
+
 
 export default () => {
 
@@ -57,16 +66,19 @@ export default () => {
             const user = userCredential.user;
 
             // redirect to profile
-            let email = user.email;
-            let uid = user.uid;
-            let lastLoginAt = user.metadata.lastSignInTime;
-            let createdAt = user.metadata.creationTime;
-            let token = ''
+            if(user.email) userInfo.email = user.email;
+            if(user.uid) userInfo.uid = user.uid;
+            if(user.metadata.lastSignInTime) userInfo.lastLoginAt = user.metadata.lastSignInTime;
+            if(user.metadata.creationTime) userInfo.createdAt = user.metadata.creationTime;
             user.getIdToken().then((idToken) => {
-                token = idToken.toString();
+                let token = idToken.toString();
+                userInfo.token = token;
             }).catch((error) => {
                 console.log(error)
             });
+            if(user.email?.split('@')[0]) userInfo.username = user.email?.split('@')[0].replace('.', '');
+            console.log("userinfo:")
+            console.log({userInfo})
             return("success")
         })
         .catch((error) => {
@@ -127,10 +139,15 @@ export default () => {
         });
     }
 
+    const getUserInfo = () => {
+        return userInfo;
+    }
+
     return{
         login,
         register,
         logout,
         resetPassword,
+        getUserInfo
     }
 }

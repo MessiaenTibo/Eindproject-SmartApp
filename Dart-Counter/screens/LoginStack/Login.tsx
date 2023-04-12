@@ -77,6 +77,8 @@ export default () => {
                 value={email}
                 placeholder="Email"
                 placeholderTextColor={colors.veryLightGrey}
+                keyboardType='email-address'
+                autoComplete='email'
             />
             <Text style={[HomeStyle.textInputErrorMessage,{height: emailError ? 20 : 0}]}>
                 {emailError}

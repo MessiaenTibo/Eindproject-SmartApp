@@ -9,13 +9,15 @@ import { colors } from '../../Styles/colors';
 
 import { ArrowRight, Delete, CornerDownLeft } from 'lucide-react-native';
 
-export default () => {
+export default (props:any) => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
     let screenHeight = Dimensions.get('window').height;
 
+    const {players }:{players:Array<{name:string, id:number}>} = props.route.params;
+
     // Game settings
-    let players = 2;
+    let AmountOfPlayers = players.length;
     const [currentPlayer, setCurrentPlayer] = useState(1);
     const [scoreInput, setScoreInput] = useState('');
 
@@ -133,7 +135,7 @@ export default () => {
     return (
         <View style={{height: screenHeight}}>
             <View style={{flexDirection: 'row'}}>
-                <View style={[players === 1 ? {width: '100%'} : {width: '50%'},{backgroundColor: colors.black},currentPlayer === 1 ? {opacity: 1} : {opacity: 0.8}]}>
+                <View style={[AmountOfPlayers === 1 ? {width: '100%'} : {width: '50%'},{backgroundColor: colors.black},currentPlayer === 1 ? {opacity: 1} : {opacity: 0.8}]}>
                     <View style={HomeStyle.gameTitleContainer}>
                         <Text style={HomeStyle.gameTitle}>{namePlayer1}</Text>
                     </View>

@@ -143,7 +143,7 @@ export const HomeStyle = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        width: '50%',
+        width: '70%',
         height: 150,
         padding: 20,
         color: colors.white,
@@ -233,6 +233,12 @@ export const HomeStyle = StyleSheet.create({
         height: 50,
         borderRadius: 999,
         backgroundColor: colors.veryLightGrey,
+    },
+    AddIcon:{
+        width: 50,
+        height: 50,
+        borderRadius: 999,
+        backgroundColor: 'transparent',
     },
     playerName:{
         fontSize: 16,

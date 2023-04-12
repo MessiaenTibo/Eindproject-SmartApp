@@ -8,13 +8,26 @@ import BigButton from '../../Components/BigButton';
 import { HomeStyle } from '../../Styles/generic';
 
 import { Image } from "react-native"
+import { useEffect, useState } from 'react';
+import useFirebase from '../../hooks/useFirebase';
+
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    
+    const [profileName, onChangeProfileName] = useState('Guest');
+    const [nickname, onChangeNickname] = useState('No nickname');
+
+    const { getUserInfo } = useFirebase();
+
+    useEffect(() => {
+        if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
+        if(getUserInfo().email != "") onChangeNickname(getUserInfo().email);
+    }, [getUserInfo().username, getUserInfo().email])
 
     return (
         <View>
-            <ProfileHeader />
+            <ProfileHeader profileName={profileName} nickname={nickname} />
 
             <Pressable style={HomeStyle.bigButtonOrange} onPress={() => {navigate('NewGame')}}>
                 <Text style={HomeStyle.bigButtonTitleWhite}>New game</Text>
