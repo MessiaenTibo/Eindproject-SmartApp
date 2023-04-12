@@ -14,15 +14,17 @@ export default (props:any) => {
 
     let screenHeight = Dimensions.get('window').height;
 
-    const {players }:{players:Array<{name:string, id:number}>} = props.route.params;
+    const {players, legs, sets }:{players:Array<{name:string, id:number}>,legs:number,sets:number} = props.route.params;
 
     // Game settings
     let AmountOfPlayers = players.length;
     const [currentPlayer, setCurrentPlayer] = useState(1);
     const [scoreInput, setScoreInput] = useState('');
+    const [TotalLegs, setLegs] = useState(legs);
+    const [TotalSets, setSets] = useState(sets);
 
     // Player 1
-    const [namePlayer1, setNamePlayer1] = useState('Username 1');
+    const [namePlayer1, setNamePlayer1] = useState(players[0].name);
     const [scorePlayer1, setScorePlayer1] = useState(501);
     const [lastScorePlayer1, setLastScorePlayer1] = useState(-1);
     let [lastscoresPlayer1, setLastscoresPlayer1] = useState([0]);
@@ -30,9 +32,10 @@ export default (props:any) => {
     const [dartsThrownPlayer1, setDartsThrownPlayer1] = useState(0);
     const [threeDartAvgPlayer1, setThreeDartAvgPlayer1] = useState(0.00);
     const [legsPlayer1, setLegsPlayer1] = useState(0);
+    const [setsPlayer1, setSetsPlayer1] = useState(0);
 
     // Player 2
-    const namePlayer2 = 'Username 2';
+    const [namePlayer2, setNamePlayer2] = useState(players[1].name);
     const [scorePlayer2, setScorePlayer2] = useState(501);
     const [lastScorePlayer2, setLastScorePlayer2] = useState(-1);
     let [lastscoresPlayer2, setLastscoresPlayer2] = useState([0]);
@@ -40,6 +43,7 @@ export default (props:any) => {
     const [dartsThrownPlayer2, setDartsThrownPlayer2] = useState(0);
     const [threeDartAvgPlayer2, setThreeDartAvgPlayer2] = useState(0);
     const [legsPlayer2, setLegsPlayer2] = useState(0);
+    const [setsPlayer2, setSetsPlayer2] = useState(0);
 
     const next = () => {
         // convert score input to int
@@ -79,9 +83,16 @@ export default (props:any) => {
             setDartsThrownPlayer2(0);
             setThreeDartAvgPlayer1(0);
             setThreeDartAvgPlayer2(0);
-            if(legsPlayer1 + 1 === 3) {
-                alert('Player 1 won!');
-                navigate('Statistics');
+            setLastscoresPlayer1([0]);
+            if(legsPlayer1 + 1 === TotalLegs) {
+                setSetsPlayer1(setsPlayer1 + 1);
+                if(setsPlayer1 + 1 === TotalSets)
+                {
+                    alert('Player 1 won!');
+                    navigate('Statistics');
+                }
+                setLegsPlayer1(0);
+                setLegsPlayer2(0);
             }
         } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt === 0) {
             setLegsPlayer2(legsPlayer2 + 1);
@@ -91,9 +102,16 @@ export default (props:any) => {
             setDartsThrownPlayer2(0);
             setThreeDartAvgPlayer1(0);
             setThreeDartAvgPlayer2(0);
-            if(legsPlayer2 + 1 === 3) {
-                alert('Player 2 won!');
-                navigate('Statistics');
+            setLastscoresPlayer2([0]);
+            if(legsPlayer2 + 1 === TotalLegs) {
+                setSetsPlayer2(setsPlayer2 + 1);
+                if(setsPlayer2 + 1 === TotalSets)
+                {
+                    alert('Player 2 won!');
+                    navigate('Statistics');
+                }
+                setLegsPlayer1(0);
+                setLegsPlayer2(0);
             }
         }
 
@@ -141,6 +159,7 @@ export default (props:any) => {
                     </View>
 
                     <View style={HomeStyle.gameLegsContainer}>
+                        <Text style={HomeStyle.gameLegsText}>Sets: {setsPlayer1}</Text>
                         <Text style={HomeStyle.gameLegsText}>Legs: {legsPlayer1}</Text>
                     </View>
 
@@ -161,6 +180,7 @@ export default (props:any) => {
                     </View>
 
                     <View style={HomeStyle.gameLegsContainer}>
+                        <Text style={HomeStyle.gameLegsText}>Sets: {setsPlayer2}</Text>
                         <Text style={HomeStyle.gameLegsText}>Legs: {legsPlayer2}</Text>
                     </View>
 

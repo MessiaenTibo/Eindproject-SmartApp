@@ -262,6 +262,7 @@ export const HomeStyle = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         padding: 4,
+        flexDirection: 'row',
         backgroundColor: colors.grey,
     },
     gameLegsText:{
@@ -270,6 +271,7 @@ export const HomeStyle = StyleSheet.create({
         color: colors.white,
         backgroundColor: colors.blue,
         padding: 4,
+        marginHorizontal: 4,
         borderRadius: 6,
     },
     gameScoreContainer:{

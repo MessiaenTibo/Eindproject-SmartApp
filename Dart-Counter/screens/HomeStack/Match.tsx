@@ -17,6 +17,8 @@ export default () => {
     const { getUserInfo } = useFirebase();
 
     const [profileName, onChangeProfileName] = useState('Guest');
+    const [legs, onChangeLegs] = useState(3);
+    const [sets, onChangeSets] = useState(2);
 
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
@@ -69,7 +71,7 @@ export default () => {
 
                 <Text style={HomeStyle.title}>Game settings</Text>
 
-                <Pressable style={[HomeStyle.button4]} onPress={() => {navigate('Game', {players: actualplayers});}}>
+                <Pressable style={[HomeStyle.button4]} onPress={() => {navigate('Game', {players: actualplayers, legs: legs, sets: sets});}}>
                     <Text style={HomeStyle.buttonText2}>Start Game</Text>
                 </Pressable>
             </View>
