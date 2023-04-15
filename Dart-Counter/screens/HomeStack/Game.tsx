@@ -14,7 +14,7 @@ export default (props:any) => {
 
     let screenHeight = Dimensions.get('window').height;
 
-    const {players, legs, sets }:{players:Array<{name:string, id:number}>,legs:number,sets:number} = props.route.params;
+    const {players, legs, sets, score }:{players:Array<{name:string, id:number}>,legs:number,sets:number,score:number} = props.route.params;
     // Camera
     let [camera, setCamera] = useState(false);
 
@@ -27,7 +27,7 @@ export default (props:any) => {
 
     // Player 1
     const [namePlayer1, setNamePlayer1] = useState(players[0].name);
-    const [scorePlayer1, setScorePlayer1] = useState(501);
+    const [scorePlayer1, setScorePlayer1] = useState(score);
     const [lastScorePlayer1, setLastScorePlayer1] = useState(-1);
     let [lastscoresPlayer1, setLastscoresPlayer1] = useState([0]);
 
@@ -41,7 +41,7 @@ export default (props:any) => {
     useEffect(() => {
         if(players[1])setNamePlayer2(players[1].name);
     }, []);
-    const [scorePlayer2, setScorePlayer2] = useState(501);
+    const [scorePlayer2, setScorePlayer2] = useState(score);
     const [lastScorePlayer2, setLastScorePlayer2] = useState(-1);
     let [lastscoresPlayer2, setLastscoresPlayer2] = useState([0]);
 
@@ -60,8 +60,8 @@ export default (props:any) => {
             setScorePlayer1(scorePlayer1 - scoreInputInt);
             setLastScorePlayer1(scoreInputInt);
             setDartsThrownPlayer1(dartsThrownPlayer1 + 3);
-            setThreeDartAvgPlayer1(((501 - scorePlayer1 ) / dartsThrownPlayer1) * 3);
-            setCurrentPlayer(2);
+            setThreeDartAvgPlayer1(((score - scorePlayer1 ) / dartsThrownPlayer1) * 3);
+            if(AmountOfPlayers > 1) setCurrentPlayer(2);
             let temp = lastscoresPlayer1
             temp.push(scoreInputInt);
             setLastscoresPlayer1(temp);
@@ -69,7 +69,7 @@ export default (props:any) => {
             setScorePlayer2(scorePlayer2 - scoreInputInt);
             setLastScorePlayer2(scoreInputInt);
             setDartsThrownPlayer2(dartsThrownPlayer2 + 3);
-            setThreeDartAvgPlayer2(((501 - scorePlayer2 ) / dartsThrownPlayer2) * 3);
+            setThreeDartAvgPlayer2(((score - scorePlayer2 ) / dartsThrownPlayer2) * 3);
             setCurrentPlayer(1);
             let temp = lastscoresPlayer2
             temp.push(scoreInputInt);
@@ -82,8 +82,8 @@ export default (props:any) => {
         // Check if game is over
         if (currentPlayer === 1 && scorePlayer1 - scoreInputInt === 0) {
             setLegsPlayer1(legsPlayer1 + 1);
-            setScorePlayer1(501);
-            setScorePlayer2(501);
+            setScorePlayer1(score);
+            setScorePlayer2(score);
             setDartsThrownPlayer1(0);
             setDartsThrownPlayer2(0);
             setThreeDartAvgPlayer1(0);
@@ -101,8 +101,8 @@ export default (props:any) => {
             }
         } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt === 0) {
             setLegsPlayer2(legsPlayer2 + 1);
-            setScorePlayer1(501);
-            setScorePlayer2(501);
+            setScorePlayer1(score);
+            setScorePlayer2(score);
             setDartsThrownPlayer1(0);
             setDartsThrownPlayer2(0);
             setThreeDartAvgPlayer1(0);
@@ -142,14 +142,14 @@ export default (props:any) => {
             setScorePlayer1(scorePlayer1 + lastscoresPlayer1[lastscoresPlayer1.length - 1]);
             setLastScorePlayer1(lastscoresPlayer1[lastscoresPlayer1.length - 2]);
             setDartsThrownPlayer1(dartsThrownPlayer1 - 3);
-            setThreeDartAvgPlayer1(((501 - scorePlayer1 ) / dartsThrownPlayer1) * 3);
+            setThreeDartAvgPlayer1(((score - scorePlayer1 ) / dartsThrownPlayer1) * 3);
             setCurrentPlayer(1);
             lastscoresPlayer1.pop();
         } else if(currentPlayer === 1 && lastscoresPlayer2.length > 1) {
             setScorePlayer2(scorePlayer2 + lastscoresPlayer2[lastscoresPlayer2.length - 1]);
             setLastScorePlayer2(lastscoresPlayer2[lastscoresPlayer2.length - 2]);
             setDartsThrownPlayer2(dartsThrownPlayer2 - 3);
-            setThreeDartAvgPlayer2(((501 - scorePlayer2 ) / dartsThrownPlayer2) * 3);
+            setThreeDartAvgPlayer2(((score - scorePlayer2 ) / dartsThrownPlayer2) * 3);
             setCurrentPlayer(2);
             lastscoresPlayer2.pop();
         }

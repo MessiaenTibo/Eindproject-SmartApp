@@ -21,7 +21,7 @@ Ook zal ik gebruik maken van babel als javaScript compiler.
 Ik zal de expo FileSystem api gebruiken om de gespeelde games locaal op te slaan.
 (https://docs.expo.dev/versions/v48.0.0/sdk/filesystem/)
 
-Ook zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zal 180.
+Ook zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zoals 180.
 (https://docs.expo.dev/versions/v48.0.0/sdk/audio/)
 
 En tenslotte zal ik de expo camera api gebruiken om de hoogtepunten tijdens het darten te kunnen vastleggen.
