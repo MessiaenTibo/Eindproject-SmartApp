@@ -27,7 +27,8 @@
     "react-native-vector-icons": "^9.2.0",
     "expo-camera": "~13.2.1",
     "expo-permissions": "~14.1.1",
-    "expo-media-library": "~15.2.3"
+    "expo-media-library": "~15.2.3",
+    "expo-updates": "~0.16.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

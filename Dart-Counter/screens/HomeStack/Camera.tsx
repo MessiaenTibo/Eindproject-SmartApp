@@ -17,6 +17,7 @@ export default function CameraEx() {
     const [type, setType] = useState(CameraType.back);
     const [flash, setFlash] = useState(FlashMode.off);
     const [photo, setPhoto] = useState<CameraCapturedPicture>();
+    let [hasPermission, setHasPermission] = useState<any | null>(null);
 
     let camera: Camera | null  =  null;
 
@@ -75,8 +76,11 @@ export default function CameraEx() {
     }
 
     const savePhoto = async(photo:string) =>{
-        const {status} = await MediaLibrary.requestPermissionsAsync();
-        if(status === 'granted'){
+        if(!hasPermission){
+            hasPermission = await MediaLibrary.requestPermissionsAsync();
+            setHasPermission(hasPermission);
+        }
+        if(hasPermission.status === 'granted'){
             const asset = await MediaLibrary.createAssetAsync(photo);
             MediaLibrary.createAlbumAsync('Dart Counter', asset, false);
         }

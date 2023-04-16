@@ -60,20 +60,28 @@ export default (props:any) => {
             setScorePlayer1(scorePlayer1 - scoreInputInt);
             setLastScorePlayer1(scoreInputInt);
             setDartsThrownPlayer1(dartsThrownPlayer1 + 3);
-            setThreeDartAvgPlayer1(((score - scorePlayer1 ) / dartsThrownPlayer1) * 3);
             if(AmountOfPlayers > 1) setCurrentPlayer(2);
             let temp = lastscoresPlayer1
             temp.push(scoreInputInt);
             setLastscoresPlayer1(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer1(temp2/(temp.length - 1));
         } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt >= 0){
             setScorePlayer2(scorePlayer2 - scoreInputInt);
             setLastScorePlayer2(scoreInputInt);
             setDartsThrownPlayer2(dartsThrownPlayer2 + 3);
-            setThreeDartAvgPlayer2(((score - scorePlayer2 ) / dartsThrownPlayer2) * 3);
             setCurrentPlayer(1);
             let temp = lastscoresPlayer2
             temp.push(scoreInputInt);
             setLastscoresPlayer2(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer2(temp2/(temp.length - 1));
         }
 
         // Reset score input
@@ -93,7 +101,7 @@ export default (props:any) => {
                 setSetsPlayer1(setsPlayer1 + 1);
                 if(setsPlayer1 + 1 === TotalSets)
                 {
-                    alert('Player 1 won!');
+                    alert(namePlayer1 + ' won!');
                     navigate('Statistics');
                 }
                 setLegsPlayer1(0);
@@ -112,7 +120,7 @@ export default (props:any) => {
                 setSetsPlayer2(setsPlayer2 + 1);
                 if(setsPlayer2 + 1 === TotalSets)
                 {
-                    alert('Player 2 won!');
+                    alert(namePlayer2 + ' won!');
                     navigate('Statistics');
                 }
                 setLegsPlayer1(0);
