@@ -18,14 +18,15 @@ De pagina's die bij elkaar horend zijn zullen ook onder 1 navigation laag zitten
 Deze verschillende pagina's / navigation lagen zullen dan in de App.tsx opgeroepen worden.
 Ook zal ik gebruik maken van babel als javaScript compiler.
 
-Ik zal de expo FileSystem api gebruiken om de gespeelde games locaal op te slaan.
-(https://docs.expo.dev/versions/v48.0.0/sdk/filesystem/)
 
-Ook zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zoals 180.
+Ik zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zoals 180.
 (https://docs.expo.dev/versions/v48.0.0/sdk/audio/)
 
-En tenslotte zal ik de expo camera api gebruiken om de hoogtepunten tijdens het darten te kunnen vastleggen.
+Vervolgens zal ik de expo camera api gebruiken om de hoogtepunten tijdens het darten te kunnen vastleggen.
 (https://docs.expo.dev/versions/v48.0.0/sdk/camera/)
+ 
+Ten slotte zal ik de expo MediaLibrary api gebruiken om genomen foto's op te slaan.
+(https://docs.expo.dev/versions/latest/sdk/media-library)
 
 ### 3. Wat is mijn insteek voor de UI?
 

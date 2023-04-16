@@ -8,6 +8,9 @@ import { colors } from '../../Styles/colors';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 
+import * as Permissions from 'expo-permissions'
+import * as MediaLibrary from 'expo-media-library'
+
 export default function CameraEx() {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
     
@@ -55,9 +58,28 @@ export default function CameraEx() {
 
     const save = () => {
         Alert.alert("Save", "Save photo?", [
-            {text: "Yes", onPress: () => {console.log("Save photo");setPhoto(undefined);goBack();}},
-            {text: "No", onPress: () => {console.log("Don't save photo");setPhoto(undefined);}}
+            {
+                text: "Yes", onPress: () => {
+                    console.log("Save photo");
+                    if(photo) savePhoto(photo.uri);
+                    setPhoto(undefined);
+                    goBack();
+                }
+            },
+            {   
+                text: "No", onPress: () => {
+                    console.log("Don't save photo");setPhoto(undefined);
+                }
+            }
         ])
+    }
+
+    const savePhoto = async(photo:string) =>{
+        const {status} = await MediaLibrary.requestPermissionsAsync();
+        if(status === 'granted'){
+            const asset = await MediaLibrary.createAssetAsync(photo);
+            MediaLibrary.createAlbumAsync('Dart Counter', asset, false);
+        }
     }
 
     const exit = () => {
