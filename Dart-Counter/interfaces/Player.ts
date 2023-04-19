@@ -1,0 +1,17 @@
+export default interface Player {
+    Name:string,
+    ThreeDartsAvg:number,
+    HighestScore:number,
+    HighestCheckout:number,
+    CheckoutPercentage:number,
+    CheckoutThrows:number,
+    CheckoutHits:number,
+    FourtyPlus:number,
+    SixtyPlus:number,
+    EightyPlus:number,
+    HundredPlus:number,
+    OneTwentyPlus:number,
+    OneFourtyPlus:number,
+    OneSixtyPlus:number,
+    OneEighty:number,
+}

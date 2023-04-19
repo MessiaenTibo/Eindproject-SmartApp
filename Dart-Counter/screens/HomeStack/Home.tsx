@@ -22,8 +22,7 @@ export default () => {
 
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
-        if(getUserInfo().email != "") onChangeNickname(getUserInfo().email);
-    }, [getUserInfo().username, getUserInfo().email])
+    }, [getUserInfo().username])
 
     return (
         <View>

@@ -20,6 +20,7 @@ export function HomeStack() {
             headerStyle: {
                 backgroundColor: '#ff4522',
             },
+            headerTitleAlign: 'center',
         }}
     >
         <Stack.Screen name="Home" component={Home} options={{title: 'Home', headerLeft: ()=> <DrawerToggleButton/>,}} />

@@ -531,4 +531,34 @@ export const HomeStyle = StyleSheet.create({
         backgroundColor: colors.black,
         marginVertical: -4,
     },
+    statsTitle:{
+        fontSize: 24,
+        fontWeight: '600',
+        color: colors.white,
+        backgroundColor: colors.black,
+        textAlign: 'center',
+        width: '100%',
+        paddingVertical: 6,
+    },
+    statsSubTitle:{
+        fontSize: 20,
+        fontWeight: '600',
+        color: colors.white,
+        backgroundColor: colors.black,
+        textAlign: 'center',
+        width: '100%',
+        paddingVertical: 4,
+    },
+    statsRow:{
+        width: '100%',
+        flexDirection: 'row',
+        justifyContent: 'flex-start',
+        backgroundColor: colors.white,
+    },
+    statsRowItem:{
+        width: '33%',
+        paddingHorizontal: 16,
+        paddingVertical: 8,
+        color: colors.black,
+    }
 })

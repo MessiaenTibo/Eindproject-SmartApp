@@ -1,4 +1,4 @@
-import { Text, View, Button, Pressable, Dimensions } from 'react-native';
+import { Text, View, Button, Pressable, Dimensions, Alert } from 'react-native';
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,7 +9,14 @@ import { colors } from '../../Styles/colors';
 
 import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
+import { MongoClient } from 'mongodb';
+
+
 export default (props:any) => {
+    // const mongoClient = new MongoClient("mongodb+srv://tibo:wachtwoord@carsdb.zhmnydd.mongodb.net/?retryWrites=true&w=majority");
+    // const data = mongoClient.db("DartCounter").collection("Games").find({}).toArray();
+    // console.log(data);
+
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
     let screenHeight = Dimensions.get('window').height;
@@ -30,11 +37,25 @@ export default (props:any) => {
     const [scorePlayer1, setScorePlayer1] = useState(score);
     const [lastScorePlayer1, setLastScorePlayer1] = useState(-1);
     let [lastscoresPlayer1, setLastscoresPlayer1] = useState([0]);
-
     const [dartsThrownPlayer1, setDartsThrownPlayer1] = useState(0);
     const [threeDartAvgPlayer1, setThreeDartAvgPlayer1] = useState(0.00);
     const [legsPlayer1, setLegsPlayer1] = useState(0);
     const [setsPlayer1, setSetsPlayer1] = useState(0);
+    //stats player 1
+    const [highestScorePlayer1, setHighestScorePlayer1] = useState(0);
+    const [highestCheckoutPlayer1, setHighestCheckoutPlayer1] = useState(0);
+    const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
+    const [checkoutThrowsPlayer1, setCheckoutThrowsPlayer1] = useState(0);
+    const [checkoutHitsPlayer1, setCheckoutHitsPlayer1] = useState(0);
+    const [fourtyPlusPlayer1, setFourtyPlusPlayer1] = useState(0);
+    const [sixtyPlusPlayer1, setSixtyPlusPlayer1] = useState(0);
+    const [eightyPlusPlayer1, setEightyPlusPlayer1] = useState(0);
+    const [hundredPlusPlayer1, setHundredPlusPlayer1] = useState(0);
+    const [oneTwentyPlusPlayer1, setOneTwentyPlusPlayer1] = useState(0);
+    const [oneFourtyPlusPlayer1, setOneFourtyPlusPlayer1] = useState(0);
+    const [oneSixtyPlusPlayer1, setOneSixtyPlusPlayer1] = useState(0);
+    const [oneEightyPlayer1, setOneEightyPlayer1] = useState(0);
+
 
     // Player 2
     const [namePlayer2, setNamePlayer2] = useState('');
@@ -44,11 +65,25 @@ export default (props:any) => {
     const [scorePlayer2, setScorePlayer2] = useState(score);
     const [lastScorePlayer2, setLastScorePlayer2] = useState(-1);
     let [lastscoresPlayer2, setLastscoresPlayer2] = useState([0]);
-
     const [dartsThrownPlayer2, setDartsThrownPlayer2] = useState(0);
     const [threeDartAvgPlayer2, setThreeDartAvgPlayer2] = useState(0);
     const [legsPlayer2, setLegsPlayer2] = useState(0);
     const [setsPlayer2, setSetsPlayer2] = useState(0);
+    //stats player 2
+    const [highestScorePlayer2, setHighestScorePlayer2] = useState(0);
+    const [highestCheckoutPlayer2, setHighestCheckoutPlayer2] = useState(0);
+    const [checkoutPercentagePlayer2, setCheckoutPercentagePlayer2] = useState(0);
+    const [checkoutThrowsPlayer2, setCheckoutThrowsPlayer2] = useState(0);
+    const [checkoutHitsPlayer2, setCheckoutHitsPlayer2] = useState(0);
+    const [fourtyPlusPlayer2, setFourtyPlusPlayer2] = useState(0);
+    const [sixtyPlusPlayer2, setSixtyPlusPlayer2] = useState(0);
+    const [eightyPlusPlayer2, setEightyPlusPlayer2] = useState(0);
+    const [hundredPlusPlayer2, setHundredPlusPlayer2] = useState(0);
+    const [oneTwentyPlusPlayer2, setOneTwentyPlusPlayer2] = useState(0);
+    const [oneFourtyPlusPlayer2, setOneFourtyPlusPlayer2] = useState(0);
+    const [oneSixtyPlusPlayer2, setOneSixtyPlusPlayer2] = useState(0);
+    const [oneEightyPlayer2, setOneEightyPlayer2] = useState(0);
+    
 
     const next = () => {
         // convert score input to int
@@ -57,6 +92,7 @@ export default (props:any) => {
 
         // Change score
         if (currentPlayer === 1 && scorePlayer1 - scoreInputInt >= 0) {
+            updateStatsPlayer1(scoreInputInt);
             setScorePlayer1(scorePlayer1 - scoreInputInt);
             setLastScorePlayer1(scoreInputInt);
             setDartsThrownPlayer1(dartsThrownPlayer1 + 3);
@@ -70,6 +106,7 @@ export default (props:any) => {
             })
             setThreeDartAvgPlayer1(temp2/(temp.length - 1));
         } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt >= 0){
+            updateStatsPlayer2(scoreInputInt);
             setScorePlayer2(scorePlayer2 - scoreInputInt);
             setLastScorePlayer2(scoreInputInt);
             setDartsThrownPlayer2(dartsThrownPlayer2 + 3);
@@ -89,6 +126,9 @@ export default (props:any) => {
 
         // Check if game is over
         if (currentPlayer === 1 && scorePlayer1 - scoreInputInt === 0) {
+            setCheckoutHitsPlayer1(checkoutHitsPlayer1 + 1);
+            setCheckoutThrowsPlayer1(checkoutThrowsPlayer1 + 1);
+            if(scoreInputInt > highestCheckoutPlayer1) setHighestCheckoutPlayer1(scoreInputInt);
             setLegsPlayer1(legsPlayer1 + 1);
             setScorePlayer1(score);
             setScorePlayer2(score);
@@ -101,13 +141,22 @@ export default (props:any) => {
                 setSetsPlayer1(setsPlayer1 + 1);
                 if(setsPlayer1 + 1 === TotalSets)
                 {
-                    alert(namePlayer1 + ' won!');
-                    navigate('Statistics');
+                    Alert.alert("Save", namePlayer1 + " won!", [
+                        {
+                            text: "Ok", onPress: () => {
+                                const gameResults = GetGameResults();
+                                navigate('Statistics', {gameResults: gameResults});
+                            }
+                        },
+                    ])
                 }
                 setLegsPlayer1(0);
                 setLegsPlayer2(0);
             }
         } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt === 0) {
+            setCheckoutHitsPlayer2(checkoutHitsPlayer2 + 1);
+            setCheckoutThrowsPlayer2(checkoutThrowsPlayer2 + 1);
+            if(scoreInputInt > highestCheckoutPlayer2) setHighestCheckoutPlayer2(scoreInputInt);
             setLegsPlayer2(legsPlayer2 + 1);
             setScorePlayer1(score);
             setScorePlayer2(score);
@@ -120,14 +169,58 @@ export default (props:any) => {
                 setSetsPlayer2(setsPlayer2 + 1);
                 if(setsPlayer2 + 1 === TotalSets)
                 {
-                    alert(namePlayer2 + ' won!');
-                    navigate('Statistics');
+                    Alert.alert("Save", namePlayer2 + " won!", [
+                        {
+                            text: "Ok", onPress: () => {
+                                const gameResults = GetGameResults();
+                                navigate('Statistics', {gameResults: gameResults});
+                            }
+                        },
+                    ])
                 }
                 setLegsPlayer1(0);
                 setLegsPlayer2(0);
             }
         }
 
+    }
+
+    const updateStatsPlayer1 = (scoreInputInt: number) => {
+        if ( scoreInputInt > highestScorePlayer1) setHighestScorePlayer1(scoreInputInt);
+        if ( scoreInputInt > 40) setFourtyPlusPlayer1(fourtyPlusPlayer1 + 1);
+        if ( scoreInputInt > 60) setSixtyPlusPlayer1(sixtyPlusPlayer1 + 1);
+        if ( scoreInputInt > 80) setEightyPlusPlayer1(eightyPlusPlayer1 + 1);
+        if ( scoreInputInt > 100) setHundredPlusPlayer1(hundredPlusPlayer1 + 1);
+        if ( scoreInputInt > 120) setOneTwentyPlusPlayer1(oneTwentyPlusPlayer1 + 1);
+        if ( scoreInputInt > 140) setOneFourtyPlusPlayer1(oneFourtyPlusPlayer1 + 1);
+        if ( scoreInputInt > 160) setOneSixtyPlusPlayer1(oneSixtyPlusPlayer1 + 1);
+        if ( scoreInputInt == 180) setOneEightyPlayer1(oneEightyPlayer1 + 1);
+        if ( scorePlayer1 < 40 ) {
+            setCheckoutThrowsPlayer1(checkoutThrowsPlayer1 + 3);
+            setCheckoutPercentagePlayer1((checkoutHitsPlayer1 / checkoutThrowsPlayer1) * 100);
+        } else if(scorePlayer1 <= 180){
+            setCheckoutThrowsPlayer1(checkoutThrowsPlayer1 + 1);
+            setCheckoutPercentagePlayer1((checkoutHitsPlayer1 / checkoutThrowsPlayer1) * 100);
+        }
+    }
+
+    const updateStatsPlayer2 = (scoreInputInt: number) => {
+        if ( scoreInputInt > highestScorePlayer2) setHighestScorePlayer2(scoreInputInt);
+        if ( scoreInputInt >= 40) setFourtyPlusPlayer2(fourtyPlusPlayer2 + 1);
+        if ( scoreInputInt >= 60) setSixtyPlusPlayer2(sixtyPlusPlayer2 + 1);
+        if ( scoreInputInt >= 80) setEightyPlusPlayer2(eightyPlusPlayer2 + 1);
+        if ( scoreInputInt >= 100) setHundredPlusPlayer2(hundredPlusPlayer2 + 1);
+        if ( scoreInputInt >= 120) setOneTwentyPlusPlayer2(oneTwentyPlusPlayer2 + 1);
+        if ( scoreInputInt >= 140) setOneFourtyPlusPlayer2(oneFourtyPlusPlayer2 + 1);
+        if ( scoreInputInt >= 160) setOneSixtyPlusPlayer2(oneSixtyPlusPlayer2 + 1);
+        if ( scoreInputInt == 180) setOneEightyPlayer2(oneEightyPlayer2 + 1);
+        if ( scorePlayer2 < 40 ) {
+            setCheckoutThrowsPlayer2(checkoutHitsPlayer2 + 3);
+            setCheckoutPercentagePlayer2((checkoutHitsPlayer2 / checkoutThrowsPlayer2) * 100);
+        } else if(scorePlayer2 <= 180){
+            setCheckoutThrowsPlayer2(checkoutHitsPlayer2 + 1);
+            setCheckoutPercentagePlayer2((checkoutHitsPlayer2 / checkoutThrowsPlayer2) * 100);
+        }
     }
 
     const addNumberToScoreInput = (number: number) => {
@@ -162,6 +255,76 @@ export default (props:any) => {
             lastscoresPlayer2.pop();
         }
     }
+
+    const GetGameResults = () => {
+        let gameResults = {}
+        if(AmountOfPlayers == 1)gameResults = {
+            Title: TotalSets == 1 ? 'First to ' + TotalLegs + ' legs' : 'First to ' + TotalSets + ' sets',
+            Legs: TotalLegs,
+            Sets: TotalSets,
+            Winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
+            Player1: {
+                Name: namePlayer1,
+                ThreeDartsAvg: threeDartAvgPlayer1,
+                HighestScore: highestScorePlayer1,
+                HighestCheckout: highestCheckoutPlayer1,
+                CheckoutPercentage: checkoutPercentagePlayer1,
+                CheckoutThrows: checkoutThrowsPlayer1,
+                CheckoutHits: checkoutHitsPlayer1,
+                FourtyPlus: fourtyPlusPlayer1,
+                SixtyPlus: sixtyPlusPlayer1,
+                EightyPlus: eightyPlusPlayer1,
+                HundredPlus: hundredPlusPlayer1,
+                OneTwentyPlus: oneTwentyPlusPlayer1,
+                OneFourtyPlus: oneFourtyPlusPlayer1,
+                OneSixtyPlus: oneSixtyPlusPlayer1,
+                OneEighty: oneEightyPlayer1,
+            },
+        }
+        else gameResults = {
+            Title: namePlayer1 + ' vs ' + namePlayer2,
+            Legs: TotalLegs,
+            Sets: TotalSets,
+            Winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
+            Player1: {
+                Name: namePlayer1,
+                ThreeDartsAvg: threeDartAvgPlayer1,
+                HighestScore: highestScorePlayer1,
+                HighestCheckout: highestCheckoutPlayer1,
+                CheckoutPercentage: checkoutPercentagePlayer1,
+                CheckoutThrows: checkoutThrowsPlayer1,
+                CheckoutHits: checkoutHitsPlayer1,
+                FourtyPlus: fourtyPlusPlayer1,
+                SixtyPlus: sixtyPlusPlayer1,
+                EightyPlus: eightyPlusPlayer1,
+                HundredPlus: hundredPlusPlayer1,
+                OneTwentyPlus: oneTwentyPlusPlayer1,
+                OneFourtyPlus: oneFourtyPlusPlayer1,
+                OneSixtyPlus: oneSixtyPlusPlayer1,
+                OneEighty: oneEightyPlayer1,
+            },
+            Player2: {
+                Name: namePlayer2,
+                ThreeDartsAvg: threeDartAvgPlayer2,
+                HighestScore: highestScorePlayer2,
+                HighestCheckout: highestCheckoutPlayer2,
+                CheckoutPercentage: checkoutPercentagePlayer2,
+                CheckoutThrows: checkoutThrowsPlayer2,
+                CheckoutHits: checkoutHitsPlayer2,
+                FourtyPlus: fourtyPlusPlayer2,
+                SixtyPlus: sixtyPlusPlayer2,
+                EightyPlus: eightyPlusPlayer2,
+                HundredPlus: hundredPlusPlayer2,
+                OneTwentyPlus: oneTwentyPlusPlayer2,
+                OneFourtyPlus: oneFourtyPlusPlayer2,
+                OneSixtyPlus: oneSixtyPlusPlayer2,
+                OneEighty: oneEightyPlayer2,
+            },
+        }
+        return gameResults;
+    }
+
+
 
     return (
         <View style={{height: screenHeight}}>

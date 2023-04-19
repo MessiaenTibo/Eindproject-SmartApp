@@ -5,7 +5,7 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 // TODO: initialize firebase auth
 // require('firebase/auth');
 
-import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail } from 'firebase/auth';
+import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
 
@@ -76,7 +76,7 @@ export default () => {
             }).catch((error) => {
                 console.log(error)
             });
-            if(user.email?.split('@')[0]) userInfo.username = user.email?.split('@')[0].replace('.', '');
+            if(user.displayName) userInfo.username = user.displayName;
             console.log("userinfo:")
             console.log({userInfo})
             return("success")
@@ -94,6 +94,14 @@ export default () => {
         return createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential: UserCredential) => {
             const user = userCredential.user;
+
+            updateProfile(user, {
+                displayName: nickname,
+            }).then(() => {
+                console.log("update successful")
+            }).catch((error) => {
+                console.log(error)
+            });
 
             // redirect to profile
             let email = user.email;
