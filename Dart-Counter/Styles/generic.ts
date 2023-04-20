@@ -16,6 +16,51 @@ export const HomeStyle = StyleSheet.create({
         alignItems: 'center',
         padding: 20,
     },
+    profilecontainer:{
+        flex: 1,
+        backgroundColor: colors.darkGrey,
+        paddingHorizontal: 20,
+    },
+    profileHeaderContainer:{
+        backgroundColor: colors.orange,
+        height: 60,
+        marginHorizontal: -20,
+        alignContent: 'center',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 60,
+    },
+    profileIconContainer:{
+        backgroundColor: colors.darkGrey,
+        height: 120,
+        width: 120,
+        marginTop: 60,
+        borderRadius: 999,
+        padding: 4,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    profileIcon:{
+        width: 100,
+        height: 100,
+        borderRadius: 999,
+        backgroundColor: colors.veryLightGrey,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderColor: colors.white,
+    },
+    profileName:{
+        fontSize: 32,
+        fontWeight: '600',
+        color: colors.white,
+        textAlign: 'center',
+    },
+    profileText:{
+        fontSize: 24,
+        fontWeight: '400',
+        color: colors.white,
+        textAlign: 'center',
+    },
     title: {
         fontSize: 60,
         fontWeight: '600',
@@ -149,7 +194,7 @@ export const HomeStyle = StyleSheet.create({
         color: colors.white,
         backgroundColor: colors.darkGrey,
     },
-    profileIcon:{
+    profileIcon2:{
         width: 100,
         height: 100,
         borderRadius: 999,
@@ -159,17 +204,17 @@ export const HomeStyle = StyleSheet.create({
         borderWidth: 2,
         borderColor: colors.white,
     },
-    profileName:{
+    profileName2:{
         fontSize: 20,
         fontWeight: '600',
         color: colors.white,
     },
-    profileText:{
+    profileText2:{
         fontSize: 16,
         fontWeight: '200',
         color: colors.white,
     },
-    profileButton:{
+    profileButton2:{
         backgroundColor: colors.orange,
         width: '100%',
         padding: 8,
@@ -177,7 +222,7 @@ export const HomeStyle = StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 12,
     },
-    profileButtonText:{
+    profileButtonText2:{
         fontSize: 16,
         color: 'white',
     },

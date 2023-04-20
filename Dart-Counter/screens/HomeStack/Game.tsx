@@ -9,7 +9,7 @@ import { colors } from '../../Styles/colors';
 
 import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
-import { MongoClient } from 'mongodb';
+// import { MongoClient } from 'mongodb';
 
 
 export default (props:any) => {

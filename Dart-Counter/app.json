@@ -30,7 +30,14 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+          "cameraPermission": "Allow DartCounter to access your camera.",
+          "mediaLibraryPermission": "Allow Movie Zone to access your media library."
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow DartCounter to accesses your photos to upload your profile picture."
         }
       ]
     ]

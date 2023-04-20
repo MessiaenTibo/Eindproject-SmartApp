@@ -5,15 +5,15 @@ import { HomeStyle } from "../Styles/generic"
 
 import { Image } from "react-native"
 
-export default ({profileName, nickname}:{profileName:string,nickname:string}) => {
+export default ({profileName, nickname, image}:{profileName:string, nickname:string, image:string|null}) => {
     return (
         <View style={HomeStyle.profileHeader}>
-            <Image style={HomeStyle.profileIcon} source={require('../assets/images/ProfileIcon.png')}/>
+            <Image style={HomeStyle.profileIcon2} source={image == null ? require('../assets/images/ProfileIcon.png') : {uri:image}}/>
             <View style={HomeStyle.profileInfoContainer}>
-                <Text style={HomeStyle.profileName}>{profileName}</Text>
-                <Text style={HomeStyle.profileText}>{nickname}</Text>
-                <Pressable style={HomeStyle.profileButton}>
-                    <Text style={HomeStyle.profileButtonText}>Upgrade</Text>
+                <Text style={HomeStyle.profileName2}>{profileName}</Text>
+                <Text style={HomeStyle.profileText2}>{nickname}</Text>
+                <Pressable style={HomeStyle.profileButton2}>
+                    <Text style={HomeStyle.profileButtonText2}>Upgrade</Text>
                 </Pressable>
             </View>
         </View>

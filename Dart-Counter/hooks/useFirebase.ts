@@ -128,6 +128,14 @@ export default () => {
         signOut(auth).then(() => {
             // Sign-out successful.
             console.log("logout successful")
+            userInfo = {
+                email: '',
+                username: '',
+                uid: '',
+                lastLoginAt: '',
+                createdAt: '',
+                token: '',
+            }
         }).catch((error) => {
             // An error happened.
             console.log(error)
