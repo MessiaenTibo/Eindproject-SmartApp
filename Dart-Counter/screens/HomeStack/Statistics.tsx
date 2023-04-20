@@ -16,7 +16,7 @@ import GameResults  from '../../interfaces/GameResults';
 
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>();
     
     const [profileName, onChangeProfileName] = useState('Guest');
     const [nickname, onChangeNickname] = useState('No nickname');
@@ -131,6 +131,11 @@ export default () => {
             </View>
             <ScrollView style={HomeStyle.statisticsGamesContainer}>
                 <GameStats game={games[0]} />
+                <GameStats game={games[0]} />
+                <GameStats game={games[0]} />
+                <GameStats game={games[0]} />
+                <GameStats game={games[0]} />
+                <Text></Text>
             </ScrollView>
         </View>
     )

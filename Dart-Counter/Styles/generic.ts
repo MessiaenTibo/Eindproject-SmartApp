@@ -667,7 +667,7 @@ export const HomeStyle = StyleSheet.create({
     },
     statisticsGamesContainer:{
         width: '100%',
-        height: '100%',
+        height: '90%',
         paddingVertical: 16,
         paddingHorizontal: 12,
         backgroundColor: colors.orange,
@@ -676,6 +676,7 @@ export const HomeStyle = StyleSheet.create({
         width: '100%',
         flexDirection: 'column',
         backgroundColor: colors.white,
+        marginBottom: 16,
     },
     statisticsGameTitleRow:{
         width: '100%',
@@ -686,6 +687,10 @@ export const HomeStyle = StyleSheet.create({
         paddingHorizontal: 12,
         backgroundColor: colors.darkGrey,
         color: colors.white,
+    },
+    statisticsGameTextRow:{
+        width: '20%',
+        textAlign: 'center',
     },
     statisticsGameRow1:{
         flexDirection: 'row',
@@ -710,5 +715,16 @@ export const HomeStyle = StyleSheet.create({
         fontSize: 14,
         color: colors.grey,
         backgroundColor: colors.white,
+    },
+    statisticsGameButton: {
+        width: '100%',
+    },
+    statisticsGameButtonText: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: colors.white,
+        textAlign: 'center',
+        paddingVertical: 8,
+        backgroundColor: colors.blue,
     },
 })

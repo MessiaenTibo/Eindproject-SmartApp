@@ -7,6 +7,7 @@ import { HomeStyle } from '../../Styles/generic';
 
 import GameResults from '../../interfaces/GameResults';
 import { ScrollView } from 'react-native-gesture-handler';
+import { useEffect, useState } from 'react';
 
 
 export default (props:any) => {
@@ -15,6 +16,13 @@ export default (props:any) => {
     const { gameResults }:{gameResults:GameResults} = props.route.params;
     console.log({gameResults})
 
+    const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
+    const [checkoutPercentagePlayer2, setCheckoutPercentagePlayer2] = useState(0);
+
+    useEffect(() => {
+        setCheckoutPercentagePlayer1(gameResults.Player1.Checkouts.Hits / gameResults.Player1.Checkouts.Throws * 100)
+        if(gameResults.Player2) setCheckoutPercentagePlayer2(gameResults.Player2.Checkouts.Hits / gameResults.Player2.Checkouts.Throws * 100)
+    }, [])
 
     return (
         <ScrollView>
@@ -40,8 +48,8 @@ export default (props:any) => {
             <Text style={HomeStyle.statsSubTitle}>Checkouts</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkout percentage</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.Checkouts.Hits}/{gameResults.Player1.Checkouts.Throws}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.Checkouts.Hits}/{gameResults.Player2.Checkouts.Throws}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer1}</Text>
+                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer2}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkouts</Text>

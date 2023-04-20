@@ -11,6 +11,7 @@ import Game from './Game';
 import Camera from './Camera';
 import GameResults from './GameResults';
 import Statistics from './Statistics';
+import StatisticsDetails from './StatisticsDetails';
 
 const Stack = createStackNavigator();
 
@@ -31,7 +32,7 @@ export function HomeStack() {
         <Stack.Screen name="Camera" component={Camera} options={{title: 'Camera'}}/>
         <Stack.Screen name="GameResults" component={GameResults} options={{title: 'GameResults'}}/>
         <Stack.Screen name="Statistics" component={Statistics} options={{title: 'Statistics'}}/>
-
+        <Stack.Screen name="StatisticsDetails" component={StatisticsDetails} options={{title: 'Game details'}}/>
     </Stack.Navigator>
   );
 }
