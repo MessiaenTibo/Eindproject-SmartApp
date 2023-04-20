@@ -4,7 +4,6 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import ProfileHeader from '../../Components/ProfileHeader';
-import BigButton from '../../Components/BigButton';
 import { HomeStyle } from '../../Styles/generic';
 
 import { useEffect, useState } from 'react';
@@ -62,7 +61,7 @@ export default () => {
                 <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
             </Pressable>
 
-            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('Statistics')}}>
                 <Text style={HomeStyle.bigButtonTitle}>View your statistics</Text>
                 <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
             </Pressable>

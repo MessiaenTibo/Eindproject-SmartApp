@@ -1,4 +1,4 @@
-import { Text, View, Button, Pressable, SafeAreaView } from 'react-native';
+import { Text, View, Pressable, SafeAreaView } from 'react-native';
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -9,30 +9,48 @@ import useFirebase from '../../hooks/useFirebase';
 import { useEffect, useState } from 'react';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 
-import { PlusCircle } from 'lucide-react';
+import * as MediaLibrary from 'expo-media-library';
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
     const { getUserInfo } = useFirebase();
 
-    const [profileName, onChangeProfileName] = useState('Guest f');
+    const [profileName, onChangeProfileName] = useState('Guest');
+    const [image, setImage] = useState<string | null>(null);
+
     const [legs, onChangeLegs] = useState('3');
     const [sets, onChangeSets] = useState('1');
     const [score, onChangeScore] = useState(501);
     const [throwIn, onChangeThrowIn] = useState('STRAIGHT');
     const [throwOut, onChangeThrowOut] = useState('DOUBLE');
 
+    const [players, onChangePlayers] = useState([{name: 'Guest 1', id: 0}, {name: 'Add', id: 1}]);
+    const [actualplayers, onChangeActualPlayers] = useState([{name: 'Guest 1', id: 0}]);
+
     useEffect(() => {
         if(getUserInfo().username != "")
         {
             onChangeProfileName(getUserInfo().username);
             players[0].name = getUserInfo().username;
+            actualplayers[0].name = getUserInfo().username;
         }
+        MediaLibrary.requestPermissionsAsync().then((result) => {
+            if(result.granted) {
+                console.log("Permission granted");
+                console.log("username: " + getUserInfo().username);
+                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                    if(album != null) {
+                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                            if(assets != null) {
+                                setImage(assets.assets[0].uri);
+                            }
+                        })
+                    }
+                })
+            }
+        })
     }, [getUserInfo().username])
-
-    const [players, onChangePlayers] = useState([{name: 'Guest 1', id: 0}, {name: 'Add', id: 1}]);
-    const [actualplayers, onChangeActualPlayers] = useState([{name: 'Guest 1', id: 0}]);
 
     const addPlayer = () => {
         if(players.length < 4)
@@ -53,7 +71,12 @@ export default () => {
 
     const player = (name: string, id: number) => {
         return (<Pressable style={HomeStyle.player} onPress={name === "Add" ? addPlayer : noAction}>
-            {name === "Add" ? <Image style={HomeStyle.AddIcon} source={require('../../assets/images/AddIcon.png')}></Image> : <Image style={HomeStyle.playerIcon} source={require('../../assets/images/ProfileIcon.png')}/>}
+            {
+            name === "Add" ? 
+            <Image style={HomeStyle.AddIcon} source={require('../../assets/images/AddIcon.png')}></Image>
+            : profileName == name ?
+               image != null && <Image style={HomeStyle.playerIcon} source={{uri: image}}/>
+            : <Image style={HomeStyle.playerIcon} source={require('../../assets/images/ProfileIcon.png')}/>}
             <Text style={HomeStyle.playerName}>{name}</Text>
         </Pressable>)
     }

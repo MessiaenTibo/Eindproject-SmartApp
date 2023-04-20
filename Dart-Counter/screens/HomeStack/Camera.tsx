@@ -1,14 +1,11 @@
 import { Image, Alert, Pressable, Text, StyleSheet, View, Dimensions, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import { HomeStyle } from '../../Styles/generic';
 
 import { Camera as CameraIcon, SwitchCamera, Zap, ZapOff } from 'lucide-react-native';
-import { colors } from '../../Styles/colors';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
-
-import * as Permissions from 'expo-permissions'
 import * as MediaLibrary from 'expo-media-library'
 
 export default function CameraEx() {

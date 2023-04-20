@@ -1,11 +1,14 @@
+import Checkouts from "./Checkouts";
+
 export default interface Player {
-    Name:string,
+    PlayerID:string,
+    Username:string,
+    Won:boolean,
+    Darts:number,
     ThreeDartsAvg:number,
     HighestScore:number,
     HighestCheckout:number,
-    CheckoutPercentage:number,
-    CheckoutThrows:number,
-    CheckoutHits:number,
+    Checkouts:Checkouts,
     FourtyPlus:number,
     SixtyPlus:number,
     EightyPlus:number,

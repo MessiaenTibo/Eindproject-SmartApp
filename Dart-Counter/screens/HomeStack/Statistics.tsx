@@ -1,101 +1,137 @@
-import { Text, View, Button, Pressable } from 'react-native';
+import { Text, View, Pressable, Image } from 'react-native';
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 import { HomeStyle } from '../../Styles/generic';
 
-import GameResults from '../../interfaces/GameResults';
+import { useEffect, useState } from 'react';
+import useFirebase from '../../hooks/useFirebase';
+
+import * as MediaLibrary from 'expo-media-library';
 import { ScrollView } from 'react-native-gesture-handler';
+import GameStats from '../../Components/GameStats';
+
+import GameResults  from '../../interfaces/GameResults';
 
 
-export default (props:any) => {
+export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    
+    const [profileName, onChangeProfileName] = useState('Guest');
+    const [nickname, onChangeNickname] = useState('No nickname');
+    const [createdAt, onChangeCreatedAt] = useState('');
+    const [createdAtDate, onChangeCreatedAtDate] = useState('');
 
-    const { gameResults }:{gameResults:GameResults} = props.route.params;
-    console.log({gameResults})
+    const [image, setImage] = useState<string | null>(null);
 
+    const { getUserInfo } = useFirebase();
+
+    useEffect(() => {
+        if(getUserInfo().username != "")
+        {
+            onChangeProfileName(getUserInfo().username);
+            onChangeCreatedAt(getUserInfo().createdAt);
+            const date = new Date(getUserInfo().createdAt);
+            onChangeCreatedAtDate(date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear());
+        }
+
+        MediaLibrary.requestPermissionsAsync().then((result) => {
+            if(result.granted) {
+                console.log("Permission granted");
+                console.log("username: " + getUserInfo().username);
+                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                    if(album != null) {
+                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                            if(assets != null) {
+                                setImage(assets.assets[0].uri);
+                            }
+                        })
+                    }
+                })
+            }
+        })
+    }, [getUserInfo().username])
+
+
+    const [games, onChangeGames] = useState<GameResults[]>([]);
+    useEffect(() => {
+        onChangeGames([{
+            PlayerAmount: 2,
+            Title: "Tibo vs Milan" ,
+            Legs: 1,
+            Sets: 1,
+            Date: '20-04-2023',
+            Score: 501,
+            ThrowIn: 'Straight in',
+            ThrowOut: 'Double out',
+            Player1: {
+                PlayerID: 'abc123',
+                Username: 'Tibo',
+                Won: true,
+                Darts: 60,
+                ThreeDartsAvg: 45,
+                HighestScore: 88,
+                HighestCheckout: 2,
+                Checkouts:{
+                    Hits: 1,
+                    Throws: 20,
+                },
+                FourtyPlus: 10,
+                SixtyPlus: 6,
+                EightyPlus: 2,
+                HundredPlus: 0,
+                OneTwentyPlus: 0,
+                OneFourtyPlus: 0,
+                OneSixtyPlus: 0,
+                OneEighty: 0,
+            },
+            Player2: {
+                PlayerID: 'bcd234',
+                Username: 'Milan',
+                Won: false,
+                Darts: 57,
+                ThreeDartsAvg: 36,
+                HighestScore: 67,
+                HighestCheckout: 2,
+                Checkouts:{
+                    Hits: 0,
+                    Throws: 18,
+                },
+                FourtyPlus: 5,
+                SixtyPlus: 2,
+                EightyPlus: 0,
+                HundredPlus: 0,
+                OneTwentyPlus: 0,
+                OneFourtyPlus: 0,
+                OneSixtyPlus: 0,
+                OneEighty: 0,
+            },
+        }])
+    }, [])
 
     return (
-        <ScrollView>
-            <Text style={HomeStyle.statsSubTitle}>{gameResults.Title}</Text>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>Players:</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.Name}</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player2?.Name}</Text>
+        <View>
+            <View style={HomeStyle.statisticsProfileContainer}>
+                <View style={HomeStyle.statisticsProfileIconContainer}>
+                    <View style={HomeStyle.statisticsProfileIcon}>
+                        <Image style={HomeStyle.statisticsProfileIconImage} source={profileName == "Guest" ? require('../../assets/images/ProfileIcon.png') : {uri:image}}/>
+                    </View>
+                    <View>
+                        <Text style={HomeStyle.statisticsProfileName}>{profileName}</Text>
+                        <Text style={HomeStyle.statisticsProfileText}>{nickname}</Text>
+                    </View>
+                </View>
+                <View style={HomeStyle.statisticsCreatedAtContainer}>
+                    <Text style={HomeStyle.statisticsCreatedAt}>Member since</Text>
+                    <Text style={HomeStyle.statisticsCreatedAt}>
+                        {createdAtDate}
+                    </Text>
+                </View>
             </View>
-
-            <Text style={HomeStyle.statsSubTitle}>Averages</Text>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>3-dart avg.</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.ThreeDartsAvg}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2?.ThreeDartsAvg}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>Highest score</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HighestScore}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HighestScore}</Text> : null}
-            </View>
-
-            <Text style={HomeStyle.statsSubTitle}>Checkouts</Text>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>Checkout percentage</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.CheckoutPercentage}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.CheckoutPercentage}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>Checkouts</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.CheckoutHits} / {gameResults.Player1.CheckoutThrows}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.CheckoutHits} / {gameResults.Player2.CheckoutThrows}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>Highest checkout</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HighestCheckout}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HighestCheckout}</Text> : null}
-            </View>
-
-            <Text style={HomeStyle.statsSubTitle}>Scores</Text>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>180</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneEighty}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneEighty}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>160+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneSixtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneSixtyPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>140+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneFourtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneFourtyPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>120+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneTwentyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneTwentyPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>100+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HundredPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HundredPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>80+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.EightyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.EightyPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>60+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.SixtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.SixtyPlus}</Text> : null}
-            </View>
-            <View style={HomeStyle.statsRow}>
-                <Text style={HomeStyle.statsRowItem}>40+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.FourtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.FourtyPlus}</Text> : null}
-            </View>
-
-        </ScrollView>
+            <ScrollView style={HomeStyle.statisticsGamesContainer}>
+                <GameStats game={games[0]} />
+            </ScrollView>
+        </View>
     )
 }

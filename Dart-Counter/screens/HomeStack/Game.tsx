@@ -145,7 +145,7 @@ export default (props:any) => {
                         {
                             text: "Ok", onPress: () => {
                                 const gameResults = GetGameResults();
-                                navigate('Statistics', {gameResults: gameResults});
+                                navigate('GameResults', {gameResults: gameResults});
                             }
                         },
                     ])
@@ -173,7 +173,7 @@ export default (props:any) => {
                         {
                             text: "Ok", onPress: () => {
                                 const gameResults = GetGameResults();
-                                navigate('Statistics', {gameResults: gameResults});
+                                navigate('GameResults', {gameResults: gameResults});
                             }
                         },
                     ])
@@ -264,13 +264,16 @@ export default (props:any) => {
             Sets: TotalSets,
             Winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
             Player1: {
-                Name: namePlayer1,
+                PlayerID: 'abc123',
+                Username: namePlayer1,
+                Won: setsPlayer1 > setsPlayer2 ? true : false,
                 ThreeDartsAvg: threeDartAvgPlayer1,
                 HighestScore: highestScorePlayer1,
                 HighestCheckout: highestCheckoutPlayer1,
-                CheckoutPercentage: checkoutPercentagePlayer1,
-                CheckoutThrows: checkoutThrowsPlayer1,
-                CheckoutHits: checkoutHitsPlayer1,
+                Checkouts:{
+                    Hits: checkoutHitsPlayer1,
+                    Throws: checkoutThrowsPlayer1,
+                },
                 FourtyPlus: fourtyPlusPlayer1,
                 SixtyPlus: sixtyPlusPlayer1,
                 EightyPlus: eightyPlusPlayer1,
@@ -285,15 +288,17 @@ export default (props:any) => {
             Title: namePlayer1 + ' vs ' + namePlayer2,
             Legs: TotalLegs,
             Sets: TotalSets,
-            Winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
             Player1: {
-                Name: namePlayer1,
+                PlayerID: 'abc123',
+                Username: namePlayer1,
+                Won: setsPlayer1 > setsPlayer2 ? true : false,
                 ThreeDartsAvg: threeDartAvgPlayer1,
                 HighestScore: highestScorePlayer1,
                 HighestCheckout: highestCheckoutPlayer1,
-                CheckoutPercentage: checkoutPercentagePlayer1,
-                CheckoutThrows: checkoutThrowsPlayer1,
-                CheckoutHits: checkoutHitsPlayer1,
+                Checkouts:{
+                    Hits: checkoutHitsPlayer1,
+                    Throws: checkoutThrowsPlayer1,
+                },
                 FourtyPlus: fourtyPlusPlayer1,
                 SixtyPlus: sixtyPlusPlayer1,
                 EightyPlus: eightyPlusPlayer1,
@@ -304,13 +309,16 @@ export default (props:any) => {
                 OneEighty: oneEightyPlayer1,
             },
             Player2: {
-                Name: namePlayer2,
+                PlayerID: 'bcd234',
+                Username: namePlayer2,
+                Won: setsPlayer1 < setsPlayer2 ? true : false,
                 ThreeDartsAvg: threeDartAvgPlayer2,
                 HighestScore: highestScorePlayer2,
                 HighestCheckout: highestCheckoutPlayer2,
-                CheckoutPercentage: checkoutPercentagePlayer2,
-                CheckoutThrows: checkoutThrowsPlayer2,
-                CheckoutHits: checkoutHitsPlayer2,
+                Checkouts:{
+                    Hits: checkoutHitsPlayer2,
+                    Throws: checkoutThrowsPlayer2,
+                },
                 FourtyPlus: fourtyPlusPlayer2,
                 SixtyPlus: sixtyPlusPlayer2,
                 EightyPlus: eightyPlusPlayer2,
