@@ -16,7 +16,7 @@ export default (props:any) => {
     const { gameResults }:{gameResults:GameResults} = props.route.params;
     console.log({gameResults})
     const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
-    const [checkoutPercentagePlayer2, setCheckoutPercentagePlayer2] = useState(0);
+    const [checkoutPercentageplayer2, setCheckoutPercentageplayer2] = useState(0);
 
     useEffect(() => {
         setOptions({
@@ -24,89 +24,89 @@ export default (props:any) => {
             headerRight: () => ( <Pressable style={HomeStyle.navigationTitleContainer} onPress={() => {navigate("Statistics")}}><Text style={HomeStyle.navigationTitle}>Statistics</Text></Pressable> )
 
         })
-        setCheckoutPercentagePlayer1(gameResults.Player1.Checkouts.Hits / gameResults.Player1.Checkouts.Throws * 100)
-        if(gameResults.Player2) setCheckoutPercentagePlayer2(gameResults.Player2.Checkouts.Hits / gameResults.Player2.Checkouts.Throws * 100)
+        setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
+        if(gameResults.player2) setCheckoutPercentageplayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
     }, [])
 
 
     return (
         <ScrollView>
-            <Text style={HomeStyle.statsSubTitle}>{gameResults.Title}</Text>
+            <Text style={HomeStyle.statsSubTitle}>{gameResults.title}</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Players:</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.Username}</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player2?.Username}</Text>
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.username}</Text>
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player2?.username}</Text>
             </View>
 
             <Text style={HomeStyle.statsSubTitle}>Averages</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>3-dart avg.</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.ThreeDartsAvg}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2?.ThreeDartsAvg}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.threeDartAvg}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2?.threeDartAvg}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Highest score</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HighestScore}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HighestScore}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.highestScore}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.highestScore}</Text> : null}
             </View>
 
             <Text style={HomeStyle.statsSubTitle}>Checkouts</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkout percentage</Text>
                 <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer1}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer2}</Text> : null}
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{checkoutPercentageplayer2}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkouts</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.Checkouts.Hits} / {gameResults.Player1.Checkouts.Throws}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.Checkouts.Hits} / {gameResults.Player2.Checkouts.Throws}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.checkouts.hits} / {gameResults.player1.checkouts.throws}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.checkouts.hits} / {gameResults.player2.checkouts.throws}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Highest checkout</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HighestCheckout}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HighestCheckout}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.highestCheckout}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.highestCheckout}</Text> : null}
             </View>
 
             <Text style={HomeStyle.statsSubTitle}>Scores</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>180</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneEighty}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneEighty}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.oneEighty}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.oneEighty}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>160+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneSixtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneSixtyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.oneSixtyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.oneSixtyPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>140+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneFourtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneFourtyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.oneFourtyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.oneFourtyPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>120+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.OneTwentyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.OneTwentyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.oneTwentyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.oneTwentyPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>100+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.HundredPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.HundredPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.hundredPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.hundredPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>80+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.EightyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.EightyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.eightyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.eightyPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>60+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.SixtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.SixtyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.sixtyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.sixtyPlus}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>40+</Text>
-                <Text style={HomeStyle.statsRowItem}>{gameResults.Player1.FourtyPlus}</Text>
-                {gameResults.Player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.Player2.FourtyPlus}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.fourtyPlus}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2.fourtyPlus}</Text> : null}
             </View>
 
         </ScrollView>

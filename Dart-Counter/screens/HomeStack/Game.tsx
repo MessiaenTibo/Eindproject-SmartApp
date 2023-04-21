@@ -9,13 +9,9 @@ import { colors } from '../../Styles/colors';
 
 import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
-// import { MongoClient } from 'mongodb';
 
 
 export default (props:any) => {
-    // const mongoClient = new MongoClient("mongodb+srv://tibo:wachtwoord@carsdb.zhmnydd.mongodb.net/?retryWrites=true&w=majority");
-    // const data = mongoClient.db("DartCounter").collection("Games").find({}).toArray();
-    // console.log(data);
 
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
@@ -259,74 +255,74 @@ export default (props:any) => {
     const GetGameResults = () => {
         let gameResults = {}
         if(AmountOfPlayers == 1)gameResults = {
-            Title: TotalSets == 1 ? 'First to ' + TotalLegs + ' legs' : 'First to ' + TotalSets + ' sets',
-            Legs: TotalLegs,
-            Sets: TotalSets,
-            Winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
-            Player1: {
-                PlayerID: 'abc123',
-                Username: namePlayer1,
-                Won: setsPlayer1 > setsPlayer2 ? true : false,
-                ThreeDartsAvg: threeDartAvgPlayer1,
-                HighestScore: highestScorePlayer1,
-                HighestCheckout: highestCheckoutPlayer1,
-                Checkouts:{
-                    Hits: checkoutHitsPlayer1,
-                    Throws: checkoutThrowsPlayer1,
+            title: TotalSets == 1 ? 'First to ' + TotalLegs + ' legs' : 'First to ' + TotalSets + ' sets',
+            legs: TotalLegs,
+            sets: TotalSets,
+            winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
+            player1: {
+                playerID: 'abc123',
+                username: namePlayer1,
+                won: setsPlayer1 > setsPlayer2 ? true : false,
+                threeDartsAvg: threeDartAvgPlayer1,
+                highestScore: highestScorePlayer1,
+                highestCheckout: highestCheckoutPlayer1,
+                checkouts:{
+                    hits: checkoutHitsPlayer1,
+                    throws: checkoutThrowsPlayer1,
                 },
-                FourtyPlus: fourtyPlusPlayer1,
-                SixtyPlus: sixtyPlusPlayer1,
-                EightyPlus: eightyPlusPlayer1,
-                HundredPlus: hundredPlusPlayer1,
-                OneTwentyPlus: oneTwentyPlusPlayer1,
-                OneFourtyPlus: oneFourtyPlusPlayer1,
-                OneSixtyPlus: oneSixtyPlusPlayer1,
-                OneEighty: oneEightyPlayer1,
+                fourtyPlus: fourtyPlusPlayer1,
+                sixtyPlus: sixtyPlusPlayer1,
+                eightyPlus: eightyPlusPlayer1,
+                hundredPlus: hundredPlusPlayer1,
+                oneTwentyPlus: oneTwentyPlusPlayer1,
+                oneFourtyPlus: oneFourtyPlusPlayer1,
+                oneSixtyPlus: oneSixtyPlusPlayer1,
+                oneEighty: oneEightyPlayer1,
             },
         }
         else gameResults = {
-            Title: namePlayer1 + ' vs ' + namePlayer2,
-            Legs: TotalLegs,
-            Sets: TotalSets,
-            Player1: {
-                PlayerID: 'abc123',
-                Username: namePlayer1,
-                Won: setsPlayer1 > setsPlayer2 ? true : false,
-                ThreeDartsAvg: threeDartAvgPlayer1,
-                HighestScore: highestScorePlayer1,
-                HighestCheckout: highestCheckoutPlayer1,
-                Checkouts:{
-                    Hits: checkoutHitsPlayer1,
-                    Throws: checkoutThrowsPlayer1,
+            title: namePlayer1 + ' vs ' + namePlayer2,
+            legs: TotalLegs,
+            sets: TotalSets,
+            player1: {
+                playerID: 'abc123',
+                username: namePlayer1,
+                won: setsPlayer1 > setsPlayer2 ? true : false,
+                threeDartsAvg: threeDartAvgPlayer1,
+                highestScore: highestScorePlayer1,
+                highestCheckout: highestCheckoutPlayer1,
+                checkouts:{
+                    hits: checkoutHitsPlayer1,
+                    throws: checkoutThrowsPlayer1,
                 },
-                FourtyPlus: fourtyPlusPlayer1,
-                SixtyPlus: sixtyPlusPlayer1,
-                EightyPlus: eightyPlusPlayer1,
-                HundredPlus: hundredPlusPlayer1,
-                OneTwentyPlus: oneTwentyPlusPlayer1,
-                OneFourtyPlus: oneFourtyPlusPlayer1,
-                OneSixtyPlus: oneSixtyPlusPlayer1,
-                OneEighty: oneEightyPlayer1,
+                fourtyPlus: fourtyPlusPlayer1,
+                sixtyPlus: sixtyPlusPlayer1,
+                eightyPlus: eightyPlusPlayer1,
+                hundredPlus: hundredPlusPlayer1,
+                oneTwentyPlus: oneTwentyPlusPlayer1,
+                oneFourtyPlus: oneFourtyPlusPlayer1,
+                oneSixtyPlus: oneSixtyPlusPlayer1,
+                oneEighty: oneEightyPlayer1,
             },
-            Player2: {
-                PlayerID: 'bcd234',
-                Username: namePlayer2,
-                Won: setsPlayer1 < setsPlayer2 ? true : false,
-                ThreeDartsAvg: threeDartAvgPlayer2,
-                HighestScore: highestScorePlayer2,
-                HighestCheckout: highestCheckoutPlayer2,
-                Checkouts:{
-                    Hits: checkoutHitsPlayer2,
-                    Throws: checkoutThrowsPlayer2,
+            player2: {
+                playerID: 'bcd234',
+                username: namePlayer2,
+                won: setsPlayer1 < setsPlayer2 ? true : false,
+                threeDartsAvg: threeDartAvgPlayer2,
+                highestScore: highestScorePlayer2,
+                highestCheckout: highestCheckoutPlayer2,
+                checkouts:{
+                    hits: checkoutHitsPlayer2,
+                    throws: checkoutThrowsPlayer2,
                 },
-                FourtyPlus: fourtyPlusPlayer2,
-                SixtyPlus: sixtyPlusPlayer2,
-                EightyPlus: eightyPlusPlayer2,
-                HundredPlus: hundredPlusPlayer2,
-                OneTwentyPlus: oneTwentyPlusPlayer2,
-                OneFourtyPlus: oneFourtyPlusPlayer2,
-                OneSixtyPlus: oneSixtyPlusPlayer2,
-                OneEighty: oneEightyPlayer2,
+                fourtyPlus: fourtyPlusPlayer2,
+                sixtyPlus: sixtyPlusPlayer2,
+                eightyPlus: eightyPlusPlayer2,
+                hundredPlus: hundredPlusPlayer2,
+                oneTwentyPlus: oneTwentyPlusPlayer2,
+                oneFourtyPlus: oneFourtyPlusPlayer2,
+                oneSixtyPlus: oneSixtyPlusPlayer2,
+                oneEighty: oneEightyPlayer2,
             },
         }
         return gameResults;

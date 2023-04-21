@@ -1,4 +1,4 @@
 export default interface Checkouts {
-    Hits: number,
-    Throws: number,
+    hits: number,
+    throws: number,
 }

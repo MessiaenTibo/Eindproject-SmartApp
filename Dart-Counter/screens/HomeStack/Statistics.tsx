@@ -9,11 +9,12 @@ import { useEffect, useState } from 'react';
 import useFirebase from '../../hooks/useFirebase';
 
 import * as MediaLibrary from 'expo-media-library';
-import { ScrollView } from 'react-native-gesture-handler';
+import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import GameStats from '../../Components/GameStats';
 
 import GameResults  from '../../interfaces/GameResults';
 
+import useHttpRequests from '../../hooks/useHttpRequests';
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>();
@@ -53,62 +54,77 @@ export default () => {
         })
     }, [getUserInfo().username])
 
+    const { getAsync } = useHttpRequests();
+
 
     const [games, onChangeGames] = useState<GameResults[]>([]);
+
     useEffect(() => {
-        onChangeGames([{
-            PlayerAmount: 2,
-            Title: "Tibo vs Milan" ,
-            Legs: 1,
-            Sets: 1,
-            Date: '20-04-2023',
-            Score: 501,
-            ThrowIn: 'Straight in',
-            ThrowOut: 'Double out',
-            Player1: {
-                PlayerID: 'abc123',
-                Username: 'Tibo',
-                Won: true,
-                Darts: 60,
-                ThreeDartsAvg: 45,
-                HighestScore: 88,
-                HighestCheckout: 2,
-                Checkouts:{
-                    Hits: 1,
-                    Throws: 20,
-                },
-                FourtyPlus: 10,
-                SixtyPlus: 6,
-                EightyPlus: 2,
-                HundredPlus: 0,
-                OneTwentyPlus: 0,
-                OneFourtyPlus: 0,
-                OneSixtyPlus: 0,
-                OneEighty: 0,
-            },
-            Player2: {
-                PlayerID: 'bcd234',
-                Username: 'Milan',
-                Won: false,
-                Darts: 57,
-                ThreeDartsAvg: 36,
-                HighestScore: 67,
-                HighestCheckout: 2,
-                Checkouts:{
-                    Hits: 0,
-                    Throws: 18,
-                },
-                FourtyPlus: 5,
-                SixtyPlus: 2,
-                EightyPlus: 0,
-                HundredPlus: 0,
-                OneTwentyPlus: 0,
-                OneFourtyPlus: 0,
-                OneSixtyPlus: 0,
-                OneEighty: 0,
-            },
-        }])
+        // onChangeGames([{
+        //     PlayerAmount: 2,
+        //     Title: "Tibo vs Milan" ,
+        //     Legs: 1,
+        //     Sets: 1,
+        //     Date: '20-04-2023',
+        //     Score: 501,
+        //     ThrowIn: 'Straight in',
+        //     ThrowOut: 'Double out',
+        //     Player1: {
+        //         PlayerID: 'abc123',
+        //         Username: 'Tibo',
+        //         Won: true,
+        //         Darts: 60,
+        //         ThreeDartsAvg: 45,
+        //         HighestScore: 88,
+        //         HighestCheckout: 2,
+        //         Checkouts:{
+        //             Hits: 1,
+        //             Throws: 20,
+        //         },
+        //         FourtyPlus: 10,
+        //         SixtyPlus: 6,
+        //         EightyPlus: 2,
+        //         HundredPlus: 0,
+        //         OneTwentyPlus: 0,
+        //         OneFourtyPlus: 0,
+        //         OneSixtyPlus: 0,
+        //         OneEighty: 0,
+        //     },
+            // Player2: {
+            //     PlayerID: 'bcd234',
+            //     Username: 'Milan',
+            //     Won: false,
+            //     Darts: 57,
+            //     ThreeDartsAvg: 36,
+            //     HighestScore: 67,
+            //     HighestCheckout: 2,
+            //     Checkouts:{
+            //         Hits: 0,
+            //         Throws: 18,
+            //     },
+            //     FourtyPlus: 5,
+            //     SixtyPlus: 2,
+            //     EightyPlus: 0,
+            //     HundredPlus: 0,
+            //     OneTwentyPlus: 0,
+            //     OneFourtyPlus: 0,
+            //     OneSixtyPlus: 0,
+            //     OneEighty: 0,
+            // },
+        // }])
+
+       const getGames = getAsync("https://webappdartcounter.azurewebsites.net/games").then((result) => {
+            if(result != null) {
+                onChangeGames(result);
+            }
+        })
+
+
     }, [])
+
+    useEffect(() => {
+        console.log(games[0]);
+    }, [games])
 
     return (
         <View>
@@ -129,14 +145,11 @@ export default () => {
                     </Text>
                 </View>
             </View>
-            <ScrollView style={HomeStyle.statisticsGamesContainer}>
-                <GameStats game={games[0]} />
-                <GameStats game={games[0]} />
-                <GameStats game={games[0]} />
-                <GameStats game={games[0]} />
-                <GameStats game={games[0]} />
-                <Text></Text>
-            </ScrollView>
+            <FlatList style={HomeStyle.statisticsGamesContainer}
+                data={games}
+                renderItem={({item}) => <GameStats game={item} />}
+                keyExtractor={(item) => item.date}
+            />
         </View>
     )
 }

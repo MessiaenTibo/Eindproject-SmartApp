@@ -23,14 +23,14 @@ export default ({game}:{game:GameResults}) => {
 
     useEffect(() => {
         if(!game) return
-        setTitle(game.Title)
-        setDate(game.Date)
-        setPlayer1Username(game.Player1.Username)
-        setPlayer1Won(game.Player1.Won)
-        setPlayer1ThreeDartsAvg(game.Player1.ThreeDartsAvg)
-        if(game.Player2) setPlayer2Username(game.Player2.Username)
-        if(game.Player2) setPlayer2Won(game.Player2.Won)
-        if(game.Player2) setPlayer2ThreeDartsAvg(game.Player2.ThreeDartsAvg)
+        setTitle(game.title)
+        setDate(game.date)
+        setPlayer1Username(game.player1.username)
+        setPlayer1Won(game.player1.won)
+        setPlayer1ThreeDartsAvg(game.player1.threeDartAvg)
+        if(game.player2) setPlayer2Username(game.player2.username)
+        if(game.player2) setPlayer2Won(game.player2.won)
+        if(game.player2) setPlayer2ThreeDartsAvg(game.player2.threeDartAvg)
 
     }, [game])
     
@@ -44,16 +44,21 @@ export default ({game}:{game:GameResults}) => {
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1Won == true ? 'Winner' : 'Lost'}</Text>
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1ThreeDartsAvg}</Text>
             </View>
-            <View style={HomeStyle.statisticsGameRow1}>
-                {game ? <Text style={HomeStyle.statisticsGameTextRow}>{player2Username}</Text> : <></>}
-                {game ? <Text style={HomeStyle.statisticsGameTextRow}>{player2Won == true ? 'Winner' : 'Lost'}</Text>: <></>}
-                {game ? <Text style={HomeStyle.statisticsGameTextRow}>{player2ThreeDartsAvg}</Text>: <></>}
-            </View>
-            <View style={HomeStyle.statisticsGameRow2}>
+            {player2Username != "Player2" && <View style={HomeStyle.statisticsGameRow1}>
+                {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2Username}</Text>}
+                {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2Won == true ? 'Winner' : 'Lost'}</Text>}
+                {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2ThreeDartsAvg}</Text>}
+            </View>}
+            {player2Username != "Player2" ? <View style={HomeStyle.statisticsGameRow2}>
                 <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
                     <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
                 </Pressable>
-            </View>
+            </View> :
+            <View style={HomeStyle.statisticsGameRow1}>
+                <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
+                    <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
+                </Pressable>
+            </View>}
         </View>
     )
 }

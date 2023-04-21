@@ -1,14 +1,14 @@
 import Player from './Player';
 
 export default interface GameResults {
-    PlayerAmount: number,
-    Date: string,
-    ThrowIn: string,
-    ThrowOut: string,
-    Score: number,
-    Title: string,
-    Legs: number,
-    Sets: number,
-    Player1: Player,
-    Player2?: Player,
+    playerAmount: number,
+    date: string,
+    throwIn: string,
+    throwOut: string,
+    score: number,
+    title: string,
+    legs: number,
+    sets: number,
+    player1: Player,
+    player2?: Player,
 }
