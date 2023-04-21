@@ -86,7 +86,7 @@ export default () => {
     }
 
     const startGame = () => {
-        if(actualplayers.length >= 1 && sets != "" && legs != "") navigate('Game', {players: actualplayers, legs: parseInt(legs), sets: parseInt(sets), score: score});
+        if(actualplayers.length >= 1 && sets != "" && legs != "") navigate('Game', {players: actualplayers, legs: parseInt(legs), sets: parseInt(sets), score: score, throwIn: throwIn, throwOut: throwOut});
         else alert("Please fill in all the fields");
     }
 

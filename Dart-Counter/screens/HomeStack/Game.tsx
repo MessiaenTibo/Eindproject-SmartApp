@@ -9,15 +9,26 @@ import { colors } from '../../Styles/colors';
 
 import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
-
+import useHttpRequests from '../../hooks/useHttpRequests';
+import useFirebase from '../../hooks/useFirebase';
 
 export default (props:any) => {
+
+    const { getUserInfo } = useFirebase();
+
+    const [profileUid, onChangeProfileUid] = useState("randomstring");
+
+    useEffect(() => {
+        if(getUserInfo().uid != "") onChangeProfileUid(getUserInfo().uid);
+    }, [getUserInfo().uid])
+
+    const { postAsync } = useHttpRequests();
 
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
     let screenHeight = Dimensions.get('window').height;
 
-    const {players, legs, sets, score }:{players:Array<{name:string, id:number}>,legs:number,sets:number,score:number} = props.route.params;
+    const {players, legs, sets, score, throwIn, throwOut}:{players:Array<{name:string, id:number}>,legs:number,sets:number,score:number,throwIn:string,throwOut:string} = props.route.params;
     // Camera
     let [camera, setCamera] = useState(false);
 
@@ -141,6 +152,7 @@ export default (props:any) => {
                         {
                             text: "Ok", onPress: () => {
                                 const gameResults = GetGameResults();
+                                postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
                                 navigate('GameResults', {gameResults: gameResults});
                             }
                         },
@@ -169,6 +181,7 @@ export default (props:any) => {
                         {
                             text: "Ok", onPress: () => {
                                 const gameResults = GetGameResults();
+                                postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
                                 navigate('GameResults', {gameResults: gameResults});
                             }
                         },
@@ -253,17 +266,23 @@ export default (props:any) => {
     }
 
     const GetGameResults = () => {
+        const date = new Date(Date.now());
+        const dateFormatted = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
         let gameResults = {}
         if(AmountOfPlayers == 1)gameResults = {
             title: TotalSets == 1 ? 'First to ' + TotalLegs + ' legs' : 'First to ' + TotalSets + ' sets',
+            date: dateFormatted,
+            playerAmount: AmountOfPlayers,
             legs: TotalLegs,
             sets: TotalSets,
-            winner: setsPlayer1 > setsPlayer2 ? namePlayer1 : namePlayer2,
+            score: score,
+            throwIn: throwIn,
+            throwOut: throwOut,
             player1: {
-                playerID: 'abc123',
+                playerID: profileUid,
                 username: namePlayer1,
-                won: setsPlayer1 > setsPlayer2 ? true : false,
-                threeDartsAvg: threeDartAvgPlayer1,
+                won: true,
+                threeDartAvg: threeDartAvgPlayer1,
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
@@ -282,13 +301,18 @@ export default (props:any) => {
         }
         else gameResults = {
             title: namePlayer1 + ' vs ' + namePlayer2,
+            date: dateFormatted,
+            playerAmount: AmountOfPlayers,
             legs: TotalLegs,
             sets: TotalSets,
+            score: score,
+            throwIn: throwIn,
+            throwOut: throwOut,
             player1: {
-                playerID: 'abc123',
+                playerID: 'Guest',
                 username: namePlayer1,
                 won: setsPlayer1 > setsPlayer2 ? true : false,
-                threeDartsAvg: threeDartAvgPlayer1,
+                threeDartAvg: threeDartAvgPlayer1,
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
@@ -308,7 +332,7 @@ export default (props:any) => {
                 playerID: 'bcd234',
                 username: namePlayer2,
                 won: setsPlayer1 < setsPlayer2 ? true : false,
-                threeDartsAvg: threeDartAvgPlayer2,
+                threeDartAvg: threeDartAvgPlayer2,
                 highestScore: highestScorePlayer2,
                 highestCheckout: highestCheckoutPlayer2,
                 checkouts:{

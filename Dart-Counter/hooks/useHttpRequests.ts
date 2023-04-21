@@ -1,22 +1,5 @@
 export default () =>{
 
-    const get = (url:string) => {
-        fetch(url, {
-        "method": "GET",
-        "headers": {
-            "x-rapidapi-host": "fairestdb.p.rapidapi.com",
-            "x-rapidapi-key": "apikey"
-        }
-        })
-        .then(response => response.json())
-        .then(response => {
-            return response;
-        })
-        .catch(err => { console.log(err); 
-        });
-    }
-
-    // make this get asynchronus
     const getAsync = async (url:string) => {
         const response = await fetch(url, {
         "method": "GET",
@@ -29,9 +12,23 @@ export default () =>{
         return data;
     }
 
+    const postAsync = async (url:string, body:any) => {
+        const response = await fetch(url, {
+        "method": "POST",
+        "headers": {
+            "x-rapidapi-host": "fairestdb.p.rapidapi.com",
+            "x-rapideapi-key": "apikey",
+            "content-type": "application/json",
+            "accept": "application/json"
+        },
+        "body": JSON.stringify(body)
+        })
+        const data = await response.json();
+        return data;
+    }
 
     return{
-        get,
-        getAsync
+        getAsync,
+        postAsync
     }
 }
