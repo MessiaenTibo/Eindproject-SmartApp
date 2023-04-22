@@ -31,7 +31,7 @@
         "expo-camera",
         {
           "cameraPermission": "Allow DartCounter to access your camera.",
-          "mediaLibraryPermission": "Allow Movie Zone to access your media library."
+          "mediaLibraryPermission": "Allow DartCounter to access your media library."
         }
       ],
       [
