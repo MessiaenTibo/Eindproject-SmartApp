@@ -309,7 +309,7 @@ export default (props:any) => {
             throwIn: throwIn,
             throwOut: throwOut,
             player1: {
-                playerID: 'Guest',
+                playerID: profileUid,
                 username: namePlayer1,
                 won: setsPlayer1 > setsPlayer2 ? true : false,
                 threeDartAvg: threeDartAvgPlayer1,
