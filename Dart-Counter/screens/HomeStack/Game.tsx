@@ -280,9 +280,10 @@ export default (props:any) => {
             throwOut: throwOut,
             player1: {
                 playerID: profileUid,
+                darts: dartsThrownPlayer1,
                 username: namePlayer1,
                 won: true,
-                threeDartAvg: threeDartAvgPlayer1,
+                threeDartAvg: threeDartAvgPlayer1.toFixed(2),
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
@@ -309,10 +310,11 @@ export default (props:any) => {
             throwIn: throwIn,
             throwOut: throwOut,
             player1: {
-                playerID: 'Guest',
+                playerID: profileUid,
+                darts: dartsThrownPlayer1,
                 username: namePlayer1,
                 won: setsPlayer1 > setsPlayer2 ? true : false,
-                threeDartAvg: threeDartAvgPlayer1,
+                threeDartAvg: threeDartAvgPlayer1.toFixed(2),
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
@@ -330,9 +332,10 @@ export default (props:any) => {
             },
             player2: {
                 playerID: 'bcd234',
+                darts: dartsThrownPlayer2,
                 username: namePlayer2,
                 won: setsPlayer1 < setsPlayer2 ? true : false,
-                threeDartAvg: threeDartAvgPlayer2,
+                threeDartAvg: threeDartAvgPlayer2.toFixed(2),
                 highestScore: highestScorePlayer2,
                 highestCheckout: highestCheckoutPlayer2,
                 checkouts:{
@@ -374,7 +377,7 @@ export default (props:any) => {
 
                         <Text style={HomeStyle.gameScoreText}>Darts thorwn: {dartsThrownPlayer1}</Text>
 
-                        <Text style={HomeStyle.gameScoreText}>3-dart avg.: {threeDartAvgPlayer1}</Text>
+                        <Text style={HomeStyle.gameScoreText}>3-dart avg.: {threeDartAvgPlayer1.toFixed(2)}</Text>
                     </View>
                 </View>
 
@@ -395,7 +398,7 @@ export default (props:any) => {
 
                         <Text style={HomeStyle.gameScoreText}>Darts thorwn: {dartsThrownPlayer2}</Text>
 
-                        <Text style={HomeStyle.gameScoreText}>3-dart avg.: {threeDartAvgPlayer2}</Text>
+                        <Text style={HomeStyle.gameScoreText}>3-dart avg.: {threeDartAvgPlayer2.toFixed(2)}</Text>
                     </View>
                 </View>
             </View>

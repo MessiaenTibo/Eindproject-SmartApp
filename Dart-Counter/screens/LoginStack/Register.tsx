@@ -82,7 +82,7 @@ export default () => {
         }
 
         //create account
-        const registerState = register(firstName, email, password);
+        const registerState = register(username, email, password);
         
         registerState.then(({errorCode, errorMessage}) => {
             setErrorMessage(errorMessage);

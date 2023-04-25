@@ -16,6 +16,8 @@ import GameResults  from '../../interfaces/GameResults';
 
 import useHttpRequests from '../../hooks/useHttpRequests';
 
+
+
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>();
     
@@ -29,16 +31,17 @@ export default () => {
 
     const { getUserInfo } = useFirebase();
 
+    const { getAsync } = useHttpRequests();
+
+
+    const [games, onChangeGames] = useState<GameResults[]>([]);
+
     useEffect(() => {
-        if(getUserInfo().username != "")
-        {
-            onChangeProfileName(getUserInfo().username);
-            onChangeCreatedAt(getUserInfo().createdAt);
-            const date = new Date(getUserInfo().createdAt);
-            onChangeCreatedAtDate(date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear());
-            onChangeUid(getUserInfo().uid);
-            console.log("uid: " + getUserInfo().uid);
-        }
+        const getGames = getAsync("https://webappdartcounter.azurewebsites.net/games/" + Uid).then((result) => {
+            if(result != null) {
+                onChangeGames(result);
+            }
+        })
 
         MediaLibrary.requestPermissionsAsync().then((result) => {
             if(result.granted) {
@@ -55,12 +58,20 @@ export default () => {
                 })
             }
         })
+    }, [])
+
+
+    useEffect(() => {
+        if(getUserInfo().username != "")
+        {
+            onChangeProfileName(getUserInfo().username);
+            onChangeCreatedAt(getUserInfo().createdAt);
+            const date = new Date(getUserInfo().createdAt);
+            onChangeCreatedAtDate(date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear());
+            onChangeUid(getUserInfo().uid);
+            console.log("uid: " + getUserInfo().uid);
+        }
     }, [getUserInfo().username])
-
-    const { getAsync } = useHttpRequests();
-
-
-    const [games, onChangeGames] = useState<GameResults[]>([]);
 
     useEffect(() => {
 
@@ -73,9 +84,6 @@ export default () => {
 
     }, [Uid])
 
-    useEffect(() => {
-        console.log(games[0]);
-    }, [games])
 
     return (
         <View>
@@ -97,7 +105,9 @@ export default () => {
                 </View>
             </View>
             <FlatList style={HomeStyle.statisticsGamesContainer}
-                data={games}
+                data={games.sort((a, b) => {
+                    return new Date(b.date).getTime() - new Date(a.date).getTime();
+                    })}
                 renderItem={({item}) => <GameStats game={item} />}
                 keyExtractor={(item) => item.date}
             />
