@@ -311,7 +311,6 @@ export default (props:any) => {
             throwOut: throwOut,
             player1: {
                 playerID: profileUid,
-                darts: dartsThrownPlayer1,
                 username: namePlayer1,
                 won: setsPlayer1 > setsPlayer2 ? true : false,
                 threeDartAvg: threeDartAvgPlayer1.toFixed(2),
