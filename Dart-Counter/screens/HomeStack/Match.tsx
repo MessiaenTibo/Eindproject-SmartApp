@@ -6,10 +6,12 @@ import { HomeStyle } from '../../Styles/generic';
 
 import { Image } from "react-native"
 import useFirebase from '../../hooks/useFirebase';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FlatList, TextInput } from 'react-native-gesture-handler';
 
 import * as MediaLibrary from 'expo-media-library';
+
+import { useFocusEffect } from '@react-navigation/native';
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
@@ -28,6 +30,26 @@ export default () => {
     const [players, onChangePlayers] = useState([{name: 'Guest 1', id: 0}, {name: 'Add', id: 1}]);
     const [actualplayers, onChangeActualPlayers] = useState([{name: 'Guest 1', id: 0}]);
 
+    useFocusEffect(
+        useCallback(() => {
+            MediaLibrary.requestPermissionsAsync().then((result) => {
+                if(result.granted) {
+                    console.log("Permission granted");
+                    console.log("username: " + getUserInfo().username);
+                    MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                        if(album != null) {
+                            MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                                if(assets != null) {
+                                    setImage(assets.assets[0].uri);
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+        }, [])
+    );
+
     useEffect(() => {
         if(getUserInfo().username != "")
         {
@@ -35,21 +57,6 @@ export default () => {
             players[0].name = getUserInfo().username;
             actualplayers[0].name = getUserInfo().username;
         }
-        MediaLibrary.requestPermissionsAsync().then((result) => {
-            if(result.granted) {
-                console.log("Permission granted");
-                console.log("username: " + getUserInfo().username);
-                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
-                    if(album != null) {
-                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
-                            if(assets != null) {
-                                setImage(assets.assets[0].uri);
-                            }
-                        })
-                    }
-                })
-            }
-        })
     }, [getUserInfo().username])
 
     const addPlayer = () => {

@@ -6,10 +6,16 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import ProfileHeader from '../../Components/ProfileHeader';
 import { HomeStyle } from '../../Styles/generic';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useFirebase from '../../hooks/useFirebase';
 
 import * as MediaLibrary from 'expo-media-library';
+
+import { useFocusEffect } from '@react-navigation/native';
+
+import { Target, Globe, Mic, BarChart2 } from 'lucide-react-native';
+
+import { colors } from '../../Styles/colors';
 
 
 export default () => {
@@ -22,24 +28,50 @@ export default () => {
 
     const { getUserInfo } = useFirebase();
 
+
+    useFocusEffect(
+        useCallback(() => {
+            console.log("useFocusEffect");
+            MediaLibrary.requestPermissionsAsync().then((result) => {
+                if(result.granted) {
+                    // console.log("Permission granted");
+                    // console.log("username: " + getUserInfo().username);
+                    MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                        if(album != null) {
+                            MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                                if(assets != null) {
+                                    setImage(assets.assets[0].uri);
+                                }
+                            })
+                        }
+                    })
+                }
+            })
+
+        }, [])
+    );
+
+    // useEffect(() => {
+    //     console.log("refreshed")
+    //     MediaLibrary.requestPermissionsAsync().then((result) => {
+    //         if(result.granted) {
+    //             // console.log("Permission granted");
+    //             // console.log("username: " + getUserInfo().username);
+    //             MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+    //                 if(album != null) {
+    //                     MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+    //                         if(assets != null) {
+    //                             setImage(assets.assets[0].uri);
+    //                         }
+    //                     })
+    //                 }
+    //             })
+    //         }
+    //     })
+    // }, [])
+
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
-
-        MediaLibrary.requestPermissionsAsync().then((result) => {
-            if(result.granted) {
-                console.log("Permission granted");
-                console.log("username: " + getUserInfo().username);
-                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
-                    if(album != null) {
-                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
-                            if(assets != null) {
-                                setImage(assets.assets[0].uri);
-                            }
-                        })
-                    }
-                })
-            }
-        })
     }, [getUserInfo().username])
 
     return (
@@ -48,22 +80,22 @@ export default () => {
 
             <Pressable style={HomeStyle.bigButtonOrange} onPress={() => {navigate('NewGame')}}>
                 <Text style={HomeStyle.bigButtonTitleWhite}>New game</Text>
-                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+                <Target size={48} color={colors.white} />
             </Pressable>
 
             <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
                 <Text style={HomeStyle.bigButtonTitle}>Play online</Text>
-                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+                <Globe size={48} color={colors.blue} />
             </Pressable>
 
             <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
                 <Text style={HomeStyle.bigButtonTitle}>Let our MasterCaller announce your name</Text>
-                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+                <Mic size={48} color={colors.lightGrey} />
             </Pressable>
 
             <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('Statistics')}}>
                 <Text style={HomeStyle.bigButtonTitle}>View your statistics</Text>
-                <Image style={HomeStyle.bigButtonIcon} source={require('../../assets/images/ProfileIcon.png')}/>
+                <BarChart2 size={48} color={colors.lightGrey} />
             </Pressable>
         </View>
     )
