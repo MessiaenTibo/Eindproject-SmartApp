@@ -96,6 +96,11 @@ export default (props:any) => {
         // convert score input to int
         if(scoreInput === '') return;
         let scoreInputInt = parseInt(scoreInput);
+        if(scoreInputInt > 180)
+        {
+            Alert.alert("Impossible score", "Score cannot be higher than 180");
+            return;
+        }
 
         // Change score
         if (currentPlayer === 1 && scorePlayer1 - scoreInputInt >= 0) {
@@ -287,8 +292,8 @@ export default (props:any) => {
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
-                    hits: checkoutHitsPlayer1,
-                    throws: checkoutThrowsPlayer1,
+                    hits: checkoutHitsPlayer1 + 1,
+                    throws: checkoutThrowsPlayer1 + 1,
                 },
                 fourtyPlus: fourtyPlusPlayer1,
                 sixtyPlus: sixtyPlusPlayer1,
@@ -317,8 +322,8 @@ export default (props:any) => {
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
-                    hits: checkoutHitsPlayer1,
-                    throws: checkoutThrowsPlayer1,
+                    hits: setsPlayer1 > setsPlayer2 ? checkoutHitsPlayer1 + 1 : checkoutHitsPlayer1,
+                    throws: setsPlayer1 > setsPlayer2 ? checkoutThrowsPlayer1 + 1 : checkoutThrowsPlayer1,
                 },
                 fourtyPlus: fourtyPlusPlayer1,
                 sixtyPlus: sixtyPlusPlayer1,
@@ -338,8 +343,8 @@ export default (props:any) => {
                 highestScore: highestScorePlayer2,
                 highestCheckout: highestCheckoutPlayer2,
                 checkouts:{
-                    hits: checkoutHitsPlayer2,
-                    throws: checkoutThrowsPlayer2,
+                    hits: setsPlayer1 < setsPlayer2 ? checkoutHitsPlayer2 + 1 : checkoutHitsPlayer2,
+                    throws: setsPlayer1 < setsPlayer2 ? checkoutThrowsPlayer2 + 1 : checkoutThrowsPlayer2,
                 },
                 fourtyPlus: fourtyPlusPlayer2,
                 sixtyPlus: sixtyPlusPlayer2,
