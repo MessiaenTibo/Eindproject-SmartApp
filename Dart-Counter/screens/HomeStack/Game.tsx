@@ -131,6 +131,32 @@ export default (props:any) => {
                 temp2 += score;
             })
             setThreeDartAvgPlayer2(temp2/(temp.length - 1));
+        } else if (currentPlayer === 1 && scorePlayer1 - scoreInputInt < 0) {
+            updateStatsPlayer1(0);
+            setLastScorePlayer1(0);
+            setDartsThrownPlayer1(dartsThrownPlayer1 + 3);
+            if(AmountOfPlayers > 1) setCurrentPlayer(2);
+            let temp = lastscoresPlayer1
+            temp.push(0);
+            setLastscoresPlayer1(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer1(temp2/(temp.length - 1));
+        } else if (currentPlayer === 2 && scorePlayer2 - scoreInputInt < 0) {
+            updateStatsPlayer2(0);
+            setLastScorePlayer2(0);
+            setDartsThrownPlayer2(dartsThrownPlayer2 + 3);
+            setCurrentPlayer(1);
+            let temp = lastscoresPlayer2
+            temp.push(0);
+            setLastscoresPlayer2(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer2(temp2/(temp.length - 1));
         }
 
         // Reset score input
