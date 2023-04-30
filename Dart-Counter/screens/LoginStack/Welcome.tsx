@@ -5,10 +5,22 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 import { HomeStyle } from '../../Styles/generic';
 
-
+import useFirebase from '../../hooks/useFirebase';
+import { useEffect } from 'react';
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
+
+    const { checkIfLoggedIn } = useFirebase();
+
+    useEffect(() => {
+        checkIfLoggedIn().then((result) => {
+            if(result) {
+                navigate('MainDrawer');
+            }
+            console.log("result: " + result)
+        })
+    }, [])
 
 
     return (

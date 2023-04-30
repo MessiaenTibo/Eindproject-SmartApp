@@ -18,6 +18,7 @@ import { Target, Globe, Mic, BarChart2 } from 'lucide-react-native';
 import { colors } from '../../Styles/colors';
 
 
+
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
     
@@ -27,6 +28,8 @@ export default () => {
     const [image, setImage] = useState<string | null>(null);
 
     const { getUserInfo } = useFirebase();
+
+
 
 
     useFocusEffect(
@@ -47,28 +50,9 @@ export default () => {
                     })
                 }
             })
-
         }, [])
     );
 
-    // useEffect(() => {
-    //     console.log("refreshed")
-    //     MediaLibrary.requestPermissionsAsync().then((result) => {
-    //         if(result.granted) {
-    //             // console.log("Permission granted");
-    //             // console.log("username: " + getUserInfo().username);
-    //             MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
-    //                 if(album != null) {
-    //                     MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
-    //                         if(assets != null) {
-    //                             setImage(assets.assets[0].uri);
-    //                         }
-    //                     })
-    //                 }
-    //             })
-    //         }
-    //     })
-    // }, [])
 
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);

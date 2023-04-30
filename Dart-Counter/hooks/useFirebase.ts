@@ -8,6 +8,8 @@ import { FirebaseApp, initializeApp } from 'firebase/app';
 import { Auth, createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential, signOut, sendPasswordResetEmail, updateProfile } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 // const firebaseConfig = {
 //     apiKey: import.meta.env.VITE_apiKey,
@@ -58,6 +60,45 @@ let userInfo = {
 
 export default () => {
 
+    const checkIfLoggedIn = async () => {
+        const temp = await getData()
+        try {
+            getData().then((value) => {
+                if(value !== null){
+                    console.log("user is logged in (asyncStorage)")
+                    userInfo = JSON.parse(value)
+                }else{
+                    console.log("user is not logged in (asyncStorage)")
+                }
+            })
+        } catch(e) {
+            console.log(e)
+        }
+        return temp
+
+    }
+
+    const getData = async () => {
+        try {
+            const value = await AsyncStorage.getItem('userInfo')
+            if(value !== null) {
+                console.log(value)
+                return value
+            }
+        } catch(e) {
+            console.log(e)
+        }
+        return null
+    }
+
+    const storeData = async (value: string) => {
+        try {
+            await AsyncStorage.setItem('userInfo', value)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
 
     const login = (emailLogin: string, password: string) => {
         return signInWithEmailAndPassword(auth, emailLogin, password)
@@ -65,7 +106,6 @@ export default () => {
             // Signed in
             const user = userCredential.user;
 
-            // redirect to profile
             if(user.email) userInfo.email = user.email;
             if(user.uid) userInfo.uid = user.uid;
             if(user.metadata.lastSignInTime) userInfo.lastLoginAt = user.metadata.lastSignInTime;
@@ -79,6 +119,10 @@ export default () => {
             if(user.displayName) userInfo.username = user.displayName;
             console.log("userinfo:")
             console.log({userInfo})
+
+            // Save user info in local storage
+            storeData(JSON.stringify(userInfo))
+
             return("success")
         })
         .catch((error) => {
@@ -103,7 +147,6 @@ export default () => {
                 console.log(error)
             });
 
-            // redirect to profile
             let email = user.email;
             let uid = user.uid;
             let lastLoginAt = user.metadata.lastSignInTime;
@@ -126,6 +169,7 @@ export default () => {
 
     const logout = () => {
         signOut(auth).then(() => {
+            AsyncStorage.removeItem('userInfo');
             // Sign-out successful.
             console.log("logout successful")
             userInfo = {
@@ -160,6 +204,7 @@ export default () => {
     }
 
     return{
+        checkIfLoggedIn,
         login,
         register,
         logout,
