@@ -42,7 +42,7 @@ export default ({game}:{game:GameResults}) => {
             <View style={HomeStyle.statisticsGameRow2}>
                 <Text style={HomeStyle.statisticsGameTextRowBold}>Name:</Text>
                 <Text style={HomeStyle.statisticsGameTextRowBold}>Winner:</Text>
-                <Text style={HomeStyle.statisticsGameTextRowBold}>3dart avr.:</Text>
+                <Text style={HomeStyle.statisticsGameTextRowBold}>3-dart avg.:</Text>
             </View>
             <View style={HomeStyle.statisticsGameRow1}>
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1Username}</Text>

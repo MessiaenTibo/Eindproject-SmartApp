@@ -16,7 +16,9 @@ export default (props:any) => {
     const { gameResults }:{gameResults:GameResults} = props.route.params;
     console.log({gameResults})
     const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
+    const [checkoutPercentagePlayer1String, setCheckoutPercentagePlayer1String] = useState("0%");
     const [checkoutPercentageplayer2, setCheckoutPercentageplayer2] = useState(0);
+    const [checkoutPercentagePlayer2String, setCheckoutPercentageplayer2String] = useState("0%");
 
     useEffect(() => {
         setOptions({
@@ -28,6 +30,11 @@ export default (props:any) => {
         if(gameResults.player2) setCheckoutPercentageplayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
     }, [])
 
+    useEffect(() => {
+        setCheckoutPercentagePlayer1String(checkoutPercentagePlayer1.toFixed(2) + "%")
+        if(gameResults.player2) setCheckoutPercentageplayer2String(checkoutPercentageplayer2.toFixed(2) + "%")
+    }, [checkoutPercentagePlayer1, checkoutPercentageplayer2])
+
 
     return (
         <ScrollView>
@@ -38,7 +45,12 @@ export default (props:any) => {
                 <Text style={HomeStyle.statsRowItem}>{gameResults.player2?.username}</Text>
             </View>
 
-            <Text style={HomeStyle.statsSubTitle}>Averages</Text>
+            <Text style={HomeStyle.statsSubTitle}>Darts</Text>
+            <View style={HomeStyle.statsRow}>
+                <Text style={HomeStyle.statsRowItem}>Total darts</Text>
+                <Text style={HomeStyle.statsRowItem}>{gameResults.player1.darts}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{gameResults.player2?.darts}</Text> : null}
+            </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>3-dart avg.</Text>
                 <Text style={HomeStyle.statsRowItem}>{gameResults.player1.threeDartAvg}</Text>
@@ -53,8 +65,8 @@ export default (props:any) => {
             <Text style={HomeStyle.statsSubTitle}>Checkouts</Text>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkout percentage</Text>
-                <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer1}</Text>
-                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{checkoutPercentageplayer2}</Text> : null}
+                <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer1String}</Text>
+                {gameResults.player2 ? <Text style={HomeStyle.statsRowItem}>{checkoutPercentagePlayer2String}</Text> : null}
             </View>
             <View style={HomeStyle.statsRow}>
                 <Text style={HomeStyle.statsRowItem}>Checkouts</Text>
