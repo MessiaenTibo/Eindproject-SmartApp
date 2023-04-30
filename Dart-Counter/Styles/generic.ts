@@ -689,8 +689,13 @@ export const HomeStyle = StyleSheet.create({
         color: colors.white,
     },
     statisticsGameTextRow:{
-        width: '20%',
+        width: '30%',
         textAlign: 'center',
+    },
+    statisticsGameTextRowBold:{
+        width: '30%',
+        textAlign: 'center',
+        fontWeight: '600',
     },
     statisticsGameRow1:{
         flexDirection: 'row',
@@ -698,6 +703,7 @@ export const HomeStyle = StyleSheet.create({
         alignContent: 'center',
         justifyContent: 'space-between',
         textAlign: 'center',
+        fontWeight: '600',
         paddingVertical: 8,
         paddingHorizontal: 12,
         fontSize: 14,

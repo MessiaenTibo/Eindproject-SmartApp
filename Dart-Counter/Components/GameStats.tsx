@@ -40,21 +40,26 @@ export default ({game}:{game:GameResults}) => {
             <Text style={HomeStyle.statisticsGameTitleRow}>{title}</Text>
             <Text style={HomeStyle.statisticsGameRow1}>{date}</Text>
             <View style={HomeStyle.statisticsGameRow2}>
+                <Text style={HomeStyle.statisticsGameTextRowBold}>Name:</Text>
+                <Text style={HomeStyle.statisticsGameTextRowBold}>Winner:</Text>
+                <Text style={HomeStyle.statisticsGameTextRowBold}>3dart avr.:</Text>
+            </View>
+            <View style={HomeStyle.statisticsGameRow1}>
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1Username}</Text>
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1Won == true ? 'Winner' : 'Lost'}</Text>
                 <Text style={HomeStyle.statisticsGameTextRow}>{player1ThreeDartsAvg}</Text>
             </View>
-            {player2Username != "Player2" && <View style={HomeStyle.statisticsGameRow1}>
+            {player2Username != "Player2" && <View style={HomeStyle.statisticsGameRow2}>
                 {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2Username}</Text>}
                 {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2Won == true ? 'Winner' : 'Lost'}</Text>}
                 {player2Username != "Player2" && <Text style={HomeStyle.statisticsGameTextRow}>{player2ThreeDartsAvg}</Text>}
             </View>}
-            {player2Username != "Player2" ? <View style={HomeStyle.statisticsGameRow2}>
+            {player2Username != "Player2" ? <View style={HomeStyle.statisticsGameRow1}>
                 <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
                     <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
                 </Pressable>
             </View> :
-            <View style={HomeStyle.statisticsGameRow1}>
+            <View style={HomeStyle.statisticsGameRow2}>
                 <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
                     <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
                 </Pressable>
