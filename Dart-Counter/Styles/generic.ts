@@ -723,7 +723,7 @@ export const HomeStyle = StyleSheet.create({
         backgroundColor: colors.white,
     },
     statisticsGameButton: {
-        width: '100%',
+        width: '86%',
     },
     statisticsGameButtonText: {
         fontSize: 14,
@@ -732,5 +732,19 @@ export const HomeStyle = StyleSheet.create({
         textAlign: 'center',
         paddingVertical: 8,
         backgroundColor: colors.blue,
+    },
+    statisticsGameButton2:{
+        backgroundColor: colors.red,
+        width: '12%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    statisticsGameButtonText2: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: colors.white,
+        textAlign: 'center',
+        paddingVertical: 8,
+        backgroundColor: colors.red,
     },
 })

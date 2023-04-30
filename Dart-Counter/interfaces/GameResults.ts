@@ -1,6 +1,7 @@
 import Player from './Player';
 
 export default interface GameResults {
+    id: string,
     playerAmount: number,
     date: string,
     throwIn: string,

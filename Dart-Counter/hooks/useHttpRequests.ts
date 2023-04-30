@@ -27,8 +27,21 @@ export default () =>{
         return data;
     }
 
+    const deleteAsync = async (url:string) => {
+        const response = await fetch(url, {
+        "method": "DELETE",
+        "headers": {
+            "x-rapidapi-host": "fairestdb.p.rapidapi.com",
+            "x-rapidapi-key": "apikey"
+        }
+        })
+        const data = await response.json();
+        return data;
+    }
+
     return{
         getAsync,
-        postAsync
+        postAsync,
+        deleteAsync
     }
 }

@@ -1,4 +1,4 @@
-import { Pressable, Text, View } from "react-native"
+import { Alert, Pressable, Text, View } from "react-native"
 import { colors } from "../Styles/colors"
 import { HomeStyle } from "../Styles/generic"
 
@@ -8,9 +8,14 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import GameResults from "../interfaces/GameResults";
 import { useState, useEffect } from "react";
 
+import useHttpRequests from "../hooks/useHttpRequests";
+
+import { Trash2 } from "lucide-react-native";
 
 export default ({game}:{game:GameResults}) => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+
+    const { deleteAsync } = useHttpRequests();
 
     const [title, setTitle] = useState('Title')
     const [date, setDate] = useState('20-04-2023')
@@ -33,6 +38,25 @@ export default ({game}:{game:GameResults}) => {
         if(game.player2) setPlayer2ThreeDartsAvg(game.player2.threeDartAvg)
 
     }, [game])
+
+    const delteGame = (id:string) => {
+        Alert.alert("Delete game", "Are you sure you want to delete this game?", [
+            {
+                text: "Cancel",
+                onPress: () => console.log("Cancel Pressed"),
+                style: "cancel"
+            },
+            { 
+                text: "Delete",
+                onPress: () => {
+                    console.log("Delete Pressed")
+                    deleteAsync("https://webappdartcounter.azurewebsites.net/games/" + id)
+                    navigate('home')
+                }
+            }
+        ]);
+    }
+    
     
 
     return (
@@ -58,10 +82,16 @@ export default ({game}:{game:GameResults}) => {
                 <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
                     <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
                 </Pressable>
+                <Pressable style={HomeStyle.statisticsGameButton2} onPress={() => delteGame(game.id)}>
+                    <Trash2 style={HomeStyle.statisticsGameButtonText2} size={30}/>
+                </Pressable>
             </View> :
             <View style={HomeStyle.statisticsGameRow2}>
                 <Pressable style={HomeStyle.statisticsGameButton} onPress={() => {navigate('StatisticsDetails', {gameResults: game})}}>
                     <Text style={HomeStyle.statisticsGameButtonText}>Details</Text>
+                </Pressable>
+                <Pressable style={HomeStyle.statisticsGameButton2} onPress={() => delteGame(game.id)}>
+                    <Trash2 style={HomeStyle.statisticsGameButtonText2} size={30}/>
                 </Pressable>
             </View>}
         </View>
