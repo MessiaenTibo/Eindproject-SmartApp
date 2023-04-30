@@ -99,6 +99,7 @@ export default (props:any) => {
         if(scoreInputInt > 180)
         {
             Alert.alert("Impossible score", "Score cannot be higher than 180");
+            setScoreInput('');
             return;
         }
 
