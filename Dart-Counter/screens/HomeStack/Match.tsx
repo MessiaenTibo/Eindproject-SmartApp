@@ -12,6 +12,7 @@ import { FlatList, TextInput } from 'react-native-gesture-handler';
 import * as MediaLibrary from 'expo-media-library';
 
 import { useFocusEffect } from '@react-navigation/native';
+import { ScreenWidth } from 'react-native-elements/dist/helpers';
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
@@ -60,7 +61,7 @@ export default () => {
     }, [getUserInfo().username])
 
     const addPlayer = () => {
-        if(players.length < 4)
+        if(players.length < 2)
         {
             let newplayers = players.slice(0, players.length - 1);
             newplayers.push({name: 'Guest ' + (newplayers.length + 1), id: newplayers.length});
@@ -108,7 +109,9 @@ export default () => {
                             renderItem={({item}) => player(item.name, item.id)}
                             keyExtractor={item => item.id.toString()}
                             horizontal={true}
-                            ItemSeparatorComponent={() => <View style={{width: 120 /players.length}}/>}
+                            // ItemSeparatorComponent={() => <View style={{width: 120 /players.length}}/>} //4 players max
+                            ItemSeparatorComponent={() => <View style={{width: ScreenWidth - 150}}/>} //2 players max
+
                         />
                     </SafeAreaView>
 

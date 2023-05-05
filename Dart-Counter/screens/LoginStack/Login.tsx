@@ -1,4 +1,4 @@
-import { Text, View, Pressable, TextInput, Keyboard  } from 'react-native';
+import { Text, View, Pressable, TextInput, Keyboard, Alert  } from 'react-native';
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -13,7 +13,7 @@ import useFirebase from '../../hooks/useFirebase';
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
-    const { login } = useFirebase();
+    const { login, resetPassword } = useFirebase();
 
     const [email, onChangeEmail] = useState('');
     const [emailError, onChangeEmailError] = useState('');
@@ -68,6 +68,44 @@ export default () => {
         })
     }
 
+    const forgotPassword = () => {
+        if(!email) {
+            onChangeEmailError('Email is required');
+            return
+        } else if (!email.includes('@') || !email.includes('.') || email.length < 5){
+            onChangeEmailError('Email must be valid');
+            return
+        } else {
+            onChangeEmailError('');
+            // const response = await resetPassword(email);
+            // if(response == "success"){
+            //     console.log("Reset password email sent");
+            //     Alert.alert("Reset password","Reset password email sent!");
+            // }
+            // else if(response == "auth/user-not-found"){
+            //     console.log("Invalid email");
+            //     onChangeEmailError('Invalid email');
+            // }
+            // else{
+            //     console.log("Unknown error");
+            //     onChangeEmailError('Unknown error');
+            // }
+            resetPassword(email).then((value) => {
+                if(value == "success"){
+                    console.log("Reset password email sent");
+                    Alert.alert("Reset password","A reset password email has been sent to your email. Please check your inbox! This may take a few minutes. If you don't receive an email, please check your spam folder.");
+                }
+                else if(value == "auth/user-not-found"){
+                    console.log("Invalid email");
+                    onChangeEmailError('Invalid email');
+                }
+                else{
+                    console.log("Unknown error");
+                    onChangeEmailError('Unknown error');
+                }
+            })
+        }
+    }
 
     return (
         <View style={HomeStyle.container}>
@@ -97,7 +135,7 @@ export default () => {
             <Pressable style={HomeStyle.button1} onPress={validate}>
                 <Text style={HomeStyle.buttonText} >LOGIN</Text>
             </Pressable>
-            <Pressable onPress={() => {navigate('ForgotPassword')}}>
+            <Pressable onPress={forgotPassword}>
                 <Text style={HomeStyle.text} >Forgot Password?</Text>
             </Pressable>
         </View>

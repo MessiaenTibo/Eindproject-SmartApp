@@ -34,20 +34,6 @@ const firebaseConfig = {
 const app: FirebaseApp = initializeApp(firebaseConfig, "Authentication-firebase");
 const auth: Auth = getAuth(app);
 
-
-const actionCodeSettings = {
-    url: 'https://www.example.com/?email=user@example.com',
-    iOS: {
-       bundleId: 'com.example.ios'
-    },
-    android: {
-      packageName: 'com.example.android',
-      installApp: true,
-      minimumVersion: '12'
-    },
-    handleCodeInApp: true
-  };
-
 let userInfo = {
     email: '',
     username: '',
@@ -187,15 +173,16 @@ export default () => {
     }
 
     const resetPassword = (email:string) => {
-        sendPasswordResetEmail(auth, email).then(() => {
+        return sendPasswordResetEmail(auth, email).then(() => {
             // Password reset email sent!
             // ..
             console.log("email sent")
+            return ("success")
         }).catch((error) => {
             const errorCode = error.code;
             const errorMessage = error.message;
             console.log({ errorCode, errorMessage })
-            return { errorCode, errorMessage}
+            return errorCode
         });
     }
 
