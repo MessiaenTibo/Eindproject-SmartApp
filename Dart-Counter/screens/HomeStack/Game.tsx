@@ -11,10 +11,13 @@ import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native'
 
 import useHttpRequests from '../../hooks/useHttpRequests';
 import useFirebase from '../../hooks/useFirebase';
+import CalculateThrowOut from '../../hooks/CalculateThrowOut';
 
 export default (props:any) => {
 
     const { getUserInfo } = useFirebase();
+
+    const { GetThrowOutSuggestions } = CalculateThrowOut();
 
     const [profileUid, onChangeProfileUid] = useState("randomstring");
 
@@ -62,6 +65,11 @@ export default (props:any) => {
     const [oneFourtyPlusPlayer1, setOneFourtyPlusPlayer1] = useState(0);
     const [oneSixtyPlusPlayer1, setOneSixtyPlusPlayer1] = useState(0);
     const [oneEightyPlayer1, setOneEightyPlayer1] = useState(0);
+    // ThrowOut suggestions player 1
+    const [Player1ThrowOutSuggestion, setPlayer1ThrowOutSuggestion] = useState(true);
+    const [Player1ThrowOutSuggestion1, setPlayer1ThrowOutSuggestion1] = useState('T20');
+    const [Player1ThrowOutSuggestion2, setPlayer1ThrowOutSuggestion2] = useState('T20');
+    const [Player1ThrowOutSuggestion3, setPlayer1ThrowOutSuggestion3] = useState('D20');
 
 
     // Player 2
@@ -90,6 +98,15 @@ export default (props:any) => {
     const [oneFourtyPlusPlayer2, setOneFourtyPlusPlayer2] = useState(0);
     const [oneSixtyPlusPlayer2, setOneSixtyPlusPlayer2] = useState(0);
     const [oneEightyPlayer2, setOneEightyPlayer2] = useState(0);
+    // ThrowOut suggestions player 1
+    const [Player2ThrowOutSuggestion, setPlayer2ThrowOutSuggestion] = useState(false);
+    const [Player2ThrowOutSuggestion1, setPlayer2ThrowOutSuggestion1] = useState('');
+    const [Player2ThrowOutSuggestion2, setPlayer2ThrowOutSuggestion2] = useState('');
+    const [Player2ThrowOutSuggestion3, setPlayer2ThrowOutSuggestion3] = useState('');
+
+    useEffect(() => {
+        SetThrowOutSuggestions();
+    }, [scorePlayer1, scorePlayer2]);
     
 
     const next = () => {
@@ -224,6 +241,8 @@ export default (props:any) => {
             }
         }
 
+        // SetThrowOutSuggestions();
+
     }
 
     const updateStatsPlayer1 = (scoreInputInt: number) => {
@@ -295,6 +314,8 @@ export default (props:any) => {
             setCurrentPlayer(2);
             lastscoresPlayer2.pop();
         }
+
+        // SetThrowOutSuggestions();
     }
 
     const GetGameResults = () => {
@@ -386,6 +407,40 @@ export default (props:any) => {
         return gameResults;
     }
 
+    const SetThrowOutSuggestions = () => {
+        console.log('SetThrowOutSuggestions')
+        if (scorePlayer1 > 170) {
+            setPlayer1ThrowOutSuggestion(false);
+            setPlayer1ThrowOutSuggestion1('');
+            setPlayer1ThrowOutSuggestion2('');
+            setPlayer1ThrowOutSuggestion3('');
+        } else{
+            setPlayer1ThrowOutSuggestion(true);
+            const throwoutSuggestions = GetThrowOutSuggestions(scorePlayer1);
+            setPlayer1ThrowOutSuggestion1(throwoutSuggestions[0]);
+            setPlayer1ThrowOutSuggestion2(throwoutSuggestions[1]);
+            setPlayer1ThrowOutSuggestion3(throwoutSuggestions[2]);
+            console.log(throwoutSuggestions[0], throwoutSuggestions[1], throwoutSuggestions[2])
+        }
+
+        if (scorePlayer2 > 170) {
+            setPlayer2ThrowOutSuggestion(false);
+            setPlayer2ThrowOutSuggestion1('');
+            setPlayer2ThrowOutSuggestion2('');
+            setPlayer2ThrowOutSuggestion3('');
+        } else {
+            setPlayer2ThrowOutSuggestion(true);
+            const throwoutSuggestions = GetThrowOutSuggestions(scorePlayer2);
+            setPlayer2ThrowOutSuggestion1(throwoutSuggestions[0]);
+            setPlayer2ThrowOutSuggestion2(throwoutSuggestions[1]);
+            setPlayer2ThrowOutSuggestion3(throwoutSuggestions[2]);
+            console.log(throwoutSuggestions[0], throwoutSuggestions[1], throwoutSuggestions[2])
+        }
+        console.log(Player1ThrowOutSuggestion, Player2ThrowOutSuggestion)
+
+    }
+        
+
 
 
     return (
@@ -402,7 +457,14 @@ export default (props:any) => {
                     </View>
 
                     <View style={HomeStyle.gameScoreContainer}>
-                        <Text style={HomeStyle.gameScoreTitle}>{scorePlayer1}</Text>
+                        <View style={HomeStyle.gameScoreTitleContainer}>
+                            <Text style={[HomeStyle.gameScoreTitle, Player1ThrowOutSuggestion ? {width:'80%'} : {width:'100%'}]}>{scorePlayer1}</Text>
+                            <View style={[HomeStyle.gameScoreThrowOutSuggestionsContainer, Player1ThrowOutSuggestion ? {width:'100%'} : {width:'0%'}]}>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player1ThrowOutSuggestion1}</Text>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player1ThrowOutSuggestion2}</Text>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player1ThrowOutSuggestion3}</Text>
+                            </View>
+                        </View>
 
                         <Text style={HomeStyle.gameScoreText}>{lastScorePlayer1 === -1 ? "Last score:-" : "Last score: " + lastScorePlayer1}</Text>
 
@@ -423,7 +485,14 @@ export default (props:any) => {
                     </View>
 
                     <View style={HomeStyle.gameScoreContainer}>
-                        <Text style={HomeStyle.gameScoreTitle}>{scorePlayer2}</Text>
+                        <View style={HomeStyle.gameScoreTitleContainer}>
+                            <Text style={[HomeStyle.gameScoreTitle, Player2ThrowOutSuggestion ? {width:'80%'} : {width:'100%'}]}>{scorePlayer2}</Text>
+                            <View style={[HomeStyle.gameScoreThrowOutSuggestionsContainer, Player2ThrowOutSuggestion ? {width:'100%'} : {width:'0%'}]}>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player2ThrowOutSuggestion1}</Text>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player2ThrowOutSuggestion2}</Text>
+                                <Text style={HomeStyle.gameScoreThrowOutSuggestions}>{Player2ThrowOutSuggestion3}</Text>
+                            </View>
+                        </View>
 
                         <Text style={HomeStyle.gameScoreText}>{lastScorePlayer2 === -1 ? "Last score:-" : "Last score: " + lastScorePlayer2}</Text>
 

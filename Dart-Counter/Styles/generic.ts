@@ -329,6 +329,21 @@ export const HomeStyle = StyleSheet.create({
         fontSize: 56,
         fontWeight: '600',
         textAlign: 'center',
+        width: '80%',
+    },
+    gameScoreTitleContainer:{
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
+    },
+    gameScoreThrowOutSuggestions:{
+        fontSize: 16,
+        fontWeight: '400',
+        width: '20%',
+    },
+    gameScoreThrowOutSuggestionsContainer:{
+        display: 'flex',
+        flexDirection: 'column',
         width: '100%',
     },
     gameScoreText:{
