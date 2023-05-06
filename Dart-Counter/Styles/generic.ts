@@ -109,6 +109,8 @@ export const HomeStyle = StyleSheet.create({
         opacity: 0.5,
     },
     button4:{
+        position: 'absolute',
+        bottom: 0,
         backgroundColor: colors.darkGrey,
         height: 70,
         justifyContent: 'center',

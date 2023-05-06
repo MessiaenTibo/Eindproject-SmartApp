@@ -22,8 +22,8 @@ export default (props:any) => {
     const [checkoutPercentagePlayer2String, setCheckoutPercentagePlayer2String] = useState("0%");
 
     useEffect(() => {
-        setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
-        if(gameResults.player2) setCheckoutPercentagePlayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
+        if(gameResults.player1.checkouts.throws != 0) setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
+        if(gameResults.player2 && gameResults.player2.checkouts.throws != 0) setCheckoutPercentagePlayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
     }, [])
 
     useEffect(() => {

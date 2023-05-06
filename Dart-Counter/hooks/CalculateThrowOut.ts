@@ -490,6 +490,9 @@ export default () =>{
         else if(score === 2){
             suggestions.push("D1")
         }
+        else{
+            suggestions.push("")
+        }
 
         // return the first suggestion, spilt space and return all the values
         return suggestions[0].split(" ");

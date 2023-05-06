@@ -12,6 +12,7 @@ import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native'
 import useHttpRequests from '../../hooks/useHttpRequests';
 import useFirebase from '../../hooks/useFirebase';
 import CalculateThrowOut from '../../hooks/CalculateThrowOut';
+import { set } from 'react-native-reanimated';
 
 export default (props:any) => {
 
@@ -48,7 +49,9 @@ export default (props:any) => {
     const [lastScorePlayer1, setLastScorePlayer1] = useState(-1);
     let [lastscoresPlayer1, setLastscoresPlayer1] = useState([0]);
     const [dartsThrownPlayer1, setDartsThrownPlayer1] = useState(0);
+    const [totalDartsThrownPlayer1, setTotalDartsThrownPlayer1] = useState(0);
     const [threeDartAvgPlayer1, setThreeDartAvgPlayer1] = useState(0.00);
+    const [totalThreeDartAvgPlayer1, setTotalThreeDartAvgPlayer1] = useState(0.00);
     const [legsPlayer1, setLegsPlayer1] = useState(0);
     const [setsPlayer1, setSetsPlayer1] = useState(0);
     //stats player 1
@@ -81,7 +84,9 @@ export default (props:any) => {
     const [lastScorePlayer2, setLastScorePlayer2] = useState(-1);
     let [lastscoresPlayer2, setLastscoresPlayer2] = useState([0]);
     const [dartsThrownPlayer2, setDartsThrownPlayer2] = useState(0);
+    const [totalDartsThrownPlayer2, setTotalDartsThrownPlayer2] = useState(0);
     const [threeDartAvgPlayer2, setThreeDartAvgPlayer2] = useState(0);
+    const [totalThreeDartAvgPlayer2, setTotalThreeDartAvgPlayer2] = useState(0);
     const [legsPlayer2, setLegsPlayer2] = useState(0);
     const [setsPlayer2, setSetsPlayer2] = useState(0);
     //stats player 2
@@ -107,6 +112,35 @@ export default (props:any) => {
     useEffect(() => {
         SetThrowOutSuggestions();
     }, [scorePlayer1, scorePlayer2]);
+
+
+    useEffect(() => {
+        if(setsPlayer1 === TotalSets)
+        {
+            Alert.alert("Save", namePlayer1 + " won!", [
+                {
+                    text: "Ok", onPress: () => {
+                        const gameResults = GetGameResults();
+                        postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
+                        navigate('GameResults', {gameResults: gameResults});
+                    }
+                },
+            ])
+        }
+
+        if(setsPlayer2 === TotalSets)
+        {
+            Alert.alert("Save", namePlayer2 + " won!", [
+                {
+                    text: "Ok", onPress: () => {
+                        const gameResults = GetGameResults();
+                        postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
+                        navigate('GameResults', {gameResults: gameResults});
+                    }
+                },
+            ])
+        }
+    }, [setsPlayer1, setsPlayer2]);
     
 
     const next = () => {
@@ -121,6 +155,41 @@ export default (props:any) => {
         }
 
         // Change score
+        if(currentPlayer === 1 && scorePlayer1 - scoreInputInt === 1)
+        {
+            updateStatsPlayer1(0);
+            setLastScorePlayer1(0);
+            setDartsThrownPlayer1(dartsThrownPlayer1 + 3);
+            if(AmountOfPlayers > 1) setCurrentPlayer(2);
+            let temp = lastscoresPlayer1
+            temp.push(0);
+            setLastscoresPlayer1(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer1(temp2/(temp.length - 1));
+            setScoreInput('');
+            return;
+        }
+        else if(currentPlayer === 2 && scorePlayer2 - scoreInputInt === 1)
+        {
+            updateStatsPlayer2(0);
+            setLastScorePlayer2(0);
+            setDartsThrownPlayer2(dartsThrownPlayer2 + 3);
+            if(AmountOfPlayers > 1) setCurrentPlayer(1);
+            let temp = lastscoresPlayer2
+            temp.push(0);
+            setLastscoresPlayer2(temp);
+            let temp2 = 0;
+            temp.map((score:number) => {
+                temp2 += score;
+            })
+            setThreeDartAvgPlayer2(temp2/(temp.length - 1));
+            setScoreInput('');
+            return;
+        }
+
         if (currentPlayer === 1 && scorePlayer1 - scoreInputInt >= 0) {
             updateStatsPlayer1(scoreInputInt);
             setScorePlayer1(scorePlayer1 - scoreInputInt);
@@ -188,25 +257,17 @@ export default (props:any) => {
             setLegsPlayer1(legsPlayer1 + 1);
             setScorePlayer1(score);
             setScorePlayer2(score);
+            setTotalDartsThrownPlayer1(totalDartsThrownPlayer1 + dartsThrownPlayer1);
+            setTotalDartsThrownPlayer2(totalDartsThrownPlayer2 + dartsThrownPlayer2);
             setDartsThrownPlayer1(0);
             setDartsThrownPlayer2(0);
+            setTotalThreeDartAvgPlayer1((totalThreeDartAvgPlayer1 + threeDartAvgPlayer1) / 2);
             setThreeDartAvgPlayer1(0);
+            setTotalThreeDartAvgPlayer2((totalThreeDartAvgPlayer2 + threeDartAvgPlayer2) / 2);
             setThreeDartAvgPlayer2(0);
             setLastscoresPlayer1([0]);
             if(legsPlayer1 + 1 === TotalLegs) {
                 setSetsPlayer1(setsPlayer1 + 1);
-                if(setsPlayer1 + 1 === TotalSets)
-                {
-                    Alert.alert("Save", namePlayer1 + " won!", [
-                        {
-                            text: "Ok", onPress: () => {
-                                const gameResults = GetGameResults();
-                                postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
-                                navigate('GameResults', {gameResults: gameResults});
-                            }
-                        },
-                    ])
-                }
                 setLegsPlayer1(0);
                 setLegsPlayer2(0);
             }
@@ -224,18 +285,6 @@ export default (props:any) => {
             setLastscoresPlayer2([0]);
             if(legsPlayer2 + 1 === TotalLegs) {
                 setSetsPlayer2(setsPlayer2 + 1);
-                if(setsPlayer2 + 1 === TotalSets)
-                {
-                    Alert.alert("Save", namePlayer2 + " won!", [
-                        {
-                            text: "Ok", onPress: () => {
-                                const gameResults = GetGameResults();
-                                postAsync("https://webappdartcounter.azurewebsites.net/games", gameResults)
-                                navigate('GameResults', {gameResults: gameResults});
-                            }
-                        },
-                    ])
-                }
                 setLegsPlayer1(0);
                 setLegsPlayer2(0);
             }
@@ -320,7 +369,7 @@ export default (props:any) => {
 
     const GetGameResults = () => {
         const date = new Date(Date.now());
-        const dateFormatted = date.getDate() + "-" + (date.getMonth() + 1) + "-" + date.getFullYear() + " " + date.getHours() + ":" + date.getMinutes();
+        const dateFormatted = date.getDate() + "-" + (((date.getMonth() + 1) > 10) ? '0' + (date.getMonth() + 1) : (date.getMonth() + 1)) + "-" + date.getFullYear() + " " + (date.getHours() < 10 ? '0' + date.getHours() : date.getHours()) + ":" + (date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes());
         let gameResults = {}
         if(AmountOfPlayers == 1)gameResults = {
             title: TotalSets == 1 ? 'First to ' + TotalLegs + ' legs' : 'First to ' + TotalSets + ' sets',
@@ -333,15 +382,15 @@ export default (props:any) => {
             throwOut: throwOut,
             player1: {
                 playerID: profileUid,
-                darts: dartsThrownPlayer1,
+                darts: totalDartsThrownPlayer1,
                 username: namePlayer1,
                 won: true,
-                threeDartAvg: threeDartAvgPlayer1.toFixed(2),
+                threeDartAvg: totalThreeDartAvgPlayer1.toFixed(2),
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
-                    hits: checkoutHitsPlayer1 + 1,
-                    throws: checkoutThrowsPlayer1 + 1,
+                    hits: checkoutHitsPlayer1 ,
+                    throws: checkoutThrowsPlayer1,
                 },
                 fourtyPlus: fourtyPlusPlayer1,
                 sixtyPlus: sixtyPlusPlayer1,
@@ -364,14 +413,15 @@ export default (props:any) => {
             throwOut: throwOut,
             player1: {
                 playerID: profileUid,
+                darts: totalDartsThrownPlayer1,
                 username: namePlayer1,
                 won: setsPlayer1 > setsPlayer2 ? true : false,
-                threeDartAvg: threeDartAvgPlayer1.toFixed(2),
+                threeDartAvg: totalThreeDartAvgPlayer1.toFixed(2),
                 highestScore: highestScorePlayer1,
                 highestCheckout: highestCheckoutPlayer1,
                 checkouts:{
-                    hits: setsPlayer1 > setsPlayer2 ? checkoutHitsPlayer1 + 1 : checkoutHitsPlayer1,
-                    throws: setsPlayer1 > setsPlayer2 ? checkoutThrowsPlayer1 + 1 : checkoutThrowsPlayer1,
+                    hits: checkoutHitsPlayer1,
+                    throws: checkoutThrowsPlayer1,
                 },
                 fourtyPlus: fourtyPlusPlayer1,
                 sixtyPlus: sixtyPlusPlayer1,
@@ -384,15 +434,15 @@ export default (props:any) => {
             },
             player2: {
                 playerID: 'bcd234',
-                darts: dartsThrownPlayer2,
+                darts: totalDartsThrownPlayer2,
                 username: namePlayer2,
                 won: setsPlayer1 < setsPlayer2 ? true : false,
-                threeDartAvg: threeDartAvgPlayer2.toFixed(2),
+                threeDartAvg: totalThreeDartAvgPlayer2.toFixed(2),
                 highestScore: highestScorePlayer2,
                 highestCheckout: highestCheckoutPlayer2,
                 checkouts:{
-                    hits: setsPlayer1 < setsPlayer2 ? checkoutHitsPlayer2 + 1 : checkoutHitsPlayer2,
-                    throws: setsPlayer1 < setsPlayer2 ? checkoutThrowsPlayer2 + 1 : checkoutThrowsPlayer2,
+                    hits: checkoutHitsPlayer2,
+                    throws: checkoutThrowsPlayer2,
                 },
                 fourtyPlus: fourtyPlusPlayer2,
                 sixtyPlus: sixtyPlusPlayer2,

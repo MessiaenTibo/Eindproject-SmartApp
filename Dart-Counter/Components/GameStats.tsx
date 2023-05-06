@@ -51,7 +51,7 @@ export default ({game}:{game:GameResults}) => {
                 onPress: () => {
                     console.log("Delete Pressed")
                     deleteAsync("https://webappdartcounter.azurewebsites.net/games/" + id)
-                    navigate('home')
+                    navigate('Home')
                 }
             }
         ]);

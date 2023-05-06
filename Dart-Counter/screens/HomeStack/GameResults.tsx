@@ -17,7 +17,7 @@ export default (props:any) => {
     console.log({gameResults})
     const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
     const [checkoutPercentagePlayer1String, setCheckoutPercentagePlayer1String] = useState("0%");
-    const [checkoutPercentageplayer2, setCheckoutPercentageplayer2] = useState(0);
+    const [checkoutPercentageplayer2, setCheckoutPercentagePlayer2] = useState(0);
     const [checkoutPercentagePlayer2String, setCheckoutPercentageplayer2String] = useState("0%");
 
     useEffect(() => {
@@ -26,8 +26,8 @@ export default (props:any) => {
             headerRight: () => ( <Pressable style={HomeStyle.navigationTitleContainer} onPress={() => {navigate("Statistics")}}><Text style={HomeStyle.navigationTitle}>Statistics</Text></Pressable> )
 
         })
-        setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
-        if(gameResults.player2) setCheckoutPercentageplayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
+        if(gameResults.player1.checkouts.throws != 0) setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
+        if(gameResults.player2 && gameResults.player2.checkouts.throws != 0) setCheckoutPercentagePlayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
     }, [])
 
     useEffect(() => {

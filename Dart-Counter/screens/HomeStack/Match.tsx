@@ -1,4 +1,4 @@
-import { Text, View, Pressable, SafeAreaView } from 'react-native';
+import { Text, View, Pressable, SafeAreaView, KeyboardAvoidingView } from 'react-native';
 
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -7,12 +7,13 @@ import { HomeStyle } from '../../Styles/generic';
 import { Image } from "react-native"
 import useFirebase from '../../hooks/useFirebase';
 import { useCallback, useEffect, useState } from 'react';
-import { FlatList, TextInput } from 'react-native-gesture-handler';
+import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
 
 import * as MediaLibrary from 'expo-media-library';
 
 import { useFocusEffect } from '@react-navigation/native';
 import { ScreenWidth } from 'react-native-elements/dist/helpers';
+
 
 export default () => {
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
@@ -28,8 +29,34 @@ export default () => {
     const [throwIn, onChangeThrowIn] = useState('STRAIGHT');
     const [throwOut, onChangeThrowOut] = useState('DOUBLE');
 
-    const [players, onChangePlayers] = useState([{name: 'Guest 1', id: 0}, {name: 'Add', id: 1}]);
-    const [actualplayers, onChangeActualPlayers] = useState([{name: 'Guest 1', id: 0}]);
+    const [players, onChangePlayers] = useState([{name: 'You', id: 0}, {name: 'Add', id: 1}]);
+    const [actualplayers, onChangeActualPlayers] = useState([{name: 'You ', id: 0}]);
+
+    const [guest, onChangeGuest] = useState(false);
+    const [guestName, onChangeGuestName] = useState('Guest');
+
+    const onChangeGuestNameText = (text: string) => {
+        if(text.length > 10) return;
+        if(text.length == 0){
+            onChangeGuestName(text);
+            text = 'Guest';
+            const tempPlayers = players;
+            tempPlayers[1].name = text;
+            onChangePlayers(tempPlayers);
+            const tempActualPlayers = actualplayers;
+            tempActualPlayers[1].name = text;
+            onChangeActualPlayers(tempActualPlayers);
+            return;
+        }
+        const tempPlayers = players;
+        tempPlayers[1].name = text;
+        onChangePlayers(tempPlayers);
+        const tempActualPlayers = actualplayers;
+        tempActualPlayers[1].name = text;
+        onChangeActualPlayers(tempActualPlayers);
+        onChangeGuestName(text);
+    }
+
 
     useFocusEffect(
         useCallback(() => {
@@ -64,16 +91,27 @@ export default () => {
         if(players.length < 2)
         {
             let newplayers = players.slice(0, players.length - 1);
-            newplayers.push({name: 'Guest ' + (newplayers.length + 1), id: newplayers.length});
-            newplayers.push({name: 'Add', id: newplayers.length + 1});
+            newplayers.push({name: guestName, id: newplayers.length});
+            newplayers.push({name: 'Add', id: newplayers.length});
             onChangePlayers(newplayers);
             onChangeActualPlayers(newplayers.slice(0, newplayers.length - 1));
         }
         else{
             let newplayers = players.slice(0, players.length - 1);
-            newplayers.push({name: 'Guest ' + (newplayers.length + 1), id: newplayers.length});
+            newplayers.push({name: guestName, id: newplayers.length});
             onChangePlayers(newplayers);
             onChangeActualPlayers(newplayers);
+            onChangeGuest(true);
+        }
+    }
+
+    const removePlayer = () => {
+        if(players.length > 1){
+            let newplayers = players.slice(0, 1);
+            newplayers.push({name: 'Add', id: newplayers.length});
+            onChangePlayers(newplayers);
+            onChangeActualPlayers(newplayers);
+            onChangeGuest(false);
         }
     }
 
@@ -99,82 +137,100 @@ export default () => {
     }
 
     return (
-            <View style={HomeStyle.container2}>
-                <View style={[{height:'100%'},{marginBottom: -50}]}>
-                    <Text style={HomeStyle.matchTitle}>Players</Text>
-                    
-                    <SafeAreaView style={HomeStyle.playersContainer}>
-                        <FlatList
-                            data={players}
-                            renderItem={({item}) => player(item.name, item.id)}
-                            keyExtractor={item => item.id.toString()}
-                            horizontal={true}
-                            // ItemSeparatorComponent={() => <View style={{width: 120 /players.length}}/>} //4 players max
-                            ItemSeparatorComponent={() => <View style={{width: ScreenWidth - 150}}/>} //2 players max
+        <View style={HomeStyle.container2}>
+            <ScrollView style={[{height:'100%'},{marginBottom: 50}]}>
+                <Text style={HomeStyle.matchTitle}>Players</Text>
+                
+                <SafeAreaView style={HomeStyle.playersContainer}>
+                    <FlatList
+                        data={players}
+                        renderItem={({item}) => player(item.name, item.id)}
+                        keyExtractor={item => item.id.toString()}
+                        horizontal={true}
+                        // ItemSeparatorComponent={() => <View style={{width: 120 /players.length}}/>} //4 players max
+                        ItemSeparatorComponent={() => <View style={{width: ScreenWidth - 150}}/>} //2 players max
 
-                        />
-                    </SafeAreaView>
+                    />
+                </SafeAreaView>
 
-                    <Text style={HomeStyle.matchTitle}>Game settings</Text>
+                <Text style={HomeStyle.matchTitle}>Game settings</Text>
 
-                    <View style={HomeStyle.matchSettingsRow}>
-                        <Pressable style={score === 301 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(301)}>
-                            <Text style={score === 301 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>301</Text>
-                        </Pressable>
-                        <Pressable style={score === 501 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(501)}>
-                            <Text style={score === 501 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>501</Text>
-                        </Pressable>
-                        <Pressable style={score === 701 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(701)}>
-                            <Text style={score === 701 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>701</Text>
-                        </Pressable>
-                        <Pressable style={score === 170 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(170)}>
-                            <Text style={score === 170 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>CUSTOM: 170</Text>
-                        </Pressable>
-                    </View>
-
-                    <View style={HomeStyle.matchSettingsRow}>
-                        <Pressable style={HomeStyle.matchSettingsRowTile1of4Active}>
-                            <Text style={HomeStyle.matchSettingsRowTextActive}>Sets:</Text>
-                        </Pressable>
-                        <View style={HomeStyle.matchSettingsRowTile1of4}>
-                            <TextInput style={HomeStyle.matchSettingsRowInput} keyboardType='numeric' onChangeText={onChangeSets} value={sets}></TextInput>
-                        </View>
-                        <Pressable style={HomeStyle.matchSettingsRowTile1of4Active}>
-                            <Text style={HomeStyle.matchSettingsRowTextActive}>Legs:</Text>
-                        </Pressable>
-                        <Pressable style={HomeStyle.matchSettingsRowTile1of4}>
-                            <TextInput style={HomeStyle.matchSettingsRowInput} keyboardType='numeric' onChangeText={onChangeLegs} value={legs}></TextInput>
-                        </Pressable>
-                    </View>
-
-                    <View style={HomeStyle.matchSettingsRow}>
-                        <Pressable style={throwIn === 'STRAIGHT' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('STRAIGHT')}>
-                            <Text style={throwIn === 'STRAIGHT' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>STRAIGHT IN</Text>
-                        </Pressable>
-                        <Pressable style={throwIn === 'DOUBLE' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('DOUBLE')}>
-                            <Text style={throwIn === 'DOUBLE' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>DOUBLE IN</Text>
-                        </Pressable>
-                        <Pressable style={throwIn === 'MASTER' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('MASTER')}>
-                            <Text style={throwIn === 'MASTER' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>MASTER IN</Text>
-                        </Pressable>
-                    </View>
-                    
-                    <View style={HomeStyle.matchSettingsRow}>
-                        <Pressable style={throwOut === 'DOUBLE' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('DOUBLE')}>
-                            <Text style={throwOut === 'DOUBLE' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>DOUBLE OUT</Text>
-                        </Pressable>
-                        <Pressable style={throwOut === 'MASTER' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('MASTER')}>
-                            <Text style={throwOut === 'MASTER' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>MASTER OUT</Text>
-                        </Pressable>
-                        <Pressable style={throwOut === 'STRAIGHT' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('STRAIGHT')}>
-                            <Text style={throwOut === 'STRAIGHT' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>STRAIGHT OUT</Text>
-                        </Pressable>
-                    </View>
+                <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={score === 301 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(301)}>
+                        <Text style={score === 301 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>301</Text>
+                    </Pressable>
+                    <Pressable style={score === 501 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(501)}>
+                        <Text style={score === 501 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>501</Text>
+                    </Pressable>
+                    <Pressable style={score === 701 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(701)}>
+                        <Text style={score === 701 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>701</Text>
+                    </Pressable>
+                    <Pressable style={score === 170 ? HomeStyle.matchSettingsRowTile1of4Active : HomeStyle.matchSettingsRowTile1of4} onPress={() => onChangeScore(170)}>
+                        <Text style={score === 170 ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>CUSTOM: 170</Text>
+                    </Pressable>
                 </View>
 
-                <Pressable style={[HomeStyle.button4]} onPress={startGame}>
-                    <Text style={HomeStyle.buttonText2}>Start Game</Text>
-                </Pressable>
-            </View>
+                <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={HomeStyle.matchSettingsRowTile1of4Active}>
+                        <Text style={HomeStyle.matchSettingsRowTextActive}>Sets:</Text>
+                    </Pressable>
+                    <View style={HomeStyle.matchSettingsRowTile1of4}>
+                        <TextInput style={HomeStyle.matchSettingsRowInput} keyboardType='numeric' onChangeText={onChangeSets} value={sets}></TextInput>
+                    </View>
+                    <Pressable style={HomeStyle.matchSettingsRowTile1of4Active}>
+                        <Text style={HomeStyle.matchSettingsRowTextActive}>Legs:</Text>
+                    </Pressable>
+                    <Pressable style={HomeStyle.matchSettingsRowTile1of4}>
+                        <TextInput style={HomeStyle.matchSettingsRowInput} keyboardType='numeric' onChangeText={onChangeLegs} value={legs}></TextInput>
+                    </Pressable>
+                </View>
+
+                <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={throwIn === 'STRAIGHT' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('STRAIGHT')}>
+                        <Text style={throwIn === 'STRAIGHT' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>STRAIGHT IN</Text>
+                    </Pressable>
+                    <Pressable style={throwIn === 'DOUBLE' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('DOUBLE')}>
+                        <Text style={throwIn === 'DOUBLE' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>DOUBLE IN</Text>
+                    </Pressable>
+                    <Pressable style={throwIn === 'MASTER' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowIn('MASTER')}>
+                        <Text style={throwIn === 'MASTER' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>MASTER IN</Text>
+                    </Pressable>
+                </View>
+                
+                <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={throwOut === 'DOUBLE' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('DOUBLE')}>
+                        <Text style={throwOut === 'DOUBLE' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>DOUBLE OUT</Text>
+                    </Pressable>
+                    <Pressable style={throwOut === 'MASTER' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('MASTER')}>
+                        <Text style={throwOut === 'MASTER' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>MASTER OUT</Text>
+                    </Pressable>
+                    <Pressable style={throwOut === 'STRAIGHT' ? HomeStyle.matchSettingsRowTile1of3Active : HomeStyle.matchSettingsRowTile1of3} onPress={() => onChangeThrowOut('STRAIGHT')}>
+                        <Text style={throwOut === 'STRAIGHT' ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>STRAIGHT OUT</Text>
+                    </Pressable>
+                </View>
+
+                <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={ guest ? HomeStyle.matchSettingsRowTile1of2 : HomeStyle.matchSettingsRowTile1of2Active} onPress={() => {onChangeGuest(false); removePlayer()}}>
+                        <Text style={ guest ? HomeStyle.matchSettingsRowText : HomeStyle.matchSettingsRowTextActive}>No Guest</Text>
+                    </Pressable>
+                    <Pressable style={ guest ? HomeStyle.matchSettingsRowTile1of2Active : HomeStyle.matchSettingsRowTile1of2} onPress={() => {onChangeGuest(true); addPlayer()}}>
+                        <Text style={ guest ? HomeStyle.matchSettingsRowTextActive : HomeStyle.matchSettingsRowText}>Guest</Text>
+                    </Pressable>
+                </View>
+
+                {guest && <View style={HomeStyle.matchSettingsRow}>
+                    <Pressable style={HomeStyle.matchSettingsRowTile1of2Active}>
+                        <Text style={HomeStyle.matchSettingsRowTextActive}>Guest name:</Text>
+                    </Pressable>
+                    <View style={HomeStyle.matchSettingsRowTile1of2}>
+                        <TextInput style={HomeStyle.matchSettingsRowInput} keyboardType='default' onChangeText={onChangeGuestNameText} value={guestName}></TextInput>
+                    </View>
+                </View>}
+            </ScrollView>
+
+            <Pressable style={[HomeStyle.button4]} onPress={startGame}>
+                <Text style={HomeStyle.buttonText2}>Start Game</Text>
+            </Pressable>
+        </View>
     )
 }
