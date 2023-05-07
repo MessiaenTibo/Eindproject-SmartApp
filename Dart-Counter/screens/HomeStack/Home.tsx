@@ -71,12 +71,12 @@ export default () => {
                 <Target size={48} color={colors.white} />
             </Pressable>
 
-            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+            <Pressable style={HomeStyle.bigButton}>
                 <Text style={HomeStyle.bigButtonTitle}>Play online</Text>
                 <Globe size={48} color={colors.blue} />
             </Pressable>
 
-            <Pressable style={HomeStyle.bigButton} onPress={() => {navigate('')}}>
+            <Pressable style={HomeStyle.bigButton}>
                 <Text style={HomeStyle.bigButtonTitle}>Let our MasterCaller announce your name</Text>
                 <Mic size={48} color={colors.lightGrey} />
             </Pressable>

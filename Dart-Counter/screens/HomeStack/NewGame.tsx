@@ -9,7 +9,7 @@ import { HomeStyle } from '../../Styles/generic';
 
 export default () => {
     // Navigation
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    const { navigate } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
     
     return (
         <View style={HomeStyle.container2}>
@@ -17,23 +17,23 @@ export default () => {
                 <Text style={HomeStyle.buttonText}>Match</Text>
             </Pressable>
 
-            <Pressable style={HomeStyle.button3Disabled} onPress={() => {navigate('');}}>
+            <Pressable style={HomeStyle.button3Disabled}>
                 <Text style={HomeStyle.buttonText}>Cricket/Tactics</Text>
             </Pressable>
 
-            <Pressable style={HomeStyle.button3Disabled} onPress={() => {navigate('');}}>
+            <Pressable style={HomeStyle.button3Disabled}>
                 <Text style={HomeStyle.buttonText}>Bob's 27</Text>
             </Pressable>
 
-            <Pressable style={HomeStyle.button3Disabled} onPress={() => {navigate('');}}>
+            <Pressable style={HomeStyle.button3Disabled}>
                 <Text style={HomeStyle.buttonText}>Singles training</Text>
             </Pressable>
 
-            <Pressable style={HomeStyle.button3Disabled} onPress={() => {navigate('');}}>
+            <Pressable style={HomeStyle.button3Disabled}>
                 <Text style={HomeStyle.buttonText}>Doubles training</Text>
             </Pressable>
 
-            <Pressable style={HomeStyle.button3Disabled} onPress={() => {navigate('');}}>
+            <Pressable style={HomeStyle.button3Disabled}>
                 <Text style={HomeStyle.buttonText}>Score training</Text>
             </Pressable>
 
