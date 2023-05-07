@@ -1,4 +1,4 @@
-import { Text } from "react-native"
+// HomeStack
 import { HomeStack } from "../HomeStack"
 
 export default () =>{

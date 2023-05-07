@@ -1,36 +1,41 @@
+// React Native
+import { useEffect, useState } from 'react';
 import { Text, View} from 'react-native';
-
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 
+// Interfaces
 import GameResults from '../../interfaces/GameResults';
-import { ScrollView } from 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
 
 
 export default (props:any) => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
-
+    // Destructure gameResults from props
     const { gameResults }:{gameResults:GameResults} = props.route.params;
     console.log({gameResults})
 
+    // Checkout percentages
     const [checkoutPercentagePlayer1, setCheckoutPercentagePlayer1] = useState(0);
     const [checkoutPercentagePlayer1String, setCheckoutPercentagePlayer1String] = useState("0%");
     const [checkoutPercentageplayer2, setCheckoutPercentagePlayer2] = useState(0);
     const [checkoutPercentagePlayer2String, setCheckoutPercentagePlayer2String] = useState("0%");
 
+    // Set Checkout percentages
     useEffect(() => {
         if(gameResults.player1.checkouts.throws != 0) setCheckoutPercentagePlayer1(gameResults.player1.checkouts.hits / gameResults.player1.checkouts.throws * 100)
         if(gameResults.player2 && gameResults.player2.checkouts.throws != 0) setCheckoutPercentagePlayer2(gameResults.player2.checkouts.hits / gameResults.player2.checkouts.throws * 100)
     }, [])
 
+    // Set Checkout percentages string when checkout percentages change
     useEffect(() => {
         setCheckoutPercentagePlayer1String(checkoutPercentagePlayer1.toFixed(2) + "%")
         if(gameResults.player2) setCheckoutPercentagePlayer2String(checkoutPercentageplayer2.toFixed(2) + "%")
     }, [checkoutPercentagePlayer1, checkoutPercentageplayer2])
 
+    
     return (
         <ScrollView>
             <Text style={HomeStyle.statsSubTitle}>{gameResults.title}</Text>

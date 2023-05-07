@@ -1,37 +1,38 @@
-import { Text, View, Button, Pressable, Image } from 'react-native';
-
+// React Native and Expo imports
+import { Text, View, Pressable } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-import ProfileHeader from '../../Components/ProfileHeader';
-import { HomeStyle } from '../../Styles/generic';
-
 import { useCallback, useEffect, useState } from 'react';
-import useFirebase from '../../hooks/useFirebase';
-
+import { useFocusEffect } from '@react-navigation/native';
 import * as MediaLibrary from 'expo-media-library';
 
-import { useFocusEffect } from '@react-navigation/native';
+// Components
+import ProfileHeader from '../../Components/ProfileHeader';
 
-import { Target, Globe, Mic, BarChart2 } from 'lucide-react-native';
-
+// Styles
 import { colors } from '../../Styles/colors';
+import { HomeStyle } from '../../Styles/generic';
+
+// Hooks
+import useFirebase from '../../hooks/useFirebase';
+
+// Lucide icons
+import { Target, Globe, Mic, BarChart2 } from 'lucide-react-native';
 
 
 
 export default () => {
+    // Navigation
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
-    
+
+    // Firebase info
+    const { getUserInfo } = useFirebase();
     const [profileName, onChangeProfileName] = useState('Guest');
     const [nickname, onChangeNickname] = useState('No nickname');
-
     const [image, setImage] = useState<string | null>(null);
 
-    const { getUserInfo } = useFirebase();
 
-
-
-
+    // Get profile image
     useFocusEffect(
         useCallback(() => {
             console.log("useFocusEffect");
@@ -53,11 +54,12 @@ export default () => {
         }, [])
     );
 
-
+    // Set profile name
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
     }, [getUserInfo().username])
 
+    
     return (
         <View>
             <ProfileHeader profileName={profileName} nickname={nickname} image={image}/>

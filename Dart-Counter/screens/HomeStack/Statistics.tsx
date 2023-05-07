@@ -1,41 +1,46 @@
-import { Text, View, Pressable, Image } from 'react-native';
-
+// React Native
+import { useEffect, useState } from 'react';
+import { Text, View, Image } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { FlatList } from 'react-native-gesture-handler';
 
+// Expo
+import * as MediaLibrary from 'expo-media-library';
+
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 
-import { useEffect, useState } from 'react';
+// Hooks
 import useFirebase from '../../hooks/useFirebase';
-
-import * as MediaLibrary from 'expo-media-library';
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
-import GameStats from '../../Components/GameStats';
-
-import GameResults  from '../../interfaces/GameResults';
-
 import useHttpRequests from '../../hooks/useHttpRequests';
 
+// Components
+import GameStats from '../../Components/GameStats';
+
+// Interfaces
+import GameResults  from '../../interfaces/GameResults';
 
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>();
-    
+    // Firebase info
     const [profileName, onChangeProfileName] = useState('Guest');
     const [nickname, onChangeNickname] = useState('No nickname');
     const [createdAt, onChangeCreatedAt] = useState('');
     const [createdAtDate, onChangeCreatedAtDate] = useState('');
     const [Uid, onChangeUid] = useState('uid');
-
-    const [image, setImage] = useState<string | null>(null);
-
     const { getUserInfo } = useFirebase();
 
+    // Profile image
+    const [image, setImage] = useState<string | null>(null);
+
+    // Http requests
     const { getAsync } = useHttpRequests();
 
-
+    // Games
     const [games, onChangeGames] = useState<GameResults[]>([]);
 
+    // Request profile info and image on load
     useEffect(() => {
         if(getUserInfo().username != "")
         {
@@ -66,6 +71,7 @@ export default () => {
         })
     }, [])
 
+    // Request games on load and when Uid changes
     useEffect(() => {
         if(Uid != "uid") {
             const getGames = getAsync("https://webappdartcounter.azurewebsites.net/games/" + Uid).then((result) => {

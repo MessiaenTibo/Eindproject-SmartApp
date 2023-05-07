@@ -1,31 +1,32 @@
+// React Native
+import { useEffect, useState } from "react";
 import { View, Text, Pressable } from "react-native"
+import { useNavigation, ParamListBase } from '@react-navigation/native';
+import { StackNavigationProp } from "@react-navigation/stack";
+
+// Styles
 import { HomeStyle } from "../../Styles/generic"
 import { colors } from "../../Styles/colors"
 
-import { useNavigation, ParamListBase } from '@react-navigation/native';
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
-
-import SettingLine from "../../Components/SettingLine";
-
-
-import { ChevronRight } from "lucide-react"
-import { LogOut } from "lucide-react-native"
+// Hooks
 import useFirebase from "../../hooks/useFirebase";
 
+
 export default () => {
+    // Navigation
+    const { navigate, setOptions } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
-
+    // Profile info
     const [profileName, onChangeProfileName] = useState('Guest');
     const [nickname, onChangeNickname] = useState('No nickname');
-
     const { getUserInfo, logout } = useFirebase();
 
+    // Set profile name on change of username
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
     }, [getUserInfo().username])
 
+    // Set header options on load
     useEffect(() => {
         setOptions({
             headerBackgroundContainerStyle: {
@@ -42,6 +43,7 @@ export default () => {
         })
     }, [])
 
+    // Logout
     const Logout = () => {
         logout()
         navigate("Welcome")

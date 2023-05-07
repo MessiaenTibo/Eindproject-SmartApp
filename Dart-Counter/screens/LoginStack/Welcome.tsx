@@ -1,18 +1,24 @@
-import { Text, View, Button, Pressable } from 'react-native';
-
+// React Native
+import { useEffect } from 'react';
+import { Text, View, Pressable } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 
+// Hooks
 import useFirebase from '../../hooks/useFirebase';
-import { useEffect } from 'react';
+
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
+    // Navigation
+    const { navigate } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
+    // Firebase
     const { checkIfLoggedIn } = useFirebase();
 
+    // Check if the user is already logged-in in the cache
     useEffect(() => {
         checkIfLoggedIn().then((result) => {
             if(result) {

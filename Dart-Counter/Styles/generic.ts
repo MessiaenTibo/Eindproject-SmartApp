@@ -1,6 +1,9 @@
+// React Native
 import { StyleSheet } from 'react-native';
+
+// Styles
 import { colors } from './colors';
-import { max } from 'react-native-reanimated';
+
 
 export const HomeStyle = StyleSheet.create({
     container: {

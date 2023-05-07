@@ -1,13 +1,15 @@
+// React Native
 import { Text, View, Pressable } from 'react-native';
-
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-
-import { HomeStyle } from '../../Styles/generic';
-
-import GameResults from '../../interfaces/GameResults';
 import { ScrollView } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
+
+// Styles
+import { HomeStyle } from '../../Styles/generic';
+
+// Interfaces
+import GameResults from '../../interfaces/GameResults';
 
 
 export default (props:any) => {

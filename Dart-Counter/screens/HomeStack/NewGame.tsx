@@ -1,12 +1,16 @@
-import { Text, View, Button, Pressable } from 'react-native';
-
+// React Native
+import { Text, View, Pressable } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 
 
 export default () => {
+    // Navigation
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    
     return (
         <View style={HomeStyle.container2}>
             <Pressable style={HomeStyle.button3} onPress={() => {navigate('Match');}}>

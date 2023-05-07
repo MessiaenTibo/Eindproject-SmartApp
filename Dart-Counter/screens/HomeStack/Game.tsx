@@ -1,18 +1,22 @@
-import { Text, View, Button, Pressable, Dimensions, Alert } from 'react-native';
-
+// React Native
+import { Text, View, Pressable, Dimensions, Alert } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { HomeStyle } from '../../Styles/generic';
 import { TextInput } from 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
+
+// Styles
+import { HomeStyle } from '../../Styles/generic';
 import { colors } from '../../Styles/colors';
 
+// Lucide icons
 import { ArrowRight, Delete, CornerDownLeft, Camera } from 'lucide-react-native';
 
+// Hooks
 import useHttpRequests from '../../hooks/useHttpRequests';
 import useFirebase from '../../hooks/useFirebase';
 import CalculateThrowOut from '../../hooks/CalculateThrowOut';
-import { set } from 'react-native-reanimated';
+
 
 export default (props:any) => {
 

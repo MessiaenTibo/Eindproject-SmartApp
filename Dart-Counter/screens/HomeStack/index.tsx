@@ -1,9 +1,9 @@
+// React native
 import 'react-native-gesture-handler';
-
 import { createStackNavigator } from '@react-navigation/stack';
+import { DrawerToggleButton } from '@react-navigation/drawer';
 
-import { createDrawerNavigator, DrawerToggleButton } from '@react-navigation/drawer';
-
+// Screens
 import Home from './Home';
 import NewGame from './NewGame';
 import Match from './Match';
@@ -13,6 +13,7 @@ import GameResults from './GameResults';
 import Statistics from './Statistics';
 import StatisticsDetails from './StatisticsDetails';
 
+// Stack
 const Stack = createStackNavigator();
 
 export function HomeStack() {

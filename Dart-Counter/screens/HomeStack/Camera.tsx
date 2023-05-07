@@ -1,38 +1,45 @@
-import { Image, Alert, Pressable, Text, StyleSheet, View, Dimensions, TouchableOpacity, SafeAreaView, ImageBackground } from 'react-native';
+// React Native
+import { Image, Alert, Pressable, Text, View, } from 'react-native';
 import { useEffect, useState } from 'react';
-import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
-import { HomeStyle } from '../../Styles/generic';
-
-import { Camera as CameraIcon, SwitchCamera, Zap, ZapOff } from 'lucide-react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
+
+// Expo
+import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library'
 
+// Styles
+import { HomeStyle } from '../../Styles/generic';
+
+// Lucide icons
+import { Camera as CameraIcon, SwitchCamera, Zap, ZapOff } from 'lucide-react-native';
+
+
 export default function CameraEx() {
+    // Navigation
     const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
     
+    // Camera
     const [type, setType] = useState(CameraType.back);
     const [flash, setFlash] = useState(FlashMode.off);
     const [photo, setPhoto] = useState<CameraCapturedPicture>();
     let [hasPermission, setHasPermission] = useState<any | null>(null);
-
     let camera: Camera | null  =  null;
 
-    // const [permission, requestPermission] = Camera.useCameraPermissions();
+    // Get camera permissions
     useEffect(() => {
         Camera.requestCameraPermissionsAsync().then(Permissions => { console.log("Permissions", Permissions) })
-        // if (!permission) ...
     }, []);
-    // if (!permission.granted) ...
 
+    // Set camera options
     function toggleCameraType() {
         setType(current => (current === CameraType.back ? CameraType.front : CameraType.back));
     }
-
     function toggleFlashlight() {
         setFlash(current => (current === FlashMode.off ? FlashMode.on : FlashMode.off));
     }
 
+    // Take picture
     function takePicture() {
         console.log("Take picture");
         let options = {
@@ -50,10 +57,12 @@ export default function CameraEx() {
         }
     }
 
+    // cancel picture
     const cancel = () => {
         setPhoto(undefined);
     }
 
+    // Save picture
     const save = () => {
         Alert.alert("Save", "Save photo?", [
             {
@@ -72,6 +81,7 @@ export default function CameraEx() {
         ])
     }
 
+    // Save photo to gallery
     const savePhoto = async(photo:string) =>{
         if(!hasPermission){
             hasPermission = await MediaLibrary.requestPermissionsAsync();
@@ -83,6 +93,7 @@ export default function CameraEx() {
         }
     }
 
+    // Exit camera
     const exit = () => {
         console.log("Exit");
         setPhoto(undefined);

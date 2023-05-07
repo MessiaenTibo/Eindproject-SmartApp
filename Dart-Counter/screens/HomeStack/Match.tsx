@@ -1,18 +1,19 @@
-import { Text, View, Pressable, SafeAreaView, KeyboardAvoidingView } from 'react-native';
-
-import { useNavigation, ParamListBase } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
-import { HomeStyle } from '../../Styles/generic';
-
-import { Image } from "react-native"
-import useFirebase from '../../hooks/useFirebase';
+// React Native
 import { useCallback, useEffect, useState } from 'react';
+import { Text, View, Pressable, SafeAreaView, Image } from 'react-native';
 import { FlatList, ScrollView, TextInput } from 'react-native-gesture-handler';
+import { useNavigation, ParamListBase, useFocusEffect } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { ScreenWidth } from 'react-native-elements/dist/helpers';
 
+// Expo
 import * as MediaLibrary from 'expo-media-library';
 
-import { useFocusEffect } from '@react-navigation/native';
-import { ScreenWidth } from 'react-native-elements/dist/helpers';
+// Styles
+import { HomeStyle } from '../../Styles/generic';
+
+// Hooks
+import useFirebase from '../../hooks/useFirebase';
 
 
 export default () => {

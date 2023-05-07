@@ -1,25 +1,31 @@
+// React Native
+import { useEffect, useState } from "react";
 import { View, Text, Image, Pressable } from "react-native"
-import { HomeStyle } from "../../Styles/generic"
-import { colors } from "../../Styles/colors"
-
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useEffect, useState } from "react";
 
-import useFirebase from "../../hooks/useFirebase";
-
+// Expo
 import * as ImagePicker from 'expo-image-picker';
 import * as MediaLibrary from 'expo-media-library';
 
+// Styles
+import { HomeStyle } from "../../Styles/generic"
+import { colors } from "../../Styles/colors"
+
+// Hooks
+import useFirebase from "../../hooks/useFirebase";
+
+
 export default () => {
+    // Navigation
+    const { setOptions } = useNavigation<StackNavigationProp<ParamListBase, 'MainDrawer'>>()
 
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'MainDrawer'>>()
-
+    // Firebase info
     const [profileName, onChangeProfileName] = useState('Guest');
     const [nickname, onChangeNickname] = useState('No nickname');
-
     const { getUserInfo } = useFirebase();
 
+    // Get profile image
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
 
@@ -39,9 +45,10 @@ export default () => {
             }
         })
     }, [getUserInfo().username])
-
+    // Profile image
     const [image, setImage] = useState<string | null>(null);
 
+    // Pick image from gallery
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -66,6 +73,7 @@ export default () => {
         }
     };
 
+    // Set header options on load
     useEffect(() => {
         setOptions({
             headerBackgroundContainerStyle: {

@@ -19,18 +19,21 @@ Deze verschillende pagina's / navigation lagen zullen dan in de App.tsx opgeroep
 Ook zal ik gebruik maken van babel als javaScript compiler.
 
 
-Ik zal ik de expo audio api gebruiken om belangerijke hoge scores af te roepen zoals 180.
-(https://docs.expo.dev/versions/v48.0.0/sdk/audio/)
+Ik maak gebruik van de AsyncStorage api om de ingelogde gebruiker te onthouden.
+(https://docs.expo.dev/versions/latest/sdk/async-storage/)
 
-Vervolgens zal ik de expo camera api gebruiken om de hoogtepunten tijdens het darten te kunnen vastleggen.
+Ook maak ik gebruik van de expo Camera api om foto's te kunnen nemen tijdens het spelen van een wedstrijd. Op deze manier kan je een foto nemen van een mooie of unieke worp.
 (https://docs.expo.dev/versions/v48.0.0/sdk/camera/)
  
-Ten slotte zal ik de expo MediaLibrary api gebruiken om genomen foto's op te slaan.
+De media library api van expo gebruik ik om de genomen foto's op te slaan in de galerij van de gebruiker.
 (https://docs.expo.dev/versions/latest/sdk/media-library)
+
+De expo image picker api gebruik ik om een foto te kunnen kiezen uit de galerij van de gebruiker.
+(https://docs.expo.dev/versions/latest/sdk/imagepicker/)
 
 ### 3. Wat is mijn insteek voor de UI?
 
-Ik ga proberen het design van de DartCounter app zo goed mogelijk na te maken.
+Ik ga proberen het design van de bestaande DartCounter app zo goed mogelijk na te maken.
 https://play.google.com/store/apps/details?id=com.dartcounter.mobile&hl=nl&gl=US&pli=1
 
 ### 4. Op welk platform ga ik focusen?

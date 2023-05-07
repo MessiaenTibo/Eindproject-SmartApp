@@ -1,5 +1,6 @@
-import { Text, View, Button, Pressable, TextInput, Keyboard } from 'react-native';
-
+// React Native
+import { useState } from 'react';
+import { Text, View, Pressable, TextInput, Keyboard } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 
@@ -7,36 +8,35 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStyle } from '../../Styles/generic';
 import { colors } from '../../Styles/colors';
 
-// React hook
-import { useState } from 'react';
-
-// Custom firebase hook
+// Hooks
 import useFirebase from '../../hooks/useFirebase';
 
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    // Navigation
+    const { navigate } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
+    // Firebase
     const { register } = useFirebase();
 
+    // States
+    // First name
     const [firstName, onChangeFirstName] = useState('');
     const [firstNameError, onChangeFirstNameError] = useState('');
-
+    // Last name
     const [lastName, onChangeLastName] = useState('');
     const [lastNameError, onChangeLastNameError] = useState('');
-
+    // Username
     const [username, onChangeUsername] = useState('');
     const [usernameError, onChangeUsernameError] = useState('');
-
+    // Email
     const [email, onChangeEmail] = useState('');
     const [emailError, onChangeEmailError] = useState('');
-
+    // Password
     const [password, onChangePassword] = useState('');
     const [passwordError, onChangePasswordError] = useState('');
 
-    let [errorMessages, setErrorMessage] = useState('none');
-
-
+    // Validate input
     const validate = () => {
         Keyboard.dismiss();
 
@@ -85,7 +85,6 @@ export default () => {
         const registerState = register(username, email, password);
         
         registerState.then(({errorCode, errorMessage}) => {
-            setErrorMessage(errorMessage);
             if(errorCode == "success") navigate('Login');
             else if(errorCode == "auth/email-already-in-use") onChangeEmailError(errorMessage);
             else if(errorCode == "auth/invalid-email") onChangeEmailError(errorMessage);
@@ -94,6 +93,7 @@ export default () => {
         })
     
     };
+    
 
     return (
         <View style={HomeStyle.container}>

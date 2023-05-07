@@ -1,18 +1,22 @@
-import * as React from 'react';
+// React Native
+import { View } from 'react-native';
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import Icon from 'react-native-vector-icons/FontAwesome'
 
+// Screens
 import Settings from "./Settings"
 import Overview from "./Overview"
 import Profile from "./Profile"
-import { Text, View } from 'react-native';
 
+// Styles
 import { colors } from '../../Styles/colors';
 
+// Lucide Icons
 import { Home } from 'lucide-react';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
-
+// Drawer
 const Drawer = createDrawerNavigator();
+
 
 export function MainDrawer () {
     return (

@@ -1,26 +1,31 @@
+// React Native
+import { useState } from 'react';
 import { Text, View, Pressable, TextInput, Keyboard, Alert  } from 'react-native';
-
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useState } from 'react';
 
+// Styles
 import { HomeStyle } from '../../Styles/generic';
 import { colors } from '../../Styles/colors';
 
-// Custom firebase hook
+// Hooks
 import useFirebase from '../../hooks/useFirebase';
 
-export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
 
+export default () => {
+    // Navigation
+    const { navigate } = useNavigation<StackNavigationProp<ParamListBase, 'LoginStack'>>()
+
+    // Firebase
     const { login, resetPassword } = useFirebase();
 
+    // States
     const [email, onChangeEmail] = useState('');
     const [emailError, onChangeEmailError] = useState('');
-
     const [password, onChangePassword] = useState('');
     const [passwordError, onChangePasswordError] = useState('');
 
+    // Validate input
     const validate = () => {
         Keyboard.dismiss();
         
@@ -68,6 +73,7 @@ export default () => {
         })
     }
 
+    // Forgot password
     const forgotPassword = () => {
         if(!email) {
             onChangeEmailError('Email is required');
@@ -106,6 +112,7 @@ export default () => {
             })
         }
     }
+
 
     return (
         <View style={HomeStyle.container}>
