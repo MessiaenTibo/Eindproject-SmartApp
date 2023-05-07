@@ -1,10 +1,12 @@
-// React Native and Expo imports
+// React Native
 import { Text, View, Pressable } from 'react-native';
 import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useCallback, useEffect, useState } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import * as MediaLibrary from 'expo-media-library';
+
+// Expo
+import { requestPermissionsAsync, getAlbumAsync, getAssetsAsync } from 'expo-media-library';
 
 // Components
 import ProfileHeader from '../../Components/ProfileHeader';
@@ -32,17 +34,17 @@ export default () => {
     const [image, setImage] = useState<string | null>(null);
 
 
-    // Get profile image
+    // Get profile image and set it
     useFocusEffect(
         useCallback(() => {
             console.log("useFocusEffect");
-            MediaLibrary.requestPermissionsAsync().then((result) => {
+            requestPermissionsAsync().then((result) => {
                 if(result.granted) {
                     // console.log("Permission granted");
                     // console.log("username: " + getUserInfo().username);
-                    MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                    getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
                         if(album != null) {
-                            MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                            getAssetsAsync({album: album}).then((assets) => {
                                 if(assets != null) {
                                     setImage(assets.assets[0].uri);
                                 }
@@ -59,7 +61,7 @@ export default () => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
     }, [getUserInfo().username])
 
-    
+
     return (
         <View>
             <ProfileHeader profileName={profileName} nickname={nickname} image={image}/>

@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { ScreenWidth } from 'react-native-elements/dist/helpers';
 
 // Expo
-import * as MediaLibrary from 'expo-media-library';
+import { requestPermissionsAsync, getAlbumAsync, getAssetsAsync } from 'expo-media-library';
 
 // Styles
 import { HomeStyle } from '../../Styles/generic';
@@ -17,25 +17,31 @@ import useFirebase from '../../hooks/useFirebase';
 
 
 export default () => {
-    const { navigate, setOptions, goBack } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
+    // Navigation
+    const { navigate } = useNavigation<StackNavigationProp<ParamListBase, 'HomeStack'>>()
 
+    // Firebase
     const { getUserInfo } = useFirebase();
-
+    // Profile info
     const [profileName, onChangeProfileName] = useState('Guest');
     const [image, setImage] = useState<string | null>(null);
 
+    // Match info
     const [legs, onChangeLegs] = useState('3');
     const [sets, onChangeSets] = useState('1');
     const [score, onChangeScore] = useState(501);
     const [throwIn, onChangeThrowIn] = useState('STRAIGHT');
     const [throwOut, onChangeThrowOut] = useState('DOUBLE');
 
+    // Player info
     const [players, onChangePlayers] = useState([{name: 'You', id: 0}, {name: 'Add', id: 1}]);
     const [actualplayers, onChangeActualPlayers] = useState([{name: 'You ', id: 0}]);
 
+    // Guest info
     const [guest, onChangeGuest] = useState(false);
     const [guestName, onChangeGuestName] = useState('Guest');
 
+    // Changing guest name
     const onChangeGuestNameText = (text: string) => {
         if(text.length > 10) return;
         if(text.length == 0){
@@ -58,16 +64,16 @@ export default () => {
         onChangeGuestName(text);
     }
 
-
+    // Get profile image and set it on focus
     useFocusEffect(
         useCallback(() => {
-            MediaLibrary.requestPermissionsAsync().then((result) => {
+            requestPermissionsAsync().then((result) => {
                 if(result.granted) {
                     console.log("Permission granted");
                     console.log("username: " + getUserInfo().username);
-                    MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                    getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
                         if(album != null) {
-                            MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                            getAssetsAsync({album: album}).then((assets) => {
                                 if(assets != null) {
                                     setImage(assets.assets[0].uri);
                                 }
@@ -79,6 +85,7 @@ export default () => {
         }, [])
     );
 
+    // Set profile name on load and on change of username
     useEffect(() => {
         if(getUserInfo().username != "")
         {
@@ -88,6 +95,7 @@ export default () => {
         }
     }, [getUserInfo().username])
 
+    // Add player
     const addPlayer = () => {
         if(players.length < 2)
         {
@@ -106,6 +114,7 @@ export default () => {
         }
     }
 
+    // Remove player
     const removePlayer = () => {
         if(players.length > 1){
             let newplayers = players.slice(0, 1);
@@ -116,6 +125,7 @@ export default () => {
         }
     }
 
+    // Player
     const player = (name: string, id: number) => {
         return (<Pressable style={HomeStyle.player} onPress={name === "Add" ? addPlayer : noAction}>
             {
@@ -128,15 +138,18 @@ export default () => {
         </Pressable>)
     }
 
+    // No action (empty callback function)
     const noAction = () => {
         console.log("No action");
     }
 
+    // Start game
     const startGame = () => {
         if(actualplayers.length >= 1 && sets != "" && legs != "") navigate('Game', {players: actualplayers, legs: parseInt(legs), sets: parseInt(sets), score: score, throwIn: throwIn, throwOut: throwOut});
         else alert("Please fill in all the fields");
     }
 
+    
     return (
         <View style={HomeStyle.container2}>
             <ScrollView style={[{height:'100%'},{marginBottom: 50}]}>

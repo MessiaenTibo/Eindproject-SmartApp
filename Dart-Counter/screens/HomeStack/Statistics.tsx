@@ -1,12 +1,10 @@
 // React Native
 import { useEffect, useState } from 'react';
 import { Text, View, Image } from 'react-native';
-import { useNavigation, ParamListBase } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { FlatList } from 'react-native-gesture-handler';
 
 // Expo
-import * as MediaLibrary from 'expo-media-library';
+import { requestPermissionsAsync, getAlbumAsync, getAssetsAsync } from 'expo-media-library';
 
 // Styles
 import { HomeStyle } from '../../Styles/generic';
@@ -53,13 +51,13 @@ export default () => {
         }
 
         console.log("Requesting image")
-        MediaLibrary.requestPermissionsAsync().then((result) => {
+        requestPermissionsAsync().then((result) => {
             if(result.granted) {
                 // console.log("Permission granted");
                 // console.log("username: " + getUserInfo().username);
-                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
                     if(album != null) {
-                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                        getAssetsAsync({album: album}).then((assets) => {
                             if(assets != null) {
                                 console.log("Image received")
                                 setImage(assets.assets[0].uri);

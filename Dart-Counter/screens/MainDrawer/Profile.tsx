@@ -5,8 +5,8 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 import { StackNavigationProp } from "@react-navigation/stack";
 
 // Expo
-import * as ImagePicker from 'expo-image-picker';
-import * as MediaLibrary from 'expo-media-library';
+import { launchImageLibraryAsync, MediaTypeOptions } from 'expo-image-picker';
+import { requestPermissionsAsync, getAlbumAsync, getAssetsAsync, createAlbumAsync , createAssetAsync, deleteAlbumsAsync } from 'expo-media-library';
 
 // Styles
 import { HomeStyle } from "../../Styles/generic"
@@ -29,13 +29,13 @@ export default () => {
     useEffect(() => {
         if(getUserInfo().username != "") onChangeProfileName(getUserInfo().username);
 
-        MediaLibrary.requestPermissionsAsync().then((result) => {
+        requestPermissionsAsync().then((result) => {
             if(result.granted) {
                 console.log("Permission granted");
                 console.log("username: " + getUserInfo().username);
-                MediaLibrary.getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
+                getAlbumAsync('ProfileIcon' + getUserInfo().username).then((album) => {
                     if(album != null) {
-                        MediaLibrary.getAssetsAsync({album: album}).then((assets) => {
+                        getAssetsAsync({album: album}).then((assets) => {
                             if(assets != null) {
                                 setImage(assets.assets[0].uri);
                             }
@@ -51,8 +51,8 @@ export default () => {
     // Pick image from gallery
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
-        let result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        let result = await launchImageLibraryAsync({
+        mediaTypes: MediaTypeOptions.All,
         allowsEditing: true,
         aspect: [1, 1],
         quality: 1,
@@ -61,12 +61,12 @@ export default () => {
         console.log(result);
 
         if (!result.canceled) {
-            const asset = await MediaLibrary.createAssetAsync(result.assets[0].uri);
-            MediaLibrary.getAlbumAsync('ProfileIcon' + profileName).then((album) => {
+            const asset = await createAssetAsync(result.assets[0].uri);
+            getAlbumAsync('ProfileIcon' + profileName).then((album) => {
                 if(album != null) {
-                    MediaLibrary.deleteAlbumsAsync(album.id, true);
+                    deleteAlbumsAsync(album.id, true);
                 }
-                MediaLibrary.createAlbumAsync('ProfileIcon' + profileName, asset, false);
+                createAlbumAsync('ProfileIcon' + profileName, asset, false);
             })
             //Show new image
             setImage(result.assets[0].uri);

@@ -6,7 +6,7 @@ import { useNavigation, ParamListBase } from '@react-navigation/native';
 
 // Expo
 import { Camera, CameraCapturedPicture, CameraType, FlashMode } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library'
+import { requestPermissionsAsync, createAlbumAsync, createAssetAsync } from 'expo-media-library';
 
 // Styles
 import { HomeStyle } from '../../Styles/generic';
@@ -84,12 +84,12 @@ export default function CameraEx() {
     // Save photo to gallery
     const savePhoto = async(photo:string) =>{
         if(!hasPermission){
-            hasPermission = await MediaLibrary.requestPermissionsAsync();
+            hasPermission = await requestPermissionsAsync();
             setHasPermission(hasPermission);
         }
         if(hasPermission.status === 'granted'){
-            const asset = await MediaLibrary.createAssetAsync(photo);
-            MediaLibrary.createAlbumAsync('Dart Counter', asset, false);
+            const asset = await createAssetAsync(photo);
+            createAlbumAsync('Dart Counter', asset, false);
         }
     }
 
